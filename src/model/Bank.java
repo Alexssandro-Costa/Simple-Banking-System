@@ -1,5 +1,7 @@
 package model;
 
+import persistence.BankAccountFileRepository;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,9 +10,11 @@ import java.util.Random;
 public class Bank {
 
     private HashMap<String, Account> accounts;
+    private BankAccountFileRepository repo;
 
     public Bank() {
         accounts = new HashMap<>();
+        repo = new BankAccountFileRepository();
     }
 
     public void registerAccount(String name, String cpf, BigDecimal initialDeposit) throws Exception {
@@ -90,4 +94,7 @@ public class Bank {
 
     }
 
+    public void save() throws Exception {
+        repo.save(accounts);
+    }
 }

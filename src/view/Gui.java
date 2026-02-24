@@ -2,10 +2,9 @@ package view;
 
 import model.Account;
 import model.Bank;
-import model.Person;
+import persistence.BankAccountFileRepository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -47,6 +46,7 @@ public class Gui {
                     case "5":
                         System.out.println("saindo...");
                         run = false;
+                        bank.save();
                         break;
                     default:
                         System.out.println("Opção invalida");
@@ -60,7 +60,7 @@ public class Gui {
         }
     }
 
-    private static void register(Scanner sc, Bank bank) throws Exception {
+    private static void register(Scanner sc, Bank bank) {
 
         /*
         Registra uma conta valida.
@@ -68,10 +68,10 @@ public class Gui {
         @param bank: objeto onde as contas serão salvas
          */
 
-        String name = null;
-        String cpf = null;
+        String name;
+        String cpf;
         boolean run = true;
-        BigDecimal deposit = BigDecimal.valueOf(0.0);
+        BigDecimal deposit;
 
         while(run) {
             try {
@@ -97,7 +97,7 @@ public class Gui {
 
     }
 
-    private static void remove(Scanner sc, Bank bank) throws Exception{
+    private static void remove(Scanner sc, Bank bank) {
 
         /*
         Remove uma conta valida.
@@ -105,8 +105,8 @@ public class Gui {
         @param bank: objeto onde as contas serão buscadas
          */
 
-        String accountNumber = null;
-        Account account = null;
+        String accountNumber;
+        Account account;
 
 
         System.out.println("\t--- DELEÇÃO ---");
@@ -121,7 +121,7 @@ public class Gui {
     }
 
 
-    private static void accessAccount(Scanner sc, Bank bank) throws Exception{
+    private static void accessAccount(Scanner sc, Bank bank) {
 
         /*
         Acessa uma conta valida e realiza funções de retirada ou deposito de dinheiro.
@@ -131,10 +131,10 @@ public class Gui {
 
         System.out.println("\t--- CONTA BANCARIA ---");
 
-        String accountNumber = null;
-        Account account = null;
-        String opt = null;
-        double value = 0.0;
+        String accountNumber;
+        Account account;
+        String opt;
+        double value;
         boolean run = true;
 
         System.out.print("Numero da conta: ");
@@ -183,7 +183,7 @@ public class Gui {
         }
     }
 
-    private static void listAll(Bank bank) throws Exception{
+    private static void listAll(Bank bank) {
 
         /*
         Mostra todas as contas cadastradas na tela.

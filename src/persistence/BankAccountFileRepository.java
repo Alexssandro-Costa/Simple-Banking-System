@@ -18,28 +18,17 @@ public class BankAccountFileRepository {
 
     public void save(HashMap<String, Account> accounts) throws Exception {
 
-        if(Files.notExists(path))
-            throw new FileNotFoundException("Não foi possivel localizar o arquivo");
-        if(accounts == null)
+        if (Files.notExists(path))
+            Files.createFile(path);
+        if (accounts == null)
             throw new NullPointerException("Não foi possivel salvar as contas");
 
-        // arquivo temporario
-        Path tempFile = Files.createTempFile("arquivo","Temporario");
-        Files.copy(path, tempFile); // cria um arquivo temporario contendo as contas slvas
-        Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING).close(); // limpa o arquivo padrão
-
+        Files.writeString(path, "", StandardOpenOption.TRUNCATE_EXISTING); // limpa o arquivo
         // salva todas as contas no arquivo
-
-        try {
-            for (Account account : accounts.values()) {
-                Files.writeString(path, String.format(account.toString()));
-            }
-        }catch (Exception e) {
-            Files.copy(tempFile, path); // retorna o arquivo ao ultimo salvamento
-            throw new Exception("Não foi possivel salvar em arquivo");
+        for (Account account : accounts.values()) {
+            Files.writeString(path, account.toString(), StandardOpenOption.APPEND);
         }
     }
 
-
-
+    public HashMap<String, Account> load()
 }
