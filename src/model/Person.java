@@ -4,13 +4,15 @@ import exceptions.InvalidFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Person {
+public abstract class Person {
 
     private String name;
     private final String CPF;
 
     public Person (String name, String CPF) throws Exception{
 
+        if(CPF == null)
+            throw new NullPointerException("O CPF inserido é nulo");
         if(!isValid(CPF))
             throw new InvalidFormatException("O CPF Passado está em um formato não valido");
         if(name == null)
@@ -25,8 +27,6 @@ public class Person {
     public void setName(String name) { this.name = name;}
 
     public String getCPF() { return CPF;}
-
-    public String toString() { return String.format("Name: %s %nCPF: %s %n", name, CPF); }
 
     private static boolean isValid(String CPF) {
 

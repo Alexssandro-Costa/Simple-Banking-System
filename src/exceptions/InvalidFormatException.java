@@ -6,6 +6,6 @@ public class InvalidFormatException extends IllegalArgumentException {
         super(message);
     }
     public  InvalidFormatException() {
-        super("O argumento passado tem um formato não invalido");
+        super("O argumento passado está em um formato não valido");
     }
 }

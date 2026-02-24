@@ -32,8 +32,7 @@ public class BankAccountFileRepository {
 
         try {
             for (Account account : accounts.values()) {
-                Files.writeString(path, String.format("%s;%s;%s;%s%n", account.getAccountNumber(),
-                        account.getHolder().getName(), account.getHolder().getCPF(), account.getBalance()));
+                Files.writeString(path, String.format(account.toString()));
             }
         }catch (Exception e) {
             Files.copy(tempFile, path); // retorna o arquivo ao ultimo salvamento

@@ -2,36 +2,30 @@ package model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Bank {
 
-    private ArrayList<Account> accounts;
+    private HashMap<String, Account> accounts;
 
     public Bank() {
-        accounts = new ArrayList<Account>();
+        accounts = new HashMap<>();
     }
 
-    public void registerAccount(Person holder, BigDecimal initialDeposit) {
+    public void registerAccount(String name, String cpf, BigDecimal initialDeposit) throws Exception {
 
         /*
         Cadrastra uma nova conta no banco.
 
-        @param holder: titular da conta
-        @param inititaldeposit: deposito inicial;
+        @param inititaldeposit deposito inicial
          */
 
-        if(holder == null)
-            throw  new NullPointerException("O titular da conta passado é nulo");
-        if(initialDeposit == null)
-            throw new NullPointerException("Deposito initial nulo");
-
-        Account newAccount = new Account(holder, initialDeposit, generateAccountNumber());
-
-        accounts.add(newAccount);
+        Account newAccount = new Account(generateAccountNumber(), name, cpf, initialDeposit);
+        accounts.put(newAccount.getAccountNumber(), newAccount);
     }
 
-    public Account removeAccount(String accountNumber) throws Exception {
+    public Account removeAccount(String accountNumber) {
 
         /*
         Remove a conta bancaria que pertença ao numero de conta passado.
@@ -40,13 +34,10 @@ public class Bank {
         @return retorna a conta bancaria removida do banco.
          */
 
-        Account subject = getAccount(accountNumber);
-        if(subject == null)
-            throw new Exception("Não foi possivel encontrar a conta buscada");
+        if(accountNumber == null)
+            throw new NullPointerException("O numero da conta passado para busca é nulo");
 
-        accounts.remove(subject);
-
-        return subject;
+        return accounts.remove(accountNumber);
 
     }
 
@@ -64,23 +55,14 @@ public class Bank {
         if(accountNumber == null)
             throw new NullPointerException("O numero da conta passado para busca é nulo");
 
-
-        for(Account a : accounts ) {
-
-            if(a != null) {
-                if(a.getAccountNumber().equals(accountNumber))
-                    return a;
-            }
-        }
-
-        return null;
+        return accounts.get(accountNumber);
     }
 
 
-    public ArrayList<Account> getAccounts() throws Exception {
+    public HashMap<String, Account> getAccounts() {
 
         if(accounts.isEmpty())
-            throw new Exception("A lista de contas está vazia");
+          return null;
 
         return accounts;
     }

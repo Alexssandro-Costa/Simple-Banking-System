@@ -6,33 +6,31 @@ import model.Person;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Gui {
 
-    public static void start() {
+    public static void start(){
 
         boolean run = true;
         Bank bank = new Bank();
         Scanner sc = new Scanner(System.in);
 
         while(run) {
-            try {
+            System.out.println("\t\t ----- BANCO ALASTOR -----");
 
-                System.out.println("|---------------------------------------|");
-                System.out.println("\t\t ----- BANCO ALASTOR -----");
+            System.out.println("Opções: ");
+            System.out.println("[1] - Cadastrar ");
+            System.out.println("[2] - Remover ");
+            System.out.println("[3] - Acessar ");
+            System.out.println("[4] - Listar todos");
+            System.out.println("[5] - Sair");
 
-                System.out.println("\tOpções: ");
-                System.out.println("\t[1] - Cadastrar ");
-                System.out.println("\t[2] - Remover ");
-                System.out.println("\t[3] - Acessar ");
-                System.out.println("\t[4] - Listar todos");
-                System.out.println("\t[5] - Sair");
+            System.out.print(": ");
+            String opt = sc.nextLine();
 
-                System.out.print("\t: ");
-                String opt = sc.nextLine();
-                System.out.println("|---------------------------------------|");
-
+            try{
                 switch (opt) {
                     case "1":
                         register(sc, bank);
@@ -47,16 +45,18 @@ public class Gui {
                         listAll(bank);
                         break;
                     case "5":
-                        System.out.println("\tSaindo do programa...");
+                        System.out.println("saindo...");
                         run = false;
                         break;
                     default:
-                        System.out.println("\tOpção invalida");
+                        System.out.println("Opção invalida");
                         break;
                 }
-            }catch (Exception e) {
-                System.err.println("\t" + e.getMessage());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
+
+
         }
     }
 
@@ -70,27 +70,34 @@ public class Gui {
 
         String name = null;
         String cpf = null;
+        boolean run = true;
         BigDecimal deposit = BigDecimal.valueOf(0.0);
 
+        while(run) {
+            try {
+                System.out.println("\t--- CADASTRO ---");
 
-        System.out.println("\t\t--- CADASTRO ---");
+                System.out.print("Nome do cliente: ");
+                name = sc.nextLine();
 
-        System.out.print("\tNome do cliente: ");
-        name = sc.nextLine();
+                System.out.print("CPF do cliente: ");
+                cpf = sc.nextLine();
 
-        System.out.print("\tCPF do cliente: ");
-        cpf = sc.nextLine();
+                System.out.print("Deposito inicial: ");
+                deposit = BigDecimal.valueOf(sc.nextDouble());
+                sc.nextLine();
 
-        System.out.print("\tDeposito inicial: ");
-        deposit = BigDecimal.valueOf(sc.nextDouble());
-        sc.nextLine();
-
-        bank.registerAccount( new Person(name, cpf), deposit);
-        System.out.println("Conta registrada com sucesso");
+                bank.registerAccount(name, cpf, deposit);
+                System.out.println("Conta registrada com sucesso");
+                run = false;
+            } catch (Exception e) {
+               System.out.println(e.getMessage());
+            }
+        }
 
     }
 
-    private static void remove(Scanner sc, Bank bank) throws Exception {
+    private static void remove(Scanner sc, Bank bank) throws Exception{
 
         /*
         Remove uma conta valida.
@@ -101,25 +108,28 @@ public class Gui {
         String accountNumber = null;
         Account account = null;
 
-        System.out.println("\t\t--- DELEÇÃO ---");
-        System.out.print("\tNumero de conta: ");
+
+        System.out.println("\t--- DELEÇÃO ---");
+        System.out.print("Numero de conta: ");
         accountNumber = sc.nextLine();
 
         account = bank.removeAccount(accountNumber);
+        if (account == null)
+            throw new NullPointerException("Não foi possivel encontrar a conta buscada");
 
-        System.out.println("Conta de titular: " + account.getHolder().getName() + " Removida com sucesso");
+        System.out.println("Conta do titular: " + account.getName() + "." + " Removida com sucesso");
     }
 
 
-    private static void accessAccount(Scanner sc, Bank bank) throws Exception {
+    private static void accessAccount(Scanner sc, Bank bank) throws Exception{
 
         /*
-        Acessa uma conta valida.
+        Acessa uma conta valida e realiza funções de retirada ou deposito de dinheiro.
         @param sc: lê os dados
         @param bank: objeto onde as contas serão buscadas
          */
 
-        System.out.println("\t\t--- CONTA BANCARIA ---");
+        System.out.println("\t--- CONTA BANCARIA ---");
 
         String accountNumber = null;
         Account account = null;
@@ -127,76 +137,69 @@ public class Gui {
         double value = 0.0;
         boolean run = true;
 
-        System.out.print("\tNumero da conta: ");
+        System.out.print("Numero da conta: ");
         accountNumber = sc.nextLine();
+
 
         account = bank.getAccount(accountNumber);
         if (account == null)
-            throw new Exception("Não foi possivel encontrar a conta buscada");
+            throw new NullPointerException("Não foi possivel encontrar a conta buscada");
 
         while (run) {
 
+            System.out.printf("Titular: " + account.getName() + "%nCPF: " + account.getCPF() + "%nBalanço: " + account.getBalance() + "%n");
+            System.out.println("[1] - Saque");
+            System.out.println("[2] - Deposito");
+            System.out.println("[3] - Deslogar ");
+
+            System.out.print(": ");
+            opt = sc.nextLine();
+
             try {
-
-                System.out.println("\t" + account);
-                System.out.println("\t[1] - Saque");
-                System.out.println("\t[2] - Deposito");
-                System.out.println("\t[3] - Deslogar ");
-
-                System.out.print("\t: ");
-                opt = sc.nextLine();
-
                 System.out.println();
                 switch (opt) {
                     case "1":
-                        System.out.print("\t Valor de saque: ");
+                        System.out.print("Valor de saque: ");
                         value = sc.nextDouble();
                         sc.nextLine();
                         account.withdraw(BigDecimal.valueOf(value));
                         break;
                     case "2":
-                        System.out.println("\t Valor de deposito: ");
+                        System.out.println("Valor de deposito: ");
                         value = sc.nextDouble();
+                        sc.nextLine();
                         account.deposit(BigDecimal.valueOf(value));
                         break;
                     case "3":
-                        System.out.println("\t Saindo...");
+                        System.out.println("Saindo...");
                         run = false;
                         break;
                     default:
-                        System.out.println("\t Opção invalida");
+                        System.out.println("Opção invalida");
                 }
             } catch (Exception e) {
-                System.err.println(e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }
 
-    private static void listAll(Bank bank) throws Exception {
+    private static void listAll(Bank bank) throws Exception{
 
         /*
         Mostra todas as contas cadastradas na tela.
          */
 
-        ArrayList<Account> accounts = bank.getAccounts();
+        HashMap<String, Account> accounts = bank.getAccounts();
 
-        if(accounts.isEmpty())
-            throw new Exception("não há nenhuma conta cadrastrada");
+        if (accounts == null)
+            throw new NullPointerException("não há nenhuma conta cadastrada");
 
-        System.out.println("\t\t--- LISTAGEM DE CONTAS ---");
+        System.out.println("\t--- LISTAGEM DE CONTAS ---");
 
-        for(Account a : accounts) {
-
-            if(a != null) {
-                System.out.println("\t------------");
+        for (Account a : accounts.values()) {
+            if (a != null)
                 System.out.println(a);
             }
-        }
-
     }
-
-
-
-
 
 }
