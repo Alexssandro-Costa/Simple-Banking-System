@@ -20,20 +20,22 @@ public class BankAccountFileRepository {
     // arquivo de persistência padrão
     private final Path path = Paths.get("C:\\Users\\user\\Downloads\\Java\\Projetos\\data\\accountsPersistence.CSV");
 
-    public void save(HashMap<String, Account> accounts) throws Exception {
+    public void save(ArrayList<String> arr) throws Exception {
         /*
             Salva todos os elementos passados em um arquivo de persistência;
          */
 
+        if (arr == null)
+            throw new NullPointerException("A estrutura passada é nula");
+
         if (Files.notExists(path))
-            Files.createFile(path);
-        if (accounts == null)
-            throw new NullPointerException("Não foi possivel salvar as contas");
+            Files.createFile(path); // cria arquivo caso não exista
 
         Files.writeString(path, "", StandardOpenOption.TRUNCATE_EXISTING); // limpa o arquivo
+
         // salva todas os elementos no arquivo
-        for (Account account : accounts.values()) {
-            Files.writeString(path, account.toString(), StandardOpenOption.APPEND);
+        for (String s : arr) {
+            Files.writeString(path, s, StandardOpenOption.APPEND);
         }
     }
 
@@ -48,17 +50,19 @@ public class BankAccountFileRepository {
         ArrayList<String> elements = new ArrayList<>();
         try(BufferedReader reader = Files.newBufferedReader(path)) {
 
+            // salva cada linha no array
             String line = reader.readLine();
             while(line != null) {
                 elements.add(line);
                 line = reader.readLine();
             }
 
-            return elements;
+           if(elements.isEmpty())
+               return null;
+           return elements;
+
         } catch (Exception e) {
             throw new Exception("Erro ao Ler o arquivo: " + e.getMessage());
         }
-
     }
-
 }

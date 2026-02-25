@@ -75,7 +75,7 @@ public class Bank {
     private String generateAccountNumber() {
 
         /*
-        cria um numero de conta aleatorio e o retorna.
+        cria um numero de conta aleatorio valido.
         @return retorna um numero de conta valido é unico.
          */
 
@@ -94,7 +94,4 @@ public class Bank {
 
     }
 
-    public void save() throws Exception {
-        repo.save(accounts);
-    }
 }

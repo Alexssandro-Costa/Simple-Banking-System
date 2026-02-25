@@ -2,8 +2,11 @@ package model;
 
 import exceptions.DepositBelowMinimumException;
 import exceptions.InsufficentFundsException;
+import exceptions.InvalidFormatException;
 
 import java.math.BigDecimal;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Account extends Person{
 
@@ -19,6 +22,9 @@ public class Account extends Person{
             throw new DepositBelowMinimumException();
         if(accountNumber == null)
             throw new NullPointerException("O numero de conta inserido é nulo");
+        if(!isValid(accountNumber))
+            throw new InvalidFormatException("O numerico de conta inserido está em um formato não valido");
+
 
         balance = initialDeposit;
         this.accountNumber = accountNumber;
@@ -61,6 +67,18 @@ public class Account extends Person{
             throw new InsufficentFundsException("Fundos insuficientes! O valor de R$: "  + value.doubleValue() + " ultrapassa o valor disponivel para saque.");
 
         balance = balance.subtract(value);
+    }
+
+    private boolean isValid(String accountNumber) {
+
+        /*
+        verifica se um numerico de conta está em um formato valido
+         */
+
+        Pattern pattern = Pattern.compile("^\\d{9}$");
+        Matcher matcher = pattern.matcher(accountNumber);
+
+        return matcher.find();
     }
 
     public String toString() {

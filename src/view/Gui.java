@@ -46,7 +46,6 @@ public class Gui {
                     case "5":
                         System.out.println("saindo...");
                         run = false;
-                        bank.save();
                         break;
                     default:
                         System.out.println("Opção invalida");
