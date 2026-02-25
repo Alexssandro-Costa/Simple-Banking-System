@@ -15,7 +15,7 @@ public class DataService {
 
     private BankAccountFileRepository repo = new BankAccountFileRepository();
 
-    protected boolean set(HashMap<String, Account> accounts) throws Exception {
+    public boolean set(HashMap<String, Account> accounts) throws Exception {
 
         /*
         Cria um ArrayList de Strings apartir de um HashMap e o entrega ao repositorio.
@@ -33,7 +33,7 @@ public class DataService {
 
     }
 
-    protected HashMap<String, Account> get() throws Exception {
+    public HashMap<String, Account> get() throws Exception {
 
         /*
         Trata os dados brutos recebidos do repositorio e os transforma em uma conta valida.

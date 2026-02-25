@@ -18,7 +18,16 @@ import java.util.List;
 public class BankAccountFileRepository {
 
     // arquivo de persistência padrão
-    private final Path path = Paths.get("C:\\Users\\user\\Downloads\\Java\\Projetos\\data\\accountsPersistence.CSV");
+    private final Path path;
+
+    public BankAccountFileRepository(String link) {
+        path = Paths.get(link);
+    }
+    public BankAccountFileRepository() {
+        this("C:\\Users\\user\\Downloads\\Java\\Projetos\\data\\accountsPersistence.CSV");
+
+    }
+
 
     public void save(ArrayList<String> arr) throws Exception {
         /*
@@ -56,9 +65,6 @@ public class BankAccountFileRepository {
                 elements.add(line);
                 line = reader.readLine();
             }
-
-           if(elements.isEmpty())
-               return null;
            return elements;
 
         } catch (Exception e) {

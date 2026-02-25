@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Gui {
 
-    public static void start(){
+    public static void start() throws Exception {
 
         boolean run = true;
         Bank bank = new Bank();
@@ -54,8 +54,9 @@ public class Gui {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-
-
+            finally {
+                bank.update();
+            }
         }
     }
 
@@ -96,7 +97,7 @@ public class Gui {
 
     }
 
-    private static void remove(Scanner sc, Bank bank) {
+    private static void remove(Scanner sc, Bank bank) throws Exception {
 
         /*
         Remove uma conta valida.
@@ -146,7 +147,7 @@ public class Gui {
 
         while (run) {
 
-            System.out.printf("Titular: " + account.getName() + "%nCPF: " + account.getCPF() + "%nBalanço: " + account.getBalance() + "%n");
+            System.out.printf("Titular: " + account.getName() + "%nCPF: " + account.getCPF() + "%nBalanço: R$:" + account.getBalance() + "%n");
             System.out.println("[1] - Saque");
             System.out.println("[2] - Deposito");
             System.out.println("[3] - Deslogar ");
@@ -158,13 +159,13 @@ public class Gui {
                 System.out.println();
                 switch (opt) {
                     case "1":
-                        System.out.print("Valor de saque: ");
+                        System.out.print("Valor de saque: R$:");
                         value = sc.nextDouble();
                         sc.nextLine();
                         account.withdraw(BigDecimal.valueOf(value));
                         break;
                     case "2":
-                        System.out.println("Valor de deposito: ");
+                        System.out.println("Valor de deposito: R$:");
                         value = sc.nextDouble();
                         sc.nextLine();
                         account.deposit(BigDecimal.valueOf(value));

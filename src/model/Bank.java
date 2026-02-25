@@ -1,20 +1,18 @@
 package model;
 
-import persistence.BankAccountFileRepository;
-
+import Service.DataService;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 public class Bank {
 
     private HashMap<String, Account> accounts;
-    private BankAccountFileRepository repo;
+    private DataService service;
 
-    public Bank() {
-        accounts = new HashMap<>();
-        repo = new BankAccountFileRepository();
+    public Bank() throws Exception {
+        service = new DataService();
+        accounts = service.get();
     }
 
     public void registerAccount(String name, String cpf, BigDecimal initialDeposit) throws Exception {
@@ -84,7 +82,7 @@ public class Bank {
 
         for(int i = 0; i < 9; i++) {
 
-            number.append(String.valueOf(r.nextInt(1, 9)));
+            number.append((r.nextInt(1, 9)));
         }
 
         if(getAccount(String.valueOf(number)) == null)
@@ -92,6 +90,10 @@ public class Bank {
 
         return generateAccountNumber();
 
+    }
+
+    public void update() throws Exception {
+        service.set(accounts);
     }
 
 }
