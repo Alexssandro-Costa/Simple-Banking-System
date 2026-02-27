@@ -24,7 +24,7 @@ public class BankAccountFileRepository {
         path = Paths.get(link);
     }
     public BankAccountFileRepository() {
-        this("C:\\Users\\user\\Downloads\\Java\\Projetos\\data\\accountsPersistence.CSV");
+        this("data\\accountsPersistence.CSV");
 
     }
 

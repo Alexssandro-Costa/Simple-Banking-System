@@ -15,7 +15,7 @@ public class DataService {
 
     private BankAccountFileRepository repo = new BankAccountFileRepository();
 
-    public boolean set(HashMap<String, Account> accounts) throws Exception {
+    public void set(HashMap<String, Account> accounts) throws Exception {
 
         /*
         Cria um ArrayList de Strings apartir de um HashMap e o entrega ao repositorio.
@@ -25,11 +25,11 @@ public class DataService {
 
         for(Account acc : accounts.values()) {
             if(acc != null)
-                arr.add(acc.toString());
+                // formata o dado extraido
+                arr.add(String.format("%s;%s;%s;%s%n", acc.getAccountNumber(), acc.getHolder().getName(),
+                        acc.getHolder().getCPF(), acc.getBalance()));
         }
         repo.save(arr);  // envia ao repositorio
-
-        return true;
 
     }
 

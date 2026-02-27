@@ -2,15 +2,16 @@ package view;
 
 import model.Account;
 import model.Bank;
-import persistence.BankAccountFileRepository;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Gui {
 
     public static void start() throws Exception {
+        Locale.setDefault(Locale.US);
 
         boolean run = true;
         Bank bank = new Bank();
@@ -33,12 +34,15 @@ public class Gui {
                 switch (opt) {
                     case "1":
                         register(sc, bank);
+                        bank.update();
                         break;
                     case "2":
                         remove(sc, bank);
+                        bank.update();
                         break;
                     case "3":
                         accessAccount(sc, bank);
+                        bank.update();
                         break;
                     case "4":
                         listAll(bank);
@@ -53,9 +57,6 @@ public class Gui {
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
-                bank.update();
             }
         }
     }
@@ -97,7 +98,7 @@ public class Gui {
 
     }
 
-    private static void remove(Scanner sc, Bank bank) throws Exception {
+    private static void remove(Scanner sc, Bank bank) {
 
         /*
         Remove uma conta valida.
@@ -117,7 +118,7 @@ public class Gui {
         if (account == null)
             throw new NullPointerException("Não foi possivel encontrar a conta buscada");
 
-        System.out.println("Conta do titular: " + account.getName() + "." + " Removida com sucesso");
+        System.out.println("Conta do titular: " + account.getHolder().getName() + "." + " Removida com sucesso");
     }
 
 
@@ -147,7 +148,7 @@ public class Gui {
 
         while (run) {
 
-            System.out.printf("Titular: " + account.getName() + "%nCPF: " + account.getCPF() + "%nBalanço: R$:" + account.getBalance() + "%n");
+            System.out.printf(account.toString());
             System.out.println("[1] - Saque");
             System.out.println("[2] - Deposito");
             System.out.println("[3] - Deslogar ");

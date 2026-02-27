@@ -4,7 +4,7 @@ import exceptions.InvalidFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class Person {
+public  class Person {
 
     private String name;
     private final String CPF;

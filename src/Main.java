@@ -1,7 +1,5 @@
-import persistence.BankAccountFileRepository;
-import view.Gui;
 
-import java.util.ArrayList;
+import view.Gui;
 
 public class Main {
 

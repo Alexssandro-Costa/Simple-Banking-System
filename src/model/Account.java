@@ -8,24 +8,23 @@ import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Account extends Person{
+public class Account {
 
     private BigDecimal balance;
     private final String accountNumber;
+    private Person holder;
 
     public Account(String accountNumber, String name, String cpf, BigDecimal initialDeposit) throws Exception {
-        super(name, cpf);
-
         if(initialDeposit == null)
             throw new NullPointerException("O deposito inserido é nulo");
-        if(initialDeposit.doubleValue() < 0)
+        if(initialDeposit.compareTo(BigDecimal.valueOf(0.0)) < 0)
             throw new DepositBelowMinimumException();
         if(accountNumber == null)
             throw new NullPointerException("O numero de conta inserido é nulo");
         if(!isValid(accountNumber))
             throw new InvalidFormatException("O numerico de conta inserido está em um formato não valido");
 
-
+        holder = new Person(name, cpf);
         balance = initialDeposit;
         this.accountNumber = accountNumber;
     }
@@ -36,6 +35,8 @@ public class Account extends Person{
         return accountNumber;
     }
 
+    public Person getHolder() { return holder; }
+
     public void deposit(BigDecimal value) {
 
         /*
@@ -45,7 +46,7 @@ public class Account extends Person{
         @throws IllegalArgumentException: É lançada se o valor de "value" for menor que 0.0
          */
 
-        if(value.doubleValue() < 0)
+        if(value.compareTo(BigDecimal.valueOf(0.0)) < 0)
             throw new DepositBelowMinimumException();
 
         balance = balance.add(value);
@@ -61,10 +62,11 @@ public class Account extends Person{
         @throws InsufficentFundsException: É lançada se o valor de saque for maior que o saldo da conta, ou se o saldo for menor que 1
          */
 
-        if(balance.doubleValue() <= 0)
+        if(balance.compareTo(BigDecimal.valueOf(0.0)) <= 0)
             throw new InsufficentFundsException("Seu balanço é zero. Sem fundos disponiveis para saque");
-        if(balance.doubleValue() < value.doubleValue())
-            throw new InsufficentFundsException("Fundos insuficientes! O valor de R$: "  + value.doubleValue() + " ultrapassa o valor disponivel para saque.");
+        if(balance.compareTo(value) < 0)
+            throw new InsufficentFundsException("Fundos insuficientes! O valor de R$: "  +
+                    value.doubleValue() + " ultrapassa o valor disponivel para saque.");
 
         balance = balance.subtract(value);
     }
@@ -75,14 +77,16 @@ public class Account extends Person{
         verifica se um numerico de conta está em um formato valido
          */
 
-        Pattern pattern = Pattern.compile("^\\d{9}$");
+        Pattern pattern = Pattern.compile("^\\d{4}$");
         Matcher matcher = pattern.matcher(accountNumber);
 
         return matcher.find();
     }
 
+    @Override
     public String toString() {
-        return String.format("%s;%s;%s;%s%n", accountNumber, getName(), getCPF(), balance);
+        return String.format("Número da conta: %s; Titular: %s; CPF do titular: %s; Balanço: R$:%s%n",
+                accountNumber, holder.getName(), holder.getCPF(), balance);
     }
 
 }

@@ -80,9 +80,9 @@ public class Bank {
         Random r = new Random();
         StringBuilder number = new StringBuilder();
 
-        for(int i = 0; i < 9; i++) {
+        for(int i = 0; i < 4; i++) {
 
-            number.append((r.nextInt(1, 9)));
+            number.append((r.nextInt(0, 10)));
         }
 
         if(getAccount(String.valueOf(number)) == null)
