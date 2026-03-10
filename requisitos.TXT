@@ -1,0 +1,19 @@
+possiveis mudanças no projeto:
+
+1. separar as funcionalidades de saque/deposito e registro/remoção/listar com um aparecendo apenas para clientes e outro para funcionarios.(possivelemente criar classes de interface grafica diferentes)
+
+2. aplicar um funcionalidade de "login" onde pro cliente e empregado. Disponibilizando as funcionalidades apenas após um login concluido.
+
+3. criar duas classes derivadas de Person, Customer e Employee.
+
+4. guardar uma lista de funcionarios no banco.
+
+5. Criar metodos para gerencia de funcionarios
+
+6. criar uma interface Persistence, que vai conter os metodos de persistencia.
+
+7. criar uma classe de persistencia para funcionarios.
+
+8. classes de persistencia de funcionarios e clientes irão implementar interface persistence.
+
+9. aumentar a quantidade de exceções personalizadas.
