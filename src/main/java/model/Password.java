@@ -20,18 +20,15 @@ public class Password {
         if(input == null)
             throw new NullPointerException("A senha passada é invalida");
 
-        if(input.length() != 5)
-            throw new InvalidPasswordException("Invalida! A senha deve conter ao menos 5 caracteres.");
+        if(input.length() < 4)
+            throw new InvalidPasswordException("A senha deve conter ao menos 4 caracteres");
 
-        if(input.isBlank()){
-            throw new InvalidPasswordException("Invalida! A senha não deve conter espaços em branco");
-        }
-
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{5}$");
+        /// determina que a senha deve conter ao menos uma letra e um numero e, ter um minimo de 4 caracteres
+        Pattern pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z0-9]{4,}$");
         Matcher matcher = pattern.matcher(input);
 
         if(!matcher.matches())
-            throw new InvalidPasswordException("Invalida! A senha deve conter ao menos uma letra e um numero.");
+            throw new InvalidPasswordException("Invalida! A senha deve conter ao menos uma letra e um numero");
 
         value = input;
     }

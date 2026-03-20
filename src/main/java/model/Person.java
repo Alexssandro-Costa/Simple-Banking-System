@@ -28,8 +28,8 @@ public abstract class Person {
         if(password == null)
             throw new NullPointerException("A senha passada é invalida");
 
-        verifyCPF(CPF);
-        verifyDTBirth(DTBirth);
+        validateCPF(CPF);
+        validateDTBirth(DTBirth);
 
         this.name = name.toUpperCase();
         this.CPF = CPF;
@@ -62,7 +62,7 @@ public abstract class Person {
         return DTBirth;
     }
 
-    private void verifyCPF(String input) {
+    private void validateCPF(String input) {
 
         /*
         Verifica se o elemento passado está em um formato valido;
@@ -77,7 +77,7 @@ public abstract class Person {
             throw new InvalidFormatException("O CPF passado está em um formato não valido.");
     }
 
-    private void verifyDTBirth(LocalDate date) {
+    private void validateDTBirth(LocalDate date) {
 
         // verifica se a data de nascimento inserida é valida
 

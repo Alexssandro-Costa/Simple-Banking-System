@@ -11,7 +11,7 @@ public class Phone {
 
     Phone(String value) {
 
-        isValid(value);
+       validateNumber(value);
         number = value;
     }
 
@@ -23,17 +23,17 @@ public class Phone {
         this.number = number;
     }
 
-    private void isValid(String value) {
+    private void validateNumber(String value) {
 
         // Verifica se a String passada está em um formato de um numero de telefone valido
 
         if(value == null)
             throw new NullPointerException("O numero de telefone passado é Invalido.");
 
-        Pattern pattern = Pattern.compile("^\\d{11}$\n");
+        Pattern pattern = Pattern.compile("^\\d{11}$");
         Matcher matcher = pattern.matcher(value);
 
-        if(matcher.matches())
+        if(!matcher.matches())
             throw new InvalidFormatException("O numero está em um formato não valido");
     }
 }

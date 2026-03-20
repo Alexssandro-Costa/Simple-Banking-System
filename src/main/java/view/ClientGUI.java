@@ -1,6 +1,6 @@
 package view;
 
-import model.Client;
+import DTO.ClientDTO;
 import service.ClientService;
 
 import java.math.BigDecimal;
@@ -122,8 +122,9 @@ public class ClientGUI {
     }
 
 
-    private void operations(Client client) {
+    private void operations(ClientDTO c) {
 
+        ClientDTO client = c;
         boolean run = true;
         char opt;
         BigDecimal value;
@@ -132,8 +133,7 @@ public class ClientGUI {
 
             try {
 
-                System.out.printf("Titular: %s %nNumero de conta: %s %nBalanço: R$:%s %n",
-                        client.getName(), client.getAccount().getAccountNumber(), client.getAccount().getBalance().toString());
+                System.out.printf(client.toString());
 
                 System.out.printf("[1] - Saque %n[2] - Deposit %n[3] - Transferência %n[4] - Sair da conta %n");
                 System.out.print(": ");
@@ -144,21 +144,21 @@ public class ClientGUI {
                         System.out.print("Valor R$: ");
                         value = sc.nextBigDecimal();
                         sc.nextLine();
-                        cs.performWithdraw(value);
+                        client = cs.performWithdraw(value); // atualiza o valor
                         break;
                     case '2':
                         System.out.print("Valor R$: ");
                         value = sc.nextBigDecimal();
                         sc.nextLine();
-                        cs.performDeposit(value);
+                        client = cs.performDeposit(value);
                         break;
                     case '3':
                         System.out.print("Numero da conta para transferencia: ");
-                        String acc = sc.nextLine();
+                        String accNum = sc.nextLine();
                         System.out.print("Valor R$: ");
                         value = sc.nextBigDecimal();
                         sc.nextLine();
-                        cs.transfer(acc, value);
+                        client = cs.transfer(accNum, value); // atualiza o valor
                         break;
                     case '4':
                         System.out.println("Saindo...");

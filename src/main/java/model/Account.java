@@ -1,6 +1,6 @@
 package model;
 
-import exceptions.DepositBelowMinimumException;
+import exceptions.InvalidDepositException;
 import exceptions.InvalidWithdrawException;
 
 import java.math.BigDecimal;
@@ -34,7 +34,7 @@ public class Account {
         if(value == null)
             throw new NullPointerException("O valor de deposito inserido é invalido ");
         if(value.compareTo(BigDecimal.ZERO) < 0)
-            throw new DepositBelowMinimumException("O valor de deposito inserido não pode ser menor que zero");
+            throw new InvalidDepositException("O valor de deposito inserido não pode ser menor que zero");
 
 
         balance = balance.add(value);
