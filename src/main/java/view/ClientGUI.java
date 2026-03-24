@@ -1,6 +1,9 @@
 package view;
 
 import DTO.ClientDTO;
+import exceptions.InvalidFormatException;
+import model.CPF;
+import model.Password;
 import service.ClientService;
 
 import java.math.BigDecimal;
@@ -49,20 +52,20 @@ public class ClientGUI {
 
     private void login() {
 
-        String cpf;
-        String password;
+        String accNumber;
+       Password password;
 
         while(true) {
             try {
                 System.out.println("\t --- Login ---");
 
-                System.out.print("CPF: ");
-                cpf = sc.nextLine();
+                System.out.print("Numero da conta: ");
+                accNumber = sc.nextLine();
 
                 System.out.print("Senha: ");
-                password = sc.nextLine();
+                password = new Password(sc.nextLine());
 
-                operations(cs.login(cpf, password));
+                operations(cs.login(accNumber, password));
                 break;
 
             } catch (Exception e) {
@@ -80,10 +83,10 @@ public class ClientGUI {
     private void register() {
 
         String name;
-        String cpf;
+        CPF cpf = new CPF();
         String number;
         LocalDate date;
-        String password;
+        Password password;
 
         while(true) {
             try {
@@ -93,7 +96,7 @@ public class ClientGUI {
                 name = sc.nextLine();
 
                 System.out.print("CPF: ");
-                cpf = sc.nextLine();
+                cpf = new CPF(sc.nextLine());
 
                 System.out.print("Numero de telefone: ");
                 number = sc.nextLine();
@@ -102,7 +105,7 @@ public class ClientGUI {
                 date = LocalDate.parse(sc.nextLine());
 
                 System.out.print("Senha: ");
-                password = sc.nextLine();
+                password = new Password(sc.nextLine());
 
                 operations(cs.Register(name, cpf, number, date, password));
                 break;
@@ -128,6 +131,7 @@ public class ClientGUI {
         boolean run = true;
         char opt;
         BigDecimal value;
+        Password password;
 
         while(run) {
 
@@ -144,21 +148,27 @@ public class ClientGUI {
                         System.out.print("Valor R$: ");
                         value = sc.nextBigDecimal();
                         sc.nextLine();
-                        client = cs.performWithdraw(value); // atualiza o valor
+                        System.out.print("Senha de confirmação: ");
+                        password = new Password(sc.nextLine());
+                        client = cs.performWithdraw(c.accountNumber(), password, value); // atualiza o valor
                         break;
                     case '2':
                         System.out.print("Valor R$: ");
                         value = sc.nextBigDecimal();
                         sc.nextLine();
-                        client = cs.performDeposit(value);
+                        System.out.print("Senha de confirmação: ");
+                        password = new Password(sc.nextLine());
+                        client = cs.performDeposit(c.accountNumber(), password, value);
                         break;
                     case '3':
                         System.out.print("Numero da conta para transferencia: ");
-                        String accNum = sc.nextLine();
+                        String accTarget = sc.nextLine();
                         System.out.print("Valor R$: ");
                         value = sc.nextBigDecimal();
                         sc.nextLine();
-                        client = cs.transfer(accNum, value); // atualiza o valor
+                        System.out.print("Senha de confirmação: ");
+                        password = new Password(sc.nextLine());
+                        client = cs.transfer(c.accountNumber(), password, accTarget, value); // atualiza o valor
                         break;
                     case '4':
                         System.out.println("Saindo...");

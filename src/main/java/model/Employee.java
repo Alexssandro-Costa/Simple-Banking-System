@@ -3,8 +3,9 @@ package model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class Employee extends Person {
+public class Employee {
 
+    /*
     private BigDecimal salary;
 
     public Employee(String name, String CPF, String phone, LocalDate DTBirth, String password, BigDecimal salary) {
@@ -33,4 +34,6 @@ public class Employee extends Person {
         return String.format("Nome: %s; CPF: %s; Telefone: %s; Data de nascimento: %s; Salario R$:%s %n",
                 getName(), getCPF(), getPhone().getNumber(), getDTBirth().toString(), getSalary().toString());
     }
+
+     */
 }

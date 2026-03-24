@@ -1,6 +1,5 @@
 package service;
 
-import model.Bank;
 import model.Client;
 import model.Employee;
 import exceptions.AccountNotFoundException;
@@ -10,6 +9,7 @@ import java.time.LocalDate;
 
 public class EmployeeService {
 
+    /*
     private Employee employee;
     private Bank bank;
 
@@ -68,4 +68,6 @@ public class EmployeeService {
             System.out.println(e);
         }
     }
+    */
+
 }

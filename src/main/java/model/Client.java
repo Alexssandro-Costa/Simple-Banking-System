@@ -1,14 +1,20 @@
 package model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Client extends Person {
 
     private Account account;
 
-    public Client(String name, String CPF, String phone, LocalDate DTBirth, String password, Account account) {
-        super(name, CPF, new Phone(phone), DTBirth, new Password(password));
+    public Client(String name, CPF CPF, String phone, LocalDate DTBirth, Password password, String accNumber, BigDecimal value) {
+        super(name, CPF, new Phone(phone), DTBirth, password);
         this.account = account;
+    }
+
+    public Client(String name, String accNumber, BigDecimal value) {
+        super(name);
+        this.account = new Account(accNumber, value);
     }
 
     public Account getAccount() {

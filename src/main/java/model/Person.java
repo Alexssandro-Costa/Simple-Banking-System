@@ -10,26 +10,21 @@ import java.util.regex.Pattern;
 public abstract class Person {
 
     private String name;
-    private String CPF;
+    private CPF CPF;
     private Phone phone;
     private LocalDate DTBirth;
     private Password password;
 
-    protected Person(String name, String CPF, Phone phone, LocalDate DTBirth, Password password) {
+    protected Person(String name, CPF CPF, Phone phone, LocalDate DTBirth, Password password) {
 
         if(name == null)
             throw new NullPointerException("O nome passado é Invalido");
-        if(CPF == null)
-            throw new NullPointerException("O CPF passado é invalido");
-        if(phone == null)
-            throw new NullPointerException("O telefone passado é invalido");
-        if(DTBirth == null)
-            throw new NullPointerException("A Data de nascimento passada é invalida");
-        if(password == null)
-            throw new NullPointerException("A senha passada é invalida");
-
-        validateCPF(CPF);
         validateDTBirth(DTBirth);
+
+        if(!getCPF().isValidy())
+            throw new InvalidFormatException("CPF está em um formato não valido");
+        if(!password.isValidy())
+            throw new InvalidFormatException("A senha está em um formato não valido");
 
         this.name = name.toUpperCase();
         this.CPF = CPF;
@@ -38,11 +33,13 @@ public abstract class Person {
         this.password = password;
     }
 
+    protected Person(String name) { this.name = name;}
+
     public String getName() {
         return name;
     }
 
-    public String getCPF() {
+    public CPF getCPF() {
         return CPF;
     }
 
@@ -62,26 +59,12 @@ public abstract class Person {
         return DTBirth;
     }
 
-    private void validateCPF(String input) {
-
-        /*
-        Verifica se o elemento passado está em um formato valido;
-        @return retorna verdadeiro se valido e falso se for invalido
-
-         */
-
-        Pattern pattern = Pattern.compile("^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$");
-        Matcher matcher = pattern.matcher(input);
-
-        if(!matcher.matches())
-            throw new InvalidFormatException("O CPF passado está em um formato não valido.");
-    }
-
     private void validateDTBirth(LocalDate date) {
 
         // verifica se a data de nascimento inserida é valida
 
-
+        if(DTBirth == null)
+            throw new NullPointerException("A Data de nascimento passada é invalida");
         if(date.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Data de nascimento não pode estar no futuro");
 
