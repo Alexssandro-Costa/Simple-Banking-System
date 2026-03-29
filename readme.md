@@ -14,7 +14,7 @@ O projeto foi construído de forma incremental, seguindo as fases abaixo:
 Implementação inicial focada na manipulação de arquivos locais. Utilizei a biblioteca `java.nio` para gerenciar a leitura e escrita de dados de forma eficiente, explorando o sistema de arquivos do SO.
 
 ### 2. Integração com Banco de Dados (JDBC)
-O projeto passou por uma refatoração na camada de acesso a dados (Repository). Substituí o armazenamento em arquivos por um banco de dados relacional, utilizando **JDBC** para gerenciar as consultas SQL e a conexão com o banco.
+O projeto passou por uma refatoração na camada de acesso a dados (com.bancarysistem.Repository). Substituí o armazenamento em arquivos por um banco de dados relacional, utilizando **JDBC** para gerenciar as consultas SQL e a conexão com o banco.
 
 ### 3. Interface Gráfica (Em construção)
 Atualmente trabalhando na criação de uma interface web básica utilizando **HTML5, CSS3 e JavaScript** para fornecer uma experiência de usuário mais amigável e conectada ao backend.

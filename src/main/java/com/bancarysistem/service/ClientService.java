@@ -1,0 +1,157 @@
+package com.bancarysistem.service;
+
+import com.bancarysistem.DAO.ClientDAO;
+import com.bancarysistem.DTO.ClientDTO;
+import com.bancarysistem.exceptions.*;
+import com.bancarysistem.model.CPF;
+import com.bancarysistem.model.Client;
+import com.bancarysistem.model.Password;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import static com.bancarysistem.utility.Generator.generateNumericString;
+
+public class ClientService {
+
+    private final ClientDAO cDao;
+
+    public ClientService() {
+        cDao = new ClientDAO();
+    }
+
+    public ClientDTO login(String accNumber, Password password) {
+
+         /*
+            confirma se todos os dados passados são validos e se forem, se conecta a conta relacionada;
+            @return retorna um DTO com os dados principais do cliente.
+         */
+
+        if(accNumber == null || password == null)
+            throw new InputException("Elemento invalido informado");
+
+        try {
+            Client client = cDao.getClientByAccountNumber(accNumber);
+
+            if(!Password.compare(client.getPassword().getValue(), password.getValue()))
+                throw new AccessDeniedException("Não foi permitido o acesso a conta.");
+
+            return new ClientDTO(client.getName(), client.getAccount().getAccountNumber(),
+                    client.getAccount().getBalance().toString());
+
+        } catch (Exception e) {
+            throw new AuthenticationFailedException(e.getMessage());
+        }
+
+    }
+
+    public ClientDTO Register(String name, CPF cpf, String phoneNumber, LocalDate DtBirth, Password password) {
+
+        /*
+            Registra a conta de um cliente ao banco.
+            @return retorna um DTO com os dados principais do cliente.
+         */
+
+        try {
+            Client client = new Client(name, cpf, phoneNumber, DtBirth, password, generateNumericString(9), BigDecimal.ZERO);
+
+            cDao.insertClient(client); // insere a entidade
+
+            // retorna um DTO com os dados principais
+            return new ClientDTO(client.getName(), client.getAccount().getAccountNumber(),
+                    client.getAccount().getBalance().toString());
+
+        } catch (Exception e) {
+            throw new RegistrationFailedException(e.getMessage());
+        }
+    }
+
+    public ClientDTO performWithdraw(String accNumber, Password password, BigDecimal value) {
+
+        /*
+            realiza um decremento de valor no saldo de uma conta associada.
+            @return retorna um DTO com os dados principais do cliente.
+         */
+
+        if(accNumber == null || password == null || value == null)
+            throw new InputException("Elemento invalido informado");
+
+        try {
+            Client client = cDao.getClientByAccountNumber(accNumber);// busca a conta no banco de dados
+
+            if(!Password.compare(client.getPassword().getValue(), password.getValue()))
+                throw new AccessDeniedException("Não foi permitido o acesso a conta.");
+
+            client.getAccount().withdraw(value);//verifica se o saque é valido
+            cDao.updateBalance(client.getAccount().getAccountNumber(), value.negate()); // realiza o saque no banco de dados
+
+            // retorna um DTO com os dados principais
+            return new ClientDTO(client.getName(), client.getAccount().getAccountNumber(),
+                    client.getAccount().getBalance().toString());
+
+        } catch (Exception e) {
+            throw new InvalidWithdrawException(e.getMessage());
+        }
+    }
+
+    public ClientDTO performDeposit(String accNumber, Password password, BigDecimal value) {
+
+        /*
+            realiza um incremento de valor no saldo de uma conta associada.
+            @return retorna um DTO com os dados principais do cliente
+         */
+
+        if(accNumber == null || password == null || value == null)
+            throw new InputException("Elemento invalido informado");
+
+        try {
+            Client client = cDao.getClientByAccountNumber(accNumber); // busca a conta no banco
+
+            if(!Password.compare(client.getPassword().getValue(), password.getValue()))
+                throw new AccessDeniedException("Não foi permitido o acesso a conta.");
+
+            client.getAccount().deposit(value); // verifica se o deposito é valido
+            cDao.updateBalance(client.getAccount().getAccountNumber(), value); // realiza o deposito no banco de dados
+
+            return new ClientDTO (client.getName(), client.getAccount().getAccountNumber(),
+                    client.getAccount().getBalance().toString());
+
+        }catch (Exception e) {
+            throw new InvalidDepositException(e.getMessage());
+        }
+
+    }
+
+    public ClientDTO transfer(String accNumber, Password password, String accountTarget, BigDecimal value) {
+
+        /*
+            Realiza uma transferencia de saldo entre a conta remetente e a conta destinataria
+            @return retorna um DTO com os dados principais do cliente
+         */
+
+        if(accNumber == null || password == null || accountTarget == null || value == null)
+            throw new InputException("Elemento invalido informado");
+
+
+        try{
+            Client sender = cDao.getClientByAccountNumber(accNumber);
+            Client receiver = cDao.getClientByAccountNumber(accountTarget);
+
+            if(!Password.compare(sender.getPassword().getValue(), password.getValue()))
+                throw new AccessDeniedException("Não foi permitido o acesso a conta.");
+
+            sender.getAccount().withdraw(value); // verifica se o saque é valido
+            receiver.getAccount().deposit(value); // verifice se o deposito é valido
+
+            cDao.updateBalance(accNumber, value.negate()); // realiza o saque no banco de dados
+            cDao.updateBalance(accountTarget, value); // realiza o deposito no banco de dados
+
+            return new ClientDTO(sender.getName(), sender.getAccount().getAccountNumber(),
+                    sender.getAccount().getBalance().toString());
+        }catch (Exception e) {
+            throw new InvalidTransferException(e.getMessage());
+        }
+
+    }
+
+}

@@ -1,10 +1,9 @@
 package view;
 
-import DTO.ClientDTO;
-import exceptions.InvalidFormatException;
-import model.CPF;
-import model.Password;
-import service.ClientService;
+import com.bancarysistem.DTO.ClientDTO;
+import com.bancarysistem.model.CPF;
+import com.bancarysistem.model.Password;
+import com.bancarysistem.service.ClientService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

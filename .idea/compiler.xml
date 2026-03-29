@@ -9,5 +9,8 @@
         <module name="sistema-bancario" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="BancarySistem" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>
