@@ -45,7 +45,7 @@ public class ClientService {
 
     }
 
-    public ClientDTO Register(String name, CPF cpf, String phoneNumber, LocalDate DtBirth, Password password) {
+    public ClientDTO Register(String name, String cpf, String phoneNumber, LocalDate DtBirth, String password) {
 
         /*
             Registra a conta de um cliente ao banco.
@@ -53,9 +53,9 @@ public class ClientService {
          */
 
         try {
-            Client client = new Client(name, cpf, phoneNumber, DtBirth, password, generateNumericString(9), BigDecimal.ZERO);
+            Client client = new Client(name, new CPF(cpf), phoneNumber, DtBirth, new Password(password), generateNumericString(9), BigDecimal.ZERO);
 
-            cDao.insertClient(client); // insere a entidade
+            cDao.insertClient(client); // insere a entidade no banco de dados
 
             // retorna um DTO com os dados principais
             return new ClientDTO(client.getName(), client.getAccount().getAccountNumber(),
@@ -82,8 +82,8 @@ public class ClientService {
             if(!Password.compare(client.getPassword().getValue(), password.getValue()))
                 throw new AccessDeniedException("Não foi permitido o acesso a conta.");
 
-            client.getAccount().withdraw(value);//verifica se o saque é valido
-            cDao.updateBalance(client.getAccount().getAccountNumber(), value.negate()); // realiza o saque no banco de dados
+            client.getAccount().withdraw(value); // Realiza uma retirada de valor da conta
+            cDao.updateBalance(accNumber, client.getAccount().getBalance());  // salva a operação no banco
 
             // retorna um DTO com os dados principais
             return new ClientDTO(client.getName(), client.getAccount().getAccountNumber(),
@@ -110,8 +110,8 @@ public class ClientService {
             if(!Password.compare(client.getPassword().getValue(), password.getValue()))
                 throw new AccessDeniedException("Não foi permitido o acesso a conta.");
 
-            client.getAccount().deposit(value); // verifica se o deposito é valido
-            cDao.updateBalance(client.getAccount().getAccountNumber(), value); // realiza o deposito no banco de dados
+            client.getAccount().deposit(value); // Realiza um deposito de valor da conta
+            cDao.updateBalance(accNumber, client.getAccount().getBalance()); // Salva no banco
 
             return new ClientDTO (client.getName(), client.getAccount().getAccountNumber(),
                     client.getAccount().getBalance().toString());
@@ -134,17 +134,19 @@ public class ClientService {
 
 
         try{
+            // acessa as contas
             Client sender = cDao.getClientByAccountNumber(accNumber);
             Client receiver = cDao.getClientByAccountNumber(accountTarget);
 
             if(!Password.compare(sender.getPassword().getValue(), password.getValue()))
                 throw new AccessDeniedException("Não foi permitido o acesso a conta.");
 
-            sender.getAccount().withdraw(value); // verifica se o saque é valido
-            receiver.getAccount().deposit(value); // verifice se o deposito é valido
+            sender.getAccount().withdraw(value); // Realiza uma retirada de valor da conta remetente
+            receiver.getAccount().deposit(value); // Realiza uma inserção de valor na conta destinataria
 
-            cDao.updateBalance(accNumber, value.negate()); // realiza o saque no banco de dados
-            cDao.updateBalance(accountTarget, value); // realiza o deposito no banco de dados
+            // atualiza as contas bancarias
+            cDao.updateBalance(accNumber, sender.getAccount().getBalance());
+            cDao.updateBalance(accountTarget, receiver.getAccount().getBalance());
 
             return new ClientDTO(sender.getName(), sender.getAccount().getAccountNumber(),
                     sender.getAccount().getBalance().toString());

@@ -96,6 +96,7 @@ public class ClientDAO implements IClientDAO {
     @Override
     public void insertClient(Client client) {
 
+        // bugged
         /*
             /* Insere um novo cliente no banco de dados
          */
@@ -118,6 +119,7 @@ public class ClientDAO implements IClientDAO {
 
                 // recupera o id gerado como chave para a tabela cliente
                 try(ResultSet rs = stm.getGeneratedKeys()) {
+                    rs.next();
                     int id = rs.getInt(1);
 
                     // insere os dados na tabela conta
@@ -129,8 +131,10 @@ public class ClientDAO implements IClientDAO {
                         stm2.executeUpdate();
                     }
                 }
+
             }catch (Exception e) {
                 conn.rollback(); // retorna o banco pro ultimo commit
+                e.printStackTrace();
                 throw new DatabaseException("Não foi possivel salvar os dados da conta");
             }
 
@@ -154,7 +158,7 @@ public class ClientDAO implements IClientDAO {
         /*
             Realiza uma alteração no saldo bancario da entidade pertencente ao numero de conta passado.
          */
-        String sql  = "update conta set balanco = balanco + ? where numeroconta = ?";
+        String sql  = "update conta set balanco = ? where numeroconta = ?";
 
         try(Connection conn = db.connect(); PreparedStatement stm = conn.prepareStatement(sql)) {
             conn.setAutoCommit(false);

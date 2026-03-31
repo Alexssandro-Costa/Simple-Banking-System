@@ -50,7 +50,7 @@ public class Account {
 
         if(value.compareTo(BigDecimal.ZERO) < 0)
             throw new InvalidWithdrawException("O valor de saque inserido não pode ser menor que zero");
-        if(balance.subtract(value).compareTo(BigDecimal.ZERO) < 0)
+        if(value.compareTo(balance) > 0)
             throw new InvalidWithdrawException("O valor de saque ultrapassa o limite permitido");
 
         balance = balance.subtract(value);

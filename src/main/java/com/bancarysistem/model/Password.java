@@ -46,9 +46,9 @@ public class Password {
         return value;
     }
 
-    public static String encrypt(String input) {
+    public void encrypt() {
 
-        return BCrypt.hashpw(input, BCrypt.gensalt());
+        value = BCrypt.hashpw(value, BCrypt.gensalt());
     }
 
 

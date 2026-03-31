@@ -82,10 +82,10 @@ public class ClientGUI {
     private void register() {
 
         String name;
-        CPF cpf = new CPF();
+        String cpf;
         String number;
         LocalDate date;
-        Password password;
+        String password;
 
         while(true) {
             try {
@@ -95,7 +95,7 @@ public class ClientGUI {
                 name = sc.nextLine();
 
                 System.out.print("CPF: ");
-                cpf = new CPF(sc.nextLine());
+                cpf = sc.nextLine();
 
                 System.out.print("Numero de telefone: ");
                 number = sc.nextLine();
@@ -104,7 +104,7 @@ public class ClientGUI {
                 date = LocalDate.parse(sc.nextLine());
 
                 System.out.print("Senha: ");
-                password = new Password(sc.nextLine());
+                password = sc.nextLine();
 
                 operations(cs.Register(name, cpf, number, date, password));
                 break;

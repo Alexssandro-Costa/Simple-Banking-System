@@ -20,6 +20,7 @@ public abstract class Person {
         validateDTBirth(DTBirth);
         cpf.validate();
         password.validate();
+        password.encrypt();
 
         this.name = name.toUpperCase();
         this.CPF = cpf;
@@ -69,7 +70,7 @@ public abstract class Person {
 
         // verifica se a data de nascimento inserida é valida
 
-        if(DTBirth == null)
+        if(date == null)
             throw new InputException("A Data de nascimento passada é invalida");
         if(date.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Data de nascimento não pode estar no futuro");
