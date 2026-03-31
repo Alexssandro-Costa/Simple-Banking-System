@@ -32,14 +32,14 @@ public class Password {
             throw new InvalidFormatException("A senha está em um formato não valido");
     }
 
-    public static boolean compare(String encryptedPassword, String input) {
+    public boolean compare( String input) {
 
         /// compara o elemento encriptado o elemento passado
 
-        if(encryptedPassword == null || input == null)
+        if(value == null || input == null)
             throw new InputException("Elemento invalido informado");
 
-        return BCrypt.checkpw(input, encryptedPassword);
+        return BCrypt.checkpw(input, value);
     }
 
     public String getValue() {
@@ -47,6 +47,8 @@ public class Password {
     }
 
     public void encrypt() {
+
+        // Criptografa a senha
 
         value = BCrypt.hashpw(value, BCrypt.gensalt());
     }

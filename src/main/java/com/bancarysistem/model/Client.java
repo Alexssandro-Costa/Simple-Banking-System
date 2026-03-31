@@ -20,6 +20,7 @@ public class Client extends Person {
         this.account = new Account(accNumber, value);
     }
 
+
     public Account getAccount() {
         return account;
     }

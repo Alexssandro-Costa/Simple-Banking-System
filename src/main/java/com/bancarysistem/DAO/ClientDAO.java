@@ -63,18 +63,19 @@ public class ClientDAO implements IClientDAO {
              /* @return retorna um objeto cliente instanciado com todas informações.
          */
 
-        String sql = "select c.nome, c.cpf, c.telefone, c.datanascimento, c.senha " +
+        String sql = "select c.nome, c.cpf, c.telefone, c.datanascimento, c.senha, " +
                 "ct.balanco, ct.numeroconta " +
                 "from cliente c " +
                 "join conta ct on c.id = ct.cliente_id " +
-                "where ct.cpf = ?";
+                "where c.cpf = ?";
 
         try(Connection conn = db.connect(); PreparedStatement stm = conn.prepareStatement(sql)) {
 
             stm.setString(1, cpf.getValue()); // passa o cpf pro comando sql
             ResultSet rs = stm.executeQuery(); // dados recuperados do banco
 
-            rs.next();
+            if (!rs.next())
+                throw new AccountNotFoundException("Não foi possivel encontrar a conta especificada.");
 
             return new
                     Client(rs.getString("nome"),
@@ -134,7 +135,6 @@ public class ClientDAO implements IClientDAO {
 
             }catch (Exception e) {
                 conn.rollback(); // retorna o banco pro ultimo commit
-                e.printStackTrace();
                 throw new DatabaseException("Não foi possivel salvar os dados da conta");
             }
 
@@ -184,7 +184,7 @@ public class ClientDAO implements IClientDAO {
     }
 
     @Override
-    public void deleteClient(Client c) {
+    public void deleteClient(String accNumber, CPF cpf) {
 
         /*
             Remove a conta de um cliente do sistema da empresa
@@ -196,16 +196,16 @@ public class ClientDAO implements IClientDAO {
         try(Connection connection = db.connect()) {
             connection.setAutoCommit(false);
 
-            // apaga a entidade conta relacionada
-            try(PreparedStatement stm = connection.prepareStatement(accountSql)) {
-                stm.setString(1, c.getAccount().getAccountNumber());
-                stm.executeUpdate();
+            try(PreparedStatement stmAccount = connection.prepareStatement(accountSql);
+                PreparedStatement stmClient = connection.prepareStatement(clientSql) ) {
+
+                // apaga a entidade conta relacionada
+                stmAccount.setString(1, accNumber);
+                stmAccount.executeUpdate();
 
                 // apaga a entidade cliente relacionada
-                try(PreparedStatement stm2 = connection.prepareStatement(clientSql)) {
-                    stm2.setString(1, c.getCPF().getValue());
-                    stm.executeUpdate();
-                }
+                stmClient.setString(1, cpf.getValue());
+                stmClient.executeUpdate();
             }
             catch (Exception e) {
                 connection.rollback();

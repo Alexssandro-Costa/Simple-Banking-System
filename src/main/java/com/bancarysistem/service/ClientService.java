@@ -3,16 +3,14 @@ package com.bancarysistem.service;
 import com.bancarysistem.DAO.ClientDAO;
 import com.bancarysistem.DTO.ClientDTO;
 import com.bancarysistem.exceptions.*;
-import com.bancarysistem.model.CPF;
-import com.bancarysistem.model.Client;
-import com.bancarysistem.model.Password;
+import com.bancarysistem.model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static com.bancarysistem.utility.Generator.generateNumericString;
 
-public class ClientService {
+public class ClientService implements IUserAccount<ClientDTO>, IOperations<ClientDTO> {
 
     private final ClientDAO cDao;
 
@@ -20,6 +18,7 @@ public class ClientService {
         cDao = new ClientDAO();
     }
 
+    @Override
     public ClientDTO login(String accNumber, Password password) {
 
          /*
@@ -33,8 +32,10 @@ public class ClientService {
         try {
             Client client = cDao.getClientByAccountNumber(accNumber);
 
-            if(!Password.compare(client.getPassword().getValue(), password.getValue()))
+            // Faz a autênticação da senha passada
+            if(!client.getPassword().compare(password.getValue())) {
                 throw new AccessDeniedException("Não foi permitido o acesso a conta.");
+            }
 
             return new ClientDTO(client.getName(), client.getAccount().getAccountNumber(),
                     client.getAccount().getBalance().toString());
@@ -45,7 +46,8 @@ public class ClientService {
 
     }
 
-    public ClientDTO Register(String name, String cpf, String phoneNumber, LocalDate DtBirth, String password) {
+    @Override
+    public ClientDTO register(String name, CPF cpf, String phoneNumber, LocalDate DtBirth, Password password) {
 
         /*
             Registra a conta de um cliente ao banco.
@@ -53,7 +55,7 @@ public class ClientService {
          */
 
         try {
-            Client client = new Client(name, new CPF(cpf), phoneNumber, DtBirth, new Password(password), generateNumericString(9), BigDecimal.ZERO);
+            Client client = new Client(name, cpf, phoneNumber, DtBirth, password, generateNumericString(9), BigDecimal.ZERO);
 
             cDao.insertClient(client); // insere a entidade no banco de dados
 
@@ -66,7 +68,31 @@ public class ClientService {
         }
     }
 
-    public ClientDTO performWithdraw(String accNumber, Password password, BigDecimal value) {
+    @Override
+    public void deleteAccount(String accNumber, CPF cpf, Password password) {
+
+
+        /*
+            Deleta a conta de um cliente do banco de dados
+         */
+
+        try{
+
+            Client client = cDao.getClientByAccountNumber(accNumber);  // busca a conta no banco de dados
+
+            // Faz a autênticação da senha passada
+            if(!client.getPassword().compare(password.getValue()))
+                throw new AccessDeniedException("Não foi permitido o acesso a conta.");
+
+            cDao.deleteClient(accNumber, cpf); // Deleta a conta do cliente
+
+        }catch (Exception e) {
+            throw new DeletationFailedException(e.getMessage());
+        }
+    }
+
+    @Override
+    public ClientDTO withdraw(String accNumber, Password password, BigDecimal value) {
 
         /*
             realiza um decremento de valor no saldo de uma conta associada.
@@ -77,9 +103,10 @@ public class ClientService {
             throw new InputException("Elemento invalido informado");
 
         try {
-            Client client = cDao.getClientByAccountNumber(accNumber);// busca a conta no banco de dados
+            Client client = cDao.getClientByAccountNumber(accNumber); // busca a conta no banco de dados
 
-            if(!Password.compare(client.getPassword().getValue(), password.getValue()))
+            // Faz a autênticação da senha passada
+            if(!client.getPassword().compare(password.getValue()))
                 throw new AccessDeniedException("Não foi permitido o acesso a conta.");
 
             client.getAccount().withdraw(value); // Realiza uma retirada de valor da conta
@@ -94,7 +121,8 @@ public class ClientService {
         }
     }
 
-    public ClientDTO performDeposit(String accNumber, Password password, BigDecimal value) {
+    @Override
+    public ClientDTO deposit(String accNumber, Password password, BigDecimal value) {
 
         /*
             realiza um incremento de valor no saldo de uma conta associada.
@@ -107,7 +135,8 @@ public class ClientService {
         try {
             Client client = cDao.getClientByAccountNumber(accNumber); // busca a conta no banco
 
-            if(!Password.compare(client.getPassword().getValue(), password.getValue()))
+            // Faz a autênticação da senha passada
+            if(!client.getPassword().compare(password.getValue()))
                 throw new AccessDeniedException("Não foi permitido o acesso a conta.");
 
             client.getAccount().deposit(value); // Realiza um deposito de valor da conta
@@ -122,7 +151,8 @@ public class ClientService {
 
     }
 
-    public ClientDTO transfer(String accNumber, Password password, String accountTarget, BigDecimal value) {
+    @Override
+    public ClientDTO transfer(String accNumber, String accountTarget, Password password, BigDecimal value) {
 
         /*
             Realiza uma transferencia de saldo entre a conta remetente e a conta destinataria
@@ -138,7 +168,8 @@ public class ClientService {
             Client sender = cDao.getClientByAccountNumber(accNumber);
             Client receiver = cDao.getClientByAccountNumber(accountTarget);
 
-            if(!Password.compare(sender.getPassword().getValue(), password.getValue()))
+            // Faz a autênticação da senha passada
+            if(!sender.getPassword().compare(password.getValue()))
                 throw new AccessDeniedException("Não foi permitido o acesso a conta.");
 
             sender.getAccount().withdraw(value); // Realiza uma retirada de valor da conta remetente

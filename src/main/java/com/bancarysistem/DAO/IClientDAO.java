@@ -18,5 +18,5 @@ public interface IClientDAO {
 
     public void updateBalance(String accnumber, BigDecimal value);
 
-    public void deleteClient(Client client);
+    public void deleteClient(String accNumber, CPF cpf);
 }

@@ -82,10 +82,10 @@ public class ClientGUI {
     private void register() {
 
         String name;
-        String cpf;
+        CPF cpf;
         String number;
         LocalDate date;
-        String password;
+        Password password;
 
         while(true) {
             try {
@@ -95,7 +95,7 @@ public class ClientGUI {
                 name = sc.nextLine();
 
                 System.out.print("CPF: ");
-                cpf = sc.nextLine();
+                cpf = new CPF(sc.nextLine());
 
                 System.out.print("Numero de telefone: ");
                 number = sc.nextLine();
@@ -104,9 +104,9 @@ public class ClientGUI {
                 date = LocalDate.parse(sc.nextLine());
 
                 System.out.print("Senha: ");
-                password = sc.nextLine();
+                password = new Password(sc.nextLine());
 
-                operations(cs.Register(name, cpf, number, date, password));
+                operations(cs.register(name, cpf, number, date, password));
                 break;
 
 
@@ -131,6 +131,7 @@ public class ClientGUI {
         char opt;
         BigDecimal value;
         Password password;
+        CPF cpf;
 
         while(run) {
 
@@ -138,7 +139,8 @@ public class ClientGUI {
 
                 System.out.printf(client.toString());
 
-                System.out.printf("[1] - Saque %n[2] - Deposit %n[3] - Transferência %n[4] - Sair da conta %n");
+                System.out.printf("[1] - Saque %n[2] - Deposit %n[3] - Transferência %n" +
+                        "[4] - Excluir conta %n[5] -  Sair da conta %n");
                 System.out.print(": ");
                 opt = sc.nextLine().charAt(0);
 
@@ -149,7 +151,7 @@ public class ClientGUI {
                         sc.nextLine();
                         System.out.print("Senha de confirmação: ");
                         password = new Password(sc.nextLine());
-                        client = cs.performWithdraw(c.accountNumber(), password, value); // atualiza o valor
+                        client = cs.withdraw(c.accountNumber(), password, value); // atualiza o valor
                         break;
                     case '2':
                         System.out.print("Valor R$: ");
@@ -157,7 +159,7 @@ public class ClientGUI {
                         sc.nextLine();
                         System.out.print("Senha de confirmação: ");
                         password = new Password(sc.nextLine());
-                        client = cs.performDeposit(c.accountNumber(), password, value);
+                        client = cs.deposit(c.accountNumber(), password, value);
                         break;
                     case '3':
                         System.out.print("Numero da conta para transferencia: ");
@@ -167,9 +169,24 @@ public class ClientGUI {
                         sc.nextLine();
                         System.out.print("Senha de confirmação: ");
                         password = new Password(sc.nextLine());
-                        client = cs.transfer(c.accountNumber(), password, accTarget, value); // atualiza o valor
+                        client = cs.transfer(c.accountNumber(),  accTarget, password, value); // atualiza o valor
                         break;
+
                     case '4':
+                        System.out.print("tem certeza que deseja deletar sua conta? [S/N]: ");
+                        opt = sc.nextLine().toUpperCase().charAt(0);
+                        if(opt != 'S')
+                            break;
+
+                        System.out.print("Digite seu CPF: ");
+                        cpf = new CPF(sc.nextLine());
+
+                        System.out.print("Senha de confirmação: ");
+                        password = new Password(sc.nextLine());
+
+                        cs.deleteAccount(c.accountNumber(), cpf, password);
+
+                    case '5':
                         System.out.println("Saindo...");
                         run = false;
                         break;
