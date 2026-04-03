@@ -1,6 +1,6 @@
 package view;
 
-import com.bancarysistem.DTO.ClientDTO;
+import com.bancarysistem.DTO.AccountDTO;
 import com.bancarysistem.model.CPF;
 import com.bancarysistem.model.Password;
 import com.bancarysistem.service.ClientService;
@@ -124,9 +124,9 @@ public class ClientGUI {
     }
 
 
-    private void operations(ClientDTO c) {
+    private void operations(AccountDTO c) {
 
-        ClientDTO client = c;
+        AccountDTO client = c;
         boolean run = true;
         char opt;
         BigDecimal value;

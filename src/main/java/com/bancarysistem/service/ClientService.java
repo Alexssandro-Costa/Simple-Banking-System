@@ -1,16 +1,22 @@
 package com.bancarysistem.service;
 
 import com.bancarysistem.DAO.ClientDAO;
-import com.bancarysistem.DTO.ClientDTO;
+import com.bancarysistem.DTO.AccountDTO;
 import com.bancarysistem.exceptions.*;
 import com.bancarysistem.model.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
 import static com.bancarysistem.utility.Generator.generateNumericString;
 
-public class ClientService implements IUserAccount<ClientDTO>, IOperations<ClientDTO> {
+
+/**
+ * Classe de serviço que implementa métodos de acesso, criação e exclusão de contas e,
+ * operações Bancarias.
+ * @author Alexssandro
+ * @since release 1
+ * @version 2.2
+ */
+public class ClientService implements IUserAccount<AccountDTO>, IOperations<AccountDTO> {
 
     private final ClientDAO cDao;
 
@@ -18,13 +24,15 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
         cDao = new ClientDAO();
     }
 
+    /**
+     * Realiza um acesso a conta bancaria especifica.
+     * @param accNumber Numero da conta
+     * @param password Senha
+     * @return AccountDTO Informações essências da conta.
+     * @exception AuthenticationFailedException Ocorre quando autenticação falha.
+     */
     @Override
-    public ClientDTO login(String accNumber, Password password) {
-
-         /*
-            confirma se todos os dados passados são validos e se forem, se conecta a conta relacionada;
-            @return retorna um DTO com os dados principais do cliente.
-         */
+    public AccountDTO login(String accNumber, Password password) {
 
         if(accNumber == null || password == null)
             throw new InputException("Elemento invalido informado");
@@ -32,12 +40,10 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
         try {
             Client client = cDao.getClientByAccountNumber(accNumber);
 
-            // Faz a autênticação da senha passada
-            if(!client.getPassword().compare(password.getValue())) {
-                throw new AccessDeniedException("Não foi permitido o acesso a conta.");
-            }
+            // Faz a autenticação da senha passada
+            authentication(client.getPassword(), password);
 
-            return new ClientDTO(client.getName(), client.getAccount().getAccountNumber(),
+            return new AccountDTO(client.getName(), client.getAccount().getAccountNumber(),
                     client.getAccount().getBalance().toString());
 
         } catch (Exception e) {
@@ -46,13 +52,18 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
 
     }
 
+    /**
+     * Cria uma conta bancaria.
+     * @param name Nome do titular
+     * @param cpf CPF dp titular
+     * @param phoneNumber Numero de telefone
+     * @param DtBirth Data de nascimento
+     * @param password Senha
+     * @return AccountDTO Informações essências da conta.
+     * @exception RegistrationFailedException Ocorre quando a criação da conta falha
+     */
     @Override
-    public ClientDTO register(String name, CPF cpf, String phoneNumber, LocalDate DtBirth, Password password) {
-
-        /*
-            Registra a conta de um cliente ao banco.
-            @return retorna um DTO com os dados principais do cliente.
-         */
+    public AccountDTO register(String name, CPF cpf, String phoneNumber, LocalDate DtBirth, Password password) {
 
         try {
             Client client = new Client(name, cpf, phoneNumber, DtBirth, password, generateNumericString(9), BigDecimal.ZERO);
@@ -60,7 +71,7 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
             cDao.insertClient(client); // insere a entidade no banco de dados
 
             // retorna um DTO com os dados principais
-            return new ClientDTO(client.getName(), client.getAccount().getAccountNumber(),
+            return new AccountDTO(client.getName(), client.getAccount().getAccountNumber(),
                     client.getAccount().getBalance().toString());
 
         } catch (Exception e) {
@@ -68,21 +79,22 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
         }
     }
 
+    /**
+     * Exclui a conta bancaria associada.
+     * @param accNumber Numero da conta
+     * @param cpf CPF do titular
+     * @param password Senha
+     * @exception DeletationFailedException Ocorre quando a exclusão falha.
+     */
     @Override
     public void deleteAccount(String accNumber, CPF cpf, Password password) {
-
-
-        /*
-            Deleta a conta de um cliente do banco de dados
-         */
 
         try{
 
             Client client = cDao.getClientByAccountNumber(accNumber);  // busca a conta no banco de dados
 
-            // Faz a autênticação da senha passada
-            if(!client.getPassword().compare(password.getValue()))
-                throw new AccessDeniedException("Não foi permitido o acesso a conta.");
+            // Faz a autenticação da senha passada
+            authentication(client.getPassword(), password);
 
             cDao.deleteClient(accNumber, cpf); // Deleta a conta do cliente
 
@@ -91,13 +103,17 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
         }
     }
 
+    /**
+     * Realiza uma retira no saldo de uma conta bancaria.
+     * @param accNumber Numero da conta.
+     * @param password Senha.
+     * @param value Valor de retirada.
+     * @return AccountDTO Informações essências da conta.
+     * @exception InputException Ocorre quando uma entrada é nula.
+     * @exception InvalidWithdrawException - Ocorre quando um saque falha.
+     */
     @Override
-    public ClientDTO withdraw(String accNumber, Password password, BigDecimal value) {
-
-        /*
-            realiza um decremento de valor no saldo de uma conta associada.
-            @return retorna um DTO com os dados principais do cliente.
-         */
+    public AccountDTO withdraw(String accNumber, Password password, BigDecimal value) {
 
         if(accNumber == null || password == null || value == null)
             throw new InputException("Elemento invalido informado");
@@ -105,15 +121,14 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
         try {
             Client client = cDao.getClientByAccountNumber(accNumber); // busca a conta no banco de dados
 
-            // Faz a autênticação da senha passada
-            if(!client.getPassword().compare(password.getValue()))
-                throw new AccessDeniedException("Não foi permitido o acesso a conta.");
+            // Faz a autenticação da senha passada
+            authentication(client.getPassword(), password);
 
             client.getAccount().withdraw(value); // Realiza uma retirada de valor da conta
             cDao.updateBalance(accNumber, client.getAccount().getBalance());  // salva a operação no banco
 
             // retorna um DTO com os dados principais
-            return new ClientDTO(client.getName(), client.getAccount().getAccountNumber(),
+            return new AccountDTO(client.getName(), client.getAccount().getAccountNumber(),
                     client.getAccount().getBalance().toString());
 
         } catch (Exception e) {
@@ -121,13 +136,17 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
         }
     }
 
+    /**
+     * Realiza um depósito numa conta bancaria.
+     * @param accNumber Numero da conta.
+     * @param password Senha.
+     * @param value Valor de deposito.
+     * @return AccountDTO Informações essências da conta.
+     * @exception InputException Ocorre quando uma entrada é nula.
+     * @exception InvalidDepositException - Ocorre quando o deposito falha.
+     */
     @Override
-    public ClientDTO deposit(String accNumber, Password password, BigDecimal value) {
-
-        /*
-            realiza um incremento de valor no saldo de uma conta associada.
-            @return retorna um DTO com os dados principais do cliente
-         */
+    public AccountDTO deposit(String accNumber, Password password, BigDecimal value) {
 
         if(accNumber == null || password == null || value == null)
             throw new InputException("Elemento invalido informado");
@@ -135,14 +154,13 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
         try {
             Client client = cDao.getClientByAccountNumber(accNumber); // busca a conta no banco
 
-            // Faz a autênticação da senha passada
-            if(!client.getPassword().compare(password.getValue()))
-                throw new AccessDeniedException("Não foi permitido o acesso a conta.");
+            // Faz a autenticação da senha passada
+            authentication(client.getPassword(), password);
 
-            client.getAccount().deposit(value); // Realiza um deposito de valor da conta
+            client.getAccount().deposit(value); // Realiza um depósito de valor da conta
             cDao.updateBalance(accNumber, client.getAccount().getBalance()); // Salva no banco
 
-            return new ClientDTO (client.getName(), client.getAccount().getAccountNumber(),
+            return new AccountDTO (client.getName(), client.getAccount().getAccountNumber(),
                     client.getAccount().getBalance().toString());
 
         }catch (Exception e) {
@@ -151,13 +169,18 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
 
     }
 
+    /**
+     * Realiza uma transferência de valor entre duas contas bancarias.
+     * @param accNumber Numero da conta remetente.
+     * @param accountTarget Numero da conta destinatária.
+     * @param password Senha.
+     * @param value Valor de transferência.
+     * @return AccountDTO Informações essências da conta.
+     * @exception InputException Ocorre quando uma entrada é nula.
+     * @exception InvalidTransferException - Ocorre quando a transferência falha.
+     */
     @Override
-    public ClientDTO transfer(String accNumber, String accountTarget, Password password, BigDecimal value) {
-
-        /*
-            Realiza uma transferencia de saldo entre a conta remetente e a conta destinataria
-            @return retorna um DTO com os dados principais do cliente
-         */
+    public AccountDTO transfer(String accNumber, String accountTarget, Password password, BigDecimal value) {
 
         if(accNumber == null || password == null || accountTarget == null || value == null)
             throw new InputException("Elemento invalido informado");
@@ -168,9 +191,8 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
             Client sender = cDao.getClientByAccountNumber(accNumber);
             Client receiver = cDao.getClientByAccountNumber(accountTarget);
 
-            // Faz a autênticação da senha passada
-            if(!sender.getPassword().compare(password.getValue()))
-                throw new AccessDeniedException("Não foi permitido o acesso a conta.");
+            // Faz a autenticação da senha passada
+            authentication(sender.getPassword(), password);
 
             sender.getAccount().withdraw(value); // Realiza uma retirada de valor da conta remetente
             receiver.getAccount().deposit(value); // Realiza uma inserção de valor na conta destinataria
@@ -179,7 +201,7 @@ public class ClientService implements IUserAccount<ClientDTO>, IOperations<Clien
             cDao.updateBalance(accNumber, sender.getAccount().getBalance());
             cDao.updateBalance(accountTarget, receiver.getAccount().getBalance());
 
-            return new ClientDTO(sender.getName(), sender.getAccount().getAccountNumber(),
+            return new AccountDTO(sender.getName(), sender.getAccount().getAccountNumber(),
                     sender.getAccount().getBalance().toString());
         }catch (Exception e) {
             throw new InvalidTransferException(e.getMessage());

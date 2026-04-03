@@ -1,15 +1,20 @@
 package com.bancarysistem.model;
 
 import com.bancarysistem.exceptions.InputException;
-import com.bancarysistem.exceptions.InvalidFormatException;
-
 import java.time.LocalDate;
 import java.time.Period;
 
+
+/**
+ * Classe abstrata contêndo informações e metodos de uma pessoa.
+ * @author Alexssandro
+ * @since release 1
+ * @version 1.2
+ */
 public abstract class Person {
 
     private String name;
-    private CPF CPF;
+    private CPF cpf;
     private Phone phone;
     private LocalDate DTBirth;
     private Password password;
@@ -23,7 +28,7 @@ public abstract class Person {
         password.encrypt();
 
         this.name = name.toUpperCase();
-        this.CPF = cpf;
+        this.cpf = cpf;
         this.phone = phone;
         this.DTBirth = DTBirth;
         this.password = password;
@@ -36,26 +41,50 @@ public abstract class Person {
         this.name = name;
     }
 
+    /**
+     * Getter para o campo name.
+     * @return String contêndo o contéudo do campo.
+     */
     public String getName() {
         return name;
     }
 
-    public CPF getCPF() {
-        return CPF;
+    /**
+     * getter para o campo cpf.
+     * @return CPF contêndo o contéudo do campo.
+     */
+    public CPF getCpf() {
+        return cpf;
     }
 
+    /**
+     * getter para o campo phone.
+     * @return Phone contêndo o contéudo do campo.
+     */
     public Phone getPhone() {
         return phone;
     }
 
+    /**
+     * Setter para o campo phone
+     * @param phone Numero de telefone
+     */
     public void setPhone(Phone phone) {
         this.phone = phone;
     }
 
+    /**
+     * getter para o campo password.
+     * @return Password contêndo o contéudo do campo.
+     */
     public Password getPassword() {
         return password;
     }
 
+    /**
+     * getter para o campo DTBirth.
+     * @return LocalDate contêndo o contéudo do campo.
+     */
     public LocalDate getDTBirth() {
         return DTBirth;
     }
@@ -66,6 +95,13 @@ public abstract class Person {
             throw new InputException("Nome informado é invalido;");
     }
 
+
+    /**
+     * Verifica se a data de nascimento inserida é valida.
+     * @param date Data.
+     * @exception InputException Lançada se o elemento for invalido.
+     * @exception IllegalArgumentException Lançada se saldo bancário não for valido.
+     */
     private void validateDTBirth(LocalDate date) {
 
         // verifica se a data de nascimento inserida é valida

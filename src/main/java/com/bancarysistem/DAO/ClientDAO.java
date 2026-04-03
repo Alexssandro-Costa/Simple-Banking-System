@@ -6,10 +6,16 @@ import com.bancarysistem.exceptions.DatabaseException;
 import com.bancarysistem.model.CPF;
 import com.bancarysistem.model.Client;
 import com.bancarysistem.model.Password;
-import org.postgresql.util.PSQLException;
 
 import java.math.BigDecimal;
 import java.sql.*;
+
+/**
+ * Classe que implementa metodos de Inserção, atualização, Busca e exclusão de dados
+ * @author Alexssandro
+ * @since release 1
+ * @version 2.0
+ */
 
 public class ClientDAO implements IClientDAO {
 
@@ -19,16 +25,17 @@ public class ClientDAO implements IClientDAO {
         db = new DataBaseSource();
     }
 
+    /**
+     * Busca dados essênciais de um cliente no banco de dados.
+     * @param accNumber Numero da conta bancaria.
+     * @return Client Tipo cliente com dados sobre o nome, senha, balanço e numero da conta de um cliente.
+     * @exception AccountNotFoundException Lançada quando não é encontrada uma conta.
+     * @exception DatabaseException Lançada quando ocorre um erro no banco de dados.
+     */
     @Override
     public Client getClientByAccountNumber(String accNumber) {
 
-        /*
-            /* Procura no banco a entidade relacionada ao numero de conta passado.
-            /* @return Retorna um objeto cliente Instanciado com o nome e a conta Bancaria relacionada.
-
-        */
-
-        String sql = "select c.nome, c.senha, ct.balanco, ct.numeroconta " +
+        String sql = "select c.nome, c.senha, ct.balanco" +
                 "from cliente c " +
                 "join conta ct on c.id = ct.cliente_id " +
                 "where ct.numeroconta = ?";
@@ -43,7 +50,7 @@ public class ClientDAO implements IClientDAO {
 
             return new
                     Client(rs.getString("nome"),
-                    rs.getString("numeroconta"),
+                    accNumber,
                     rs.getBigDecimal("balanco"),
                     new Password(rs.getString("senha")));
 
@@ -55,13 +62,15 @@ public class ClientDAO implements IClientDAO {
 
     }
 
+    /**
+     * Busca Todas as informações de um cliente no banco de dados.
+     * @param cpf Numero do CPF.
+     * @return Client objeto Client contêndo todos os dados de um cliente.
+     * @exception AccountNotFoundException Lançada quando não é encontrada uma conta.
+     * @exception DatabaseException Lançada quando ocorre um erro no banco de dados.
+     */
     @Override
-    public Client getClientByCpf(CPF cpf) {
-
-        /*
-             /* Procura no banco a entidade relacionada ao CPF passado
-             /* @return retorna um objeto cliente instanciado com todas informações.
-         */
+    public Client getClientInformation(CPF cpf) {
 
         String sql = "select c.nome, c.cpf, c.telefone, c.datanascimento, c.senha, " +
                 "ct.balanco, ct.numeroconta " +
@@ -71,7 +80,7 @@ public class ClientDAO implements IClientDAO {
 
         try(Connection conn = db.connect(); PreparedStatement stm = conn.prepareStatement(sql)) {
 
-            stm.setString(1, cpf.getValue()); // passa o cpf pro comando sql
+            stm.setString(1, cpf.getValue()); // passa o cpf para comando sql
             ResultSet rs = stm.executeQuery(); // dados recuperados do banco
 
             if (!rs.next())
@@ -94,13 +103,14 @@ public class ClientDAO implements IClientDAO {
 
     }
 
+    /**
+     * Insere um novo cliente no banco de dados.
+     * @param client Objeto cliente contêndo toda a informação necessaria
+     * @exception DatabaseException Lançada quando ocorre um erro no banco de dados.
+     */
     @Override
     public void insertClient(Client client) {
 
-        // bugged
-        /*
-            /* Insere um novo cliente no banco de dados
-         */
 
         String clientSql = "insert into cliente(nome, cpf, telefone, datanascimento, senha) values (?, ?, ?, ?, ?)";
         String accountSql = "insert into conta(cliente_id, numeroconta, balanco) values (?,?, ?)";
@@ -112,7 +122,7 @@ public class ClientDAO implements IClientDAO {
             try(PreparedStatement stm = conn.prepareStatement(clientSql, Statement.RETURN_GENERATED_KEYS)) {
 
                 stm.setString(1, client.getName());
-                stm.setString(2, client.getCPF().getValue());
+                stm.setString(2, client.getCpf().getValue());
                 stm.setString(3, client.getPhone().getNumber());
                 stm.setDate(4, Date.valueOf(client.getDTBirth()));
                 stm.setString(5, client.getPassword().getValue());
@@ -146,18 +156,25 @@ public class ClientDAO implements IClientDAO {
         }
     }
 
+    /**
+     * Atualiza as informações de um cliente.
+     * @param client Objeto Client com todas as novas informações.
+     */
     @Override
     public void updateClientInformation(Client client) {
 
         // ainda em construção
     }
 
+    /**
+     * Atualiza o saldo bancario de uma conta especificada.
+     * @param accnumber numero da conta.
+     * @param value novo valor do saldo.
+     * @exception DatabaseException Lançada quando ocorre um erro no banco de dados.
+     */
     @Override
     public void updateBalance(String accnumber, BigDecimal value) {
 
-        /*
-            Realiza uma alteração no saldo bancario da entidade pertencente ao numero de conta passado.
-         */
         String sql  = "update conta set balanco = ? where numeroconta = ?";
 
         try(Connection conn = db.connect(); PreparedStatement stm = conn.prepareStatement(sql)) {
@@ -183,12 +200,15 @@ public class ClientDAO implements IClientDAO {
 
     }
 
+    /**
+     * Deleta a conta especificada do banco de dados.
+     * @param accNumber Numero da conta
+     * @param cpf CPF do cliente
+     * @exception DatabaseException Lançada quando ocorre um erro no banco de dados.
+     */
     @Override
     public void deleteClient(String accNumber, CPF cpf) {
 
-        /*
-            Remove a conta de um cliente do sistema da empresa
-         */
 
         String clientSql = "delete from cliente where cpf = ?";
         String accountSql = "delete from conta where numeroconta = ?";
