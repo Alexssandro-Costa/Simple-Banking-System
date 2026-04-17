@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="afbad176-5787-4020-b58f-73ffadae97cb" name="Bank@localhost Mapping">
+      <data-sources db="9208426b-2cfe-44c3-89c9-89149b132eb9" ddl="7547c702-6581-460f-bfe1-4a628e11fbad" />
+    </mapping>
+  </component>
+  <component name="SqlDataSourceStorage">
+    <option name="dataSources">
+      <list>
+        <State>
+          <option name="id" value="7547c702-6581-460f-bfe1-4a628e11fbad" />
+          <option name="name" value="Bank@localhost (DDL)" />
+          <option name="dbmsName" value="POSTGRES" />
+          <option name="urls">
+            <array />
+          </option>
+          <option name="outLayout" value="File per object by schema.groovy" />
+        </State>
+      </list>
+    </option>
+  </component>
+</project>
