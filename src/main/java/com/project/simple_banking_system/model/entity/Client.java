@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import com.project.simple_banking_system.model.DTOs.ClientDTO;
+import com.project.simple_banking_system.model.DTOs.RegisterRequestDTO;
 import com.project.simple_banking_system.model.valueObjects.Cpf;
 import com.project.simple_banking_system.model.valueObjects.DateBirth;
 import com.project.simple_banking_system.model.valueObjects.Gender;
@@ -43,16 +44,21 @@ public class Client extends Person {
         account = new Account(password);
     }
 
-    public Client(ClientDTO clientDTO, Account account) {
+    public Client(RegisterRequestDTO registerRequest) {
 
-        super(new Name(clientDTO.name()), new Cpf(clientDTO.cpf()), Gender.valueOf(clientDTO.gender()), new Phone(clientDTO.phone()), new DateBirth(LocalDate.parse(clientDTO.dateBirth())) );
-        this.account = account;
+        super(new Name(registerRequest.name()), new Cpf(registerRequest.cpf()), Gender.valueOf(registerRequest.gender()), new Phone(registerRequest.phone()), new DateBirth(LocalDate.parse(registerRequest.dateBirth())) );
         
     }
+
+    public Client() {}
 
 
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public Account getAccount() {

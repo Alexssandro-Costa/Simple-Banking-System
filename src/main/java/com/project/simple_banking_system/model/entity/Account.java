@@ -1,6 +1,6 @@
 package com.project.simple_banking_system.model.entity;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.project.simple_banking_system.model.valueObjects.AccountNumber;
@@ -61,7 +61,7 @@ public class Account {
 
     // designa a relação com transactions
     @OneToMany(mappedBy = "account")
-    private ArrayList<Transaction> transactions;
+    private List<Transaction> transactions;
 
 
     public Account(Password password) {
@@ -71,6 +71,8 @@ public class Account {
         status = Status.HABILITADA;
 
     }
+
+    public Account() {}
 
     public UUID getId() {
         return id;
@@ -83,6 +85,8 @@ public class Account {
     public AccountNumber getAccountNumber() {
         return accountNumber;
     }
+
+    
 
 
     public Cash getBalance() {
@@ -117,13 +121,14 @@ public class Account {
         this.client = client;
     }
 
-    public ArrayList<Transaction> getTransactions() {
+    public List<Transaction> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(ArrayList<Transaction> transactions) {
+    public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
     }
+
 
 
     

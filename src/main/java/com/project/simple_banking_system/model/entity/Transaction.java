@@ -1,9 +1,11 @@
 package com.project.simple_banking_system.model.entity;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.project.simple_banking_system.model.valueObjects.AccountNumber;
 import com.project.simple_banking_system.model.valueObjects.Cash;
@@ -13,6 +15,7 @@ import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +33,7 @@ import jakarta.persistence.Table;
  * @version 1
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "transacao")
 public class Transaction {
 
@@ -41,9 +45,10 @@ public class Transaction {
     @Embedded
     private Cash value;
 
-    @Column(name = "data-emissao", nullable = false, length = 50)
+    
+    @Column(name = "data-emissao", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
     @CreatedDate
-    private LocalDate date;
+    private Instant date;
 
     @Column(name = "tipo", nullable = false, length = 60)
     @Enumerated(EnumType.STRING)
@@ -62,9 +67,8 @@ public class Transaction {
     @JoinColumn(name = "conta-id", nullable = false)
     private Account account;
 
-    public Transaction(Cash value, LocalDate date, TransactionType transactionType, AccountNumber sender, AccountNumber receiver) {
+    public Transaction(Cash value, TransactionType transactionType, AccountNumber sender, AccountNumber receiver) {
         this.value = value;
-        this.date = date;
         this.transactionType = transactionType;
         this.receiver = receiver;
         this.sender = sender;
@@ -85,9 +89,13 @@ public class Transaction {
         this.value = value;
     }
 
-    public LocalDate getDate() {
+    public Instant getDate() {
         return date;
     }
+
+    public void setDate(Instant date) {
+        this.date = date;
+    } 
 
     public TransactionType getTransactionType() {
         return transactionType;

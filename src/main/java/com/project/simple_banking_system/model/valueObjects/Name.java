@@ -20,7 +20,7 @@ public class Name {
     //private Pattern NAME_PATTERN = Pattern.compile("^(?!.*[-'\\s]{2})[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[A-Za-zÀ-ÖØ-öø-ÿ\\s'.-]*[A-Za-zÀ-ÖØ-öø-ÿ])?$");
 
     public Name(String value) {
-        this.value = value;
+        this.value = value.toUpperCase();
     }
 
     public Name() {

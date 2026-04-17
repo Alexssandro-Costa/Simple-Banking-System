@@ -55,7 +55,6 @@ public abstract class Person {
         this.dateBirth = dateBirth;
     }
     protected Person() {
-        this(null, null, null, null, null);
     }
 
     public Name getName() {

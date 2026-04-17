@@ -20,6 +20,10 @@ public class AccountNumber {
         value = Generator.generateNumericString(9);
     }
 
+    public AccountNumber (String value) {
+        this.value = value;
+    }
+
     public String getValue() {
         return value;
     }
