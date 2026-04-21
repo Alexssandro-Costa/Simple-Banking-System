@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.project.simple_banking_system.model.DTOs.TransactionDTO;
 import com.project.simple_banking_system.model.valueObjects.AccountNumber;
 import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.model.valueObjects.TransactionType;
@@ -129,6 +130,27 @@ public class Transaction {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+
+    /**
+     * Cria um DTO contêndo os dados do objeto.
+     * @return TransactionDTO - um DTO do proprio objeto.
+     */
+    public TransactionDTO toDTO() {
+
+        if(sender == null && receiver == null) {
+            return new TransactionDTO(transactionType.toString(), value.getValue().toString(), date.toString(), null, null);
+
+        }
+        else if(sender == null) {
+            return new TransactionDTO(transactionType.toString(), value.getValue().toString(), date.toString(), receiver.getValue(), null);
+        }
+        else if(receiver == null) {
+            return new TransactionDTO(transactionType.toString(), value.getValue().toString(), date.toString(), null, sender.getValue());
+        }
+
+        return new TransactionDTO(transactionType.toString(), value.getValue().toString(), date.toString(), receiver.getValue(), sender.getValue());
     }
 
 
