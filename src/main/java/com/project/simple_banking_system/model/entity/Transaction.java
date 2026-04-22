@@ -1,7 +1,6 @@
 package com.project.simple_banking_system.model.entity;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;

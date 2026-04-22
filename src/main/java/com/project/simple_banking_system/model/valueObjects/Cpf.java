@@ -1,5 +1,6 @@
 package com.project.simple_banking_system.model.valueObjects;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jakarta.persistence.Embeddable;
@@ -16,7 +17,7 @@ public class Cpf {
     private String value;
 
     /**  Formato padrão de um CPF. */ 
-    //private static Pattern CPF_PATTERN = Pattern.compile("^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$");
+    public static final Pattern CPF_PATTERN = Pattern.compile("^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$");
 
     public Cpf(String value) {
         this.value = value;
@@ -33,11 +34,17 @@ public class Cpf {
         this.value = value;
     }
 
-    /* 
-    public static Pattern getCPF_PATTERN() {
-        return CPF_PATTERN;
+   
+    
+    /**
+     * Verifica se o valor do objeto está no formato padrão.
+     * @return verdadeiro se estiver, falso caso contrario.
+     */
+    public boolean isStandardized() {
+
+        Matcher matcher = CPF_PATTERN.matcher(value);
+        return matcher.matches();
     }
-        */
     
     
 }

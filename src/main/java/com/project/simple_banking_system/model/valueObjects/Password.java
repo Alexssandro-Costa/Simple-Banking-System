@@ -1,5 +1,6 @@
 package com.project.simple_banking_system.model.valueObjects;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +19,9 @@ import jakarta.persistence.Embeddable;
 public class Password {
 
     private String value;
-    //private Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$");
+
+    /** Formato padrão de uma senha */
+    public static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$");
 
     public Password(String value) {
         this.value = value;
@@ -35,13 +38,6 @@ public class Password {
     public void setValue(String value) {
         this.value = value;
     }
-
-    /* 
-    public Pattern getPASSWORD_PATTERN() {
-        return PASSWORD_PATTERN;
-    }
-        */
-
 
     /**
      * Criptografa o conteúdo de uma senha.
@@ -81,6 +77,18 @@ public class Password {
 
         */
 
+    }
+
+
+    
+    /**
+     * Verifica se o valor do objeto está no formato padrão.
+     * @return verdadeiro se estiver, falso caso contrario.
+     */
+    public boolean isStandardized() {
+
+        Matcher matcher = PASSWORD_PATTERN.matcher(value);
+        return matcher.matches();
     }
 
     

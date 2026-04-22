@@ -10,6 +10,7 @@ import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.entity.Client;
 import com.project.simple_banking_system.model.valueObjects.Password;
 import com.project.simple_banking_system.repository.ClientRepository;
+import com.project.simple_banking_system.utility.ValidateData;
 
 
 /**
@@ -30,6 +31,8 @@ public class RegisterNewClient {
     @Transactional
     public AccountDTO execute(RegisterRequestDTO registerRequest) {
 
+        ValidateData.execute(registerRequest);
+
         // inicializa uma nova entidade cliente
         Client client = new Client(registerRequest);
 
@@ -45,5 +48,7 @@ public class RegisterNewClient {
 
         return new AccountDTO(account.getClient().getName().getValue(), account.getAccountNumber().getValue(), account.getBalance().getValue().toString());
     }
+
+
     
 }

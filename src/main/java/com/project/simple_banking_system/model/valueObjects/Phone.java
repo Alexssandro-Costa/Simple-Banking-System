@@ -1,5 +1,6 @@
 package com.project.simple_banking_system.model.valueObjects;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jakarta.persistence.Embeddable;
@@ -16,7 +17,7 @@ public class Phone {
     private String value;
     
     /**  Formato padrão de um numero de telefone. */
-    //private static Pattern PHONE_NUMBER_PATTERN = Pattern.compile("^\\(?\\d{2}\\)?\\s?\\d{8,9}$");
+    public static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("^\\(?\\d{2}\\)?\\s?\\d{8,9}$");
 
     public String getValue() {
         return value;
@@ -35,12 +36,17 @@ public class Phone {
         this.value = value;
     }
 
+    
+    /**
+     * Verifica se o valor do objeto está no formato padrão.
+     * @return verdadeiro se estiver, falso caso contrario.
+     */
+    public boolean isStandardized() {
 
-    /* 
-    public static Pattern getPHONE_NUMBER_PATTERN() {
-        return PHONE_NUMBER_PATTERN;
+        Matcher matcher = PHONE_NUMBER_PATTERN.matcher(value);
+        return matcher.matches();
+
     }
-    */
 
     
 }

@@ -1,6 +1,5 @@
 package com.project.simple_banking_system.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,18 +11,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.simple_banking_system.model.DTOs.AccountDTO;
+// DTOs 
 import com.project.simple_banking_system.model.DTOs.ChangeStatusRequestDTO;
-import com.project.simple_banking_system.model.DTOs.ErrorMessageDTO;
 import com.project.simple_banking_system.model.DTOs.LoginRequestDTO;
 import com.project.simple_banking_system.model.DTOs.RegisterRequestDTO;
-import com.project.simple_banking_system.model.DTOs.TransactionDTO;
 import com.project.simple_banking_system.model.DTOs.TransactionRequestDTO;
+
+// classes de serviço
 import com.project.simple_banking_system.service.caseUses.AccessAccount;
 import com.project.simple_banking_system.service.caseUses.ChangeAccountStatus;
 import com.project.simple_banking_system.service.caseUses.CheckStatement;
 import com.project.simple_banking_system.service.caseUses.PerformTransaction;
 import com.project.simple_banking_system.service.caseUses.RegisterNewClient;
+
+import jakarta.annotation.Nonnull;
 
 
 /**
@@ -52,46 +53,43 @@ public class BankingSystemController {
     private CheckStatement checkStatement;
     
     @PostMapping("/register")
-    public AccountDTO registerNewClient(@RequestBody RegisterRequestDTO registerRequest) {
-        return registerNewClient.execute(registerRequest);
+    public ResponseEntity<?> registerNewClient(@Nonnull @RequestBody RegisterRequestDTO registerRequest) {
+        var result = registerNewClient.execute(registerRequest);
+        return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<?> AccessAccount(@RequestBody LoginRequestDTO loginRequest) {
-
-        try {
-            var result = accessAccount.execute(loginRequest);
-            return ResponseEntity.ok(result);
-            
-        } catch (Exception e) {
-            var errorMessage =  new ErrorMessageDTO(e.getMessage());
-            return ResponseEntity.status(400).body(errorMessage);
-        }
+    @PostMapping("/login")
+    public ResponseEntity<?> AccessAccount(@Nonnull @RequestBody LoginRequestDTO loginRequest) {
+        var result = accessAccount.execute(loginRequest);
+        return ResponseEntity.ok(result);
+        
     }
 
     @PostMapping("/account/{accountNumber}/transaction")
-    public void performTransaction(@PathVariable String accountNumber, @RequestBody TransactionRequestDTO transactionRequest) {
+    public ResponseEntity<?> performTransaction(@Nonnull @PathVariable String accountNumber, @Nonnull @RequestBody TransactionRequestDTO transactionRequest) {
 
-        performTransaction.execute(accountNumber, transactionRequest);        
+        var result = performTransaction.execute(accountNumber, transactionRequest);
+        return ResponseEntity.ok(result);   
     }
 
     @PatchMapping("/account/{accountNumber}/disable-account")
-    public void disableAccount(@PathVariable String accountNumber, @RequestBody ChangeStatusRequestDTO changeStatusRequestDTO) {
+    public void disableAccount(@Nonnull @PathVariable String accountNumber, @Nonnull @RequestBody ChangeStatusRequestDTO changeStatusRequestDTO) {
         changeAccountStatus.execute(accountNumber, changeStatusRequestDTO);
 
     }
 
     @PatchMapping("/account/{accountNumber}/enable-account")
-    public void enableAccount(@PathVariable String accountNumber, @RequestBody ChangeStatusRequestDTO changeStatusRequestDTO) {
+    public void enableAccount(@Nonnull @PathVariable String accountNumber, @Nonnull @RequestBody ChangeStatusRequestDTO changeStatusRequestDTO) {
 
         changeAccountStatus.execute(accountNumber, changeStatusRequestDTO);
 
     }
 
     @GetMapping("/account/{accountNumber}/statement")
-    public List<TransactionDTO> checkStatement(@PathVariable String accountNumber) {
+    public ResponseEntity<?> checkStatement(@Nonnull @PathVariable String accountNumber) {
 
-        return checkStatement.execute(accountNumber);
+        var result = checkStatement.execute(accountNumber);
+        return ResponseEntity.ok(result);
     }
 
 }

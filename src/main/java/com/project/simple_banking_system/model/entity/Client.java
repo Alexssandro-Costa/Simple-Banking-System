@@ -3,7 +3,6 @@ package com.project.simple_banking_system.model.entity;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.project.simple_banking_system.model.DTOs.ClientDTO;
 import com.project.simple_banking_system.model.DTOs.RegisterRequestDTO;
 import com.project.simple_banking_system.model.valueObjects.Cpf;
 import com.project.simple_banking_system.model.valueObjects.DateBirth;
@@ -46,7 +45,11 @@ public class Client extends Person {
 
     public Client(RegisterRequestDTO registerRequest) {
 
-        super(new Name(registerRequest.name()), new Cpf(registerRequest.cpf()), Gender.valueOf(registerRequest.gender()), new Phone(registerRequest.phone()), new DateBirth(LocalDate.parse(registerRequest.dateBirth())) );
+        super(new Name(registerRequest.name()), 
+        new Cpf(registerRequest.cpf()), 
+        Gender.valueOf(registerRequest.gender()), 
+        new Phone(registerRequest.phone()), 
+        new DateBirth(LocalDate.parse(registerRequest.dateBirth())) );
         
     }
 
