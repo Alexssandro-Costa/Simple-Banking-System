@@ -12,6 +12,7 @@ import com.project.simple_banking_system.exceptions.NullElementException;
 import com.project.simple_banking_system.model.DTOs.ChangeStatusRequestDTO;
 import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.valueObjects.AccountNumber;
+import com.project.simple_banking_system.model.valueObjects.Cpf;
 import com.project.simple_banking_system.model.valueObjects.Status;
 import com.project.simple_banking_system.model.valueObjects.TransactionType;
 import com.project.simple_banking_system.repository.AccountRepository;
@@ -29,7 +30,6 @@ public class ChangeAccountStatus {
     // incializa o repositorio automaticamente
     @Autowired
     AccountRepository accountRepository;
-
 
     /**
      * Execute a mudança de status.

@@ -1,9 +1,6 @@
 package com.project.simple_banking_system.exceptions;
 
-import javax.swing.text.html.parser.Entity;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -84,10 +81,42 @@ public class GlobalExceptionHandler {
      * @return ErrorMessageDTO uma mensagem de erro personalizada.
      */
     @ExceptionHandler(NullElementException.class)
-    public ResponseEntity<ErrorMessageDTO> handleValidationRules(NullElementException e) {
+    public ResponseEntity<ErrorMessageDTO> handleNullableElement(NullElementException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getMessage()));
     }
 
+      /**
+     * Exceção lançada quando um elemento é nulo.
+     * @param e Exceção que deve ser lançada
+     * @return ErrorMessageDTO uma mensagem de erro personalizada.
+     */
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ErrorMessageDTO> handleNullableElement(NullPointerException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getStackTrace().toString()));
+    }
+
+    
+    /**
+     * Exceção lançada quando o acesso a uma conta é negado
+     * @param e Exceção que deve ser lançada.
+     * @return ErrorMessageDTO Uma mensagem de erro personalizada.
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorMessageDTO> handleAccessError(AccessDeniedException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessageDTO(e.getMessage()));
+    }
+
+
+    
+    /**
+     * Exceção lançada quando uma authenticação falha.
+     * @param e Exceção que deve ser lançada.
+     * @return ErrorMessageDTO Uma mensagem de erro personalizada.
+     */
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<ErrorMessageDTO> handleValidationError(AuthenticationFailedException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessageDTO(e.getMessage()));
+    }
 
     /**
      * Exceção lançada quando um erro generico ocorre.
@@ -99,12 +128,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessageDTO("Erro interno no servido"));
 
     }
-
-
-
-
-
-
 
     
 }

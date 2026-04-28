@@ -3,7 +3,7 @@ package com.project.simple_banking_system.model.valueObjects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.project.simple_banking_system.exceptions.NullElementException;
 
@@ -43,17 +43,18 @@ public class Password {
      * Criptografa o conteúdo de uma senha.
      * @param rawPassword Senha não criptografada.
      * @exception NullElementException Lançada caso o elemento passado for nulo.
-     * @return String criptografa.
+     * @return encryptedPassword Senha criptografa.
      */
-    public static void encrypt(Password rawPassword) {
+    public static Password encrypt(Password rawPassword) {
 
-        /* 
         if(rawPassword == null || rawPassword.getValue() == null)
             throw new NullElementException("Elemento nulo informado"); 
 
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        return bcrypt.encode(rawPassword.getValue());
-    */
+
+        Password encryptedPassword = new Password(bcrypt.encode(rawPassword.getValue()));
+        return encryptedPassword;
+
    }
 
 
@@ -64,9 +65,8 @@ public class Password {
      * @exception NullElementException Lançada caso um elemento passado for nulo.
      * @return boolean - Verdadeiro se os elementos forem iguais, falso caso contrario.
      */
-    public static void compare(Password rawPassword, Password encodedPassword) {
+    public static boolean compare(Password rawPassword, Password encodedPassword) {
 
-        /* 
         if( ( rawPassword == null || rawPassword.getValue() == null ) || 
         (encodedPassword == null || encodedPassword.getValue() == null) )
             throw new NullElementException("Elemento nulo informado");
@@ -74,9 +74,6 @@ public class Password {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 
         return bcrypt.matches(rawPassword.getValue(), encodedPassword.getValue());
-
-        */
-
     }
 
 

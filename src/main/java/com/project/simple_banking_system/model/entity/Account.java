@@ -1,7 +1,12 @@
 package com.project.simple_banking_system.model.entity;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.project.simple_banking_system.model.valueObjects.AccountNumber;
 import com.project.simple_banking_system.model.valueObjects.Cash;
@@ -31,7 +36,7 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "conta")
-public class Account {
+public class Account{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,9 +51,6 @@ public class Account {
     @Embedded
     private Cash balance;
 
-    @AttributeOverride(name = "value", column = @Column(name = "senha", nullable = false))
-    @Embedded
-    private Password password;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -64,15 +66,13 @@ public class Account {
     private List<Transaction> transactions;
 
 
-    public Account(Password password) {
+    public Account() {
         this.accountNumber = new AccountNumber();
-        this.password = password;
         balance = new Cash();
         status = Status.HABILITADA;
 
     }
 
-    public Account() {}
 
     public UUID getId() {
         return id;
@@ -86,9 +86,6 @@ public class Account {
         return accountNumber;
     }
 
-    
-
-
     public Cash getBalance() {
         return balance;
     }
@@ -97,13 +94,6 @@ public class Account {
         this.balance = balance;
     }
 
-    public Password getPassword() {
-        return password;
-    }
-
-    public void setPassword(Password password) {
-        this.password = password;
-    }
 
     public Status getStatus() {
         return status;
@@ -129,7 +119,4 @@ public class Account {
         this.transactions = transactions;
     }
 
-
-
-    
 }

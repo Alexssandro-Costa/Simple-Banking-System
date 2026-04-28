@@ -55,7 +55,7 @@ public class PerformTransaction {
         Account account = accountRepository.findByAccountNumber( new AccountNumber(accountNumber));
         if(account == null) 
             throw new AccountNotFoundException("Não foi possivel encontrar sua conta bancaria");
-        
+    
 
         Transaction transaction = new Transaction(
             new Cash(new BigDecimal(transactionDTO.value())), 
@@ -107,7 +107,7 @@ public class PerformTransaction {
 
         return new TranscationResponseDTO(String.valueOf(savedTransaction.getId()), 
         savedTransaction.getTransactionType().name(), 
-        savedTransaction.getValue().getValue().toString(), 
+        savedTransaction.getValue().toString(), 
         savedTransaction.getAccount().getBalance().getValue().toString(), 
         savedTransaction.getReceiver().getValue(), 
         savedTransaction.getDate().toString());

@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 // DTOs 
 import com.project.simple_banking_system.model.DTOs.ChangeStatusRequestDTO;
-import com.project.simple_banking_system.model.DTOs.LoginRequestDTO;
-import com.project.simple_banking_system.model.DTOs.RegisterRequestDTO;
 import com.project.simple_banking_system.model.DTOs.TransactionRequestDTO;
 
 // classes de serviço
@@ -22,9 +20,10 @@ import com.project.simple_banking_system.service.caseUses.AccessAccount;
 import com.project.simple_banking_system.service.caseUses.ChangeAccountStatus;
 import com.project.simple_banking_system.service.caseUses.CheckStatement;
 import com.project.simple_banking_system.service.caseUses.PerformTransaction;
-import com.project.simple_banking_system.service.caseUses.RegisterNewClient;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nonnull;
+import jakarta.validation.Valid;
 
 
 /**
@@ -33,12 +32,10 @@ import jakarta.annotation.Nonnull;
  * @since release 3
  * @version 1
  */
-@RequestMapping("/banco")
+@Tag(name = "Banking System", description = "Operações bancárias principais")
+@RequestMapping("/api/banco")
 @RestController
 public class BankingSystemController {
-
-    @Autowired
-    private RegisterNewClient registerNewClient;
 
     @Autowired
     private AccessAccount accessAccount;
@@ -51,42 +48,30 @@ public class BankingSystemController {
 
     @Autowired
     private CheckStatement checkStatement;
-    
-    @PostMapping("/register")
-    public ResponseEntity<?> registerNewClient(@Nonnull @RequestBody RegisterRequestDTO registerRequest) {
-        var result = registerNewClient.execute(registerRequest);
-        return ResponseEntity.ok(result);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> AccessAccount(@Nonnull @RequestBody LoginRequestDTO loginRequest) {
-        var result = accessAccount.execute(loginRequest);
-        return ResponseEntity.ok(result);
-        
-    }
 
     @PostMapping("/account/{accountNumber}/transaction")
-    public ResponseEntity<?> performTransaction(@Nonnull @PathVariable String accountNumber, @Nonnull @RequestBody TransactionRequestDTO transactionRequest) {
+    public ResponseEntity<?> performTransaction(@Valid @PathVariable String accountNumber, @Nonnull @RequestBody TransactionRequestDTO transactionRequest) {
 
         var result = performTransaction.execute(accountNumber, transactionRequest);
         return ResponseEntity.ok(result);   
     }
 
     @PatchMapping("/account/{accountNumber}/disable-account")
-    public void disableAccount(@Nonnull @PathVariable String accountNumber, @Nonnull @RequestBody ChangeStatusRequestDTO changeStatusRequestDTO) {
+    public ResponseEntity<Void> disableAccount(@Valid @PathVariable String accountNumber, @Nonnull @RequestBody ChangeStatusRequestDTO changeStatusRequestDTO) {
         changeAccountStatus.execute(accountNumber, changeStatusRequestDTO);
+        return ResponseEntity.noContent().build(); // Retorna 204
 
     }
 
     @PatchMapping("/account/{accountNumber}/enable-account")
-    public void enableAccount(@Nonnull @PathVariable String accountNumber, @Nonnull @RequestBody ChangeStatusRequestDTO changeStatusRequestDTO) {
-
+    public ResponseEntity<Void> enableAccount(@Valid @PathVariable String accountNumber, @Nonnull @RequestBody ChangeStatusRequestDTO changeStatusRequestDTO) {
         changeAccountStatus.execute(accountNumber, changeStatusRequestDTO);
+        return ResponseEntity.noContent().build(); // Retorna 204
 
     }
 
     @GetMapping("/account/{accountNumber}/statement")
-    public ResponseEntity<?> checkStatement(@Nonnull @PathVariable String accountNumber) {
+    public ResponseEntity<?> checkStatement(@Valid @PathVariable String accountNumber) {
 
         var result = checkStatement.execute(accountNumber);
         return ResponseEntity.ok(result);
