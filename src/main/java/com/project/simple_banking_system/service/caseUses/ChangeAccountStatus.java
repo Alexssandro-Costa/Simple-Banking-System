@@ -1,6 +1,6 @@
 package com.project.simple_banking_system.service.caseUses;
 
-import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,19 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.project.simple_banking_system.exceptions.AccountNotFoundException;
 import com.project.simple_banking_system.exceptions.InvalidEnumValueException;
 import com.project.simple_banking_system.exceptions.NullElementException;
-import com.project.simple_banking_system.model.DTOs.ChangeStatusRequestDTO;
-import com.project.simple_banking_system.model.entity.Account;
-import com.project.simple_banking_system.model.valueObjects.AccountNumber;
-import com.project.simple_banking_system.model.valueObjects.Cpf;
+import com.project.simple_banking_system.model.DTOs.Request.ChangeStatusRequest;
+import com.project.simple_banking_system.model.entity.Client;
 import com.project.simple_banking_system.model.valueObjects.Status;
-import com.project.simple_banking_system.model.valueObjects.TransactionType;
-import com.project.simple_banking_system.repository.AccountRepository;
+
+import com.project.simple_banking_system.repository.ClientRepository;
 
 /**
  * Classe de serviço que troca o status atual de uma conta bancaria.
  * @author Alexssandro
  * @since release 3
- * @version 1
+ * @version 2.0
  */
 @Service
 @Transactional
@@ -29,55 +27,58 @@ public class ChangeAccountStatus {
 
     // incializa o repositorio automaticamente
     @Autowired
-    AccountRepository accountRepository;
+    ClientRepository clientRepository;
+
+    @Autowired
+    DecodeToken decodeToken;
 
     /**
-     * Execute a mudança de status.
-     * @param accountNumberString Numero da conta relacionada.
-     * @param changeStatusRequestDTO Requisição de mudança de status.
+     * Muda o status atual de uma conta bancaria.
+     * @param changeStatusRequest Requisição de mudança de status.
      * @exception AccountNotFoundException Lançada quando não é possivel encontrar a conta associada.
      */
-    public void execute(String accountNumberString, ChangeStatusRequestDTO changeStatusRequestDTO) {
+    public void execute(ChangeStatusRequest changeStatusRequest) {
 
         // valida os inputs passados
-        validate(accountNumberString, changeStatusRequestDTO);
+        validate(changeStatusRequest);
 
-        // procura a conta associada
-        Account account = accountRepository.findByAccountNumber(new AccountNumber(accountNumberString));
+        try{
+            // procura a conta associada
+            Client client = clientRepository.findById(decodeToken.execute()).orElseThrow();
 
-        if(account == null)
-            throw new AccountNotFoundException("Não foi possivel validar a conta.");
+            // Insere o novo status da conta
+            client.getAccount().setStatus(Status.valueOf(changeStatusRequest.newStatus().toUpperCase()));
 
-        // realiza a mudança
-        account.setStatus(Status.valueOf(changeStatusRequestDTO.newStatus()));
+            // salva o mudança
+            clientRepository.save(client);
 
-        accountRepository.save(account);
+        }catch(NoSuchElementException e) {
+            throw new AccountNotFoundException("Não foi possivel encontrar a conta associada.");
+        }
+
 
     }
 
 
     /**
      * Valida os inputs passados para mudança de status.
-     * @param accountNumberString Numero da conta.
-     * @param changeStatusRequestDTO Requisição de mudança de status.
+     * @param changeStatusRequest Requisição de mudança de status.
      * @exception NullElementException Lançada quando um elemento é nulo.
-     * @InvalidEnumValueException Lançada quando um valor passado para um enum não é valido.
+     * @exception InvalidEnumValueException Lançada quando um valor passado para um enum não é valido.
      */
-    private void validate(String accountNumberString, ChangeStatusRequestDTO changeStatusRequestDTO) {
+    private void validate(ChangeStatusRequest changeStatusRequest) {
 
-
-        if(accountNumberString == null) 
-            throw new NullElementException("Numero de conta é invalido.");
-        if(changeStatusRequestDTO == null || changeStatusRequestDTO.cpf() == null || changeStatusRequestDTO.password() == null || changeStatusRequestDTO.newStatus() == null)
+        if(changeStatusRequest == null || changeStatusRequest.newStatus() == null)
             throw new NullElementException("Requisição de mudança de status invalida.");
 
-        // verifica se o status passado é valido.
-        boolean valid = Arrays.stream(TransactionType.values())
-                       .anyMatch(g -> g.name().equals(changeStatusRequestDTO.newStatus()));
-
-        if(!valid) {
+        // verifica se o status passado é um enum valido.
+        try {
+            //tenta converter a string para um enum
+            Status.valueOf(changeStatusRequest.newStatus().toUpperCase());
+        } catch (IllegalArgumentException e) {
             throw new InvalidEnumValueException("Status passado é invalido");
         }
+        
     }
     
 }

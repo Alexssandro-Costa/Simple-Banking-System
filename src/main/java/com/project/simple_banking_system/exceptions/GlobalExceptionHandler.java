@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.project.simple_banking_system.model.DTOs.ErrorMessageDTO;
+import com.project.simple_banking_system.model.DTOs.Response.ErrorMessageDTO;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ErrorMessageDTO> handleNullableElement(NullPointerException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getStackTrace().toString()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getMessage()));
     }
 
     
@@ -116,6 +116,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationFailedException.class)
     public ResponseEntity<ErrorMessageDTO> handleValidationError(AuthenticationFailedException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessageDTO(e.getMessage()));
+    }
+
+
+    /**
+     * Exceção lançada quando a decodificação de um token de acesso passado falha.
+     * @param e Exceção que deve ser lançada.
+     * @return ErrorMessageDTO Uma mensagem de erro personalizada.
+     */
+    @ExceptionHandler(TokenDecodificationFailedException.class)
+    public ResponseEntity<ErrorMessageDTO> handleTokenManipulationError(TokenDecodificationFailedException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body((new ErrorMessageDTO(e.getMessage())));
     }
 
     /**

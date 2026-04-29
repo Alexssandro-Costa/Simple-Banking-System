@@ -3,7 +3,6 @@ package com.project.simple_banking_system.utility;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Arrays;
 
 import com.project.simple_banking_system.exceptions.InvalidDateException;
 import com.project.simple_banking_system.exceptions.InvalidEnumValueException;
@@ -110,11 +109,12 @@ public class ValidateData {
             throw new NullElementException("Genêro passado não é valido.");
 
         // verifica se o valor passado é um genero existente.
-        boolean valid = Arrays.stream(Gender.values())
-                       .anyMatch(g -> g.name().equals(gender));
-
-        if(!valid)
+        try {
+            // tenta converter a string para um enum
+            Gender.valueOf(gender.toUpperCase());
+        } catch (IllegalArgumentException e) {
             throw new InvalidEnumValueException("Genêro não é uma opção valida.");
+        }
 
     }    
     

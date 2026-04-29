@@ -31,7 +31,7 @@ public class AuthController {
 
     @GetMapping("/test")
     public String test() {
-        return "ola";
+        return "Olá Mundo.";
     }
 
     @Operation(summary = "autentica uma tentativa de login")

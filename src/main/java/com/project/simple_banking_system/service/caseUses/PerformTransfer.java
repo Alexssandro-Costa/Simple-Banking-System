@@ -20,7 +20,6 @@ public class PerformTransfer {
      * @param transaction Transação que está sendo realizada.
      */
     public static void execute(Account receiver, Account sender, Transaction transaction) {
-
         PerformWithdraw.execute(sender, transaction.getValue());
         PerformDeposit.execute(receiver, transaction.getValue());
     }

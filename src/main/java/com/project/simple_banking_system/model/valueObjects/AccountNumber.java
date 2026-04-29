@@ -34,6 +34,11 @@ public class AccountNumber {
         return value;
     }
 
+    @Override
+    public String toString() {
+        return value;
+    }
+
     
     /**
      * Verifica se o valor do objeto está no formato padrão.

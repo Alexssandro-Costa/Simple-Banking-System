@@ -25,7 +25,7 @@ import com.project.simple_banking_system.utility.ValidateData;
  * Classe de serviço que cria uma nova entidade Cliente e Conta.
  * @author Alexssandro
  * @since release 3
- * @version 1
+ * @version 2.0
  */
 @Service
 public class RegisterNewClient {
@@ -39,6 +39,11 @@ public class RegisterNewClient {
     PasswordEncoder passwordEncoder;
 
 
+    /**
+     * Registra um novo cliente no banco de dados.
+     * @param registerRequest Requisição de registro contêndo os dados do cliente.
+     * @return Retorna o Username e o Password do usuario encapsulados pelo DTO RegisterUserResponse. 
+     */
     @Transactional
     public RegisterUserResponse execute(RegisterRequest registerRequest) {
 
@@ -51,7 +56,7 @@ public class RegisterNewClient {
         // Define os dados do cliente
         client.setName(new Name(registerRequest.name().toUpperCase()));
         client.setCpf(new Cpf(registerRequest.cpf()));
-        client.setGender(Gender.valueOf(registerRequest.gender()));
+        client.setGender(Gender.valueOf(registerRequest.gender().toUpperCase()));
         client.setPhone(new Phone(registerRequest.phone()));
         client.setDateBirth(new DateBirth(LocalDate.parse(registerRequest.dateBirth())));
         client.setPassword(new Password(passwordEncoder.encode(registerRequest.password())));

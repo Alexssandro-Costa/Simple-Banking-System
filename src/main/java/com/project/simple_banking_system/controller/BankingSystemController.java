@@ -3,26 +3,22 @@ package com.project.simple_banking_system.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// DTOs 
-import com.project.simple_banking_system.model.DTOs.ChangeStatusRequestDTO;
-import com.project.simple_banking_system.model.DTOs.TransactionRequestDTO;
-
+import com.project.simple_banking_system.model.DTOs.Request.ChangeStatusRequest;
+import com.project.simple_banking_system.model.DTOs.Request.TransactionRequest;
 // classes de serviço
 import com.project.simple_banking_system.service.caseUses.AccessAccount;
 import com.project.simple_banking_system.service.caseUses.ChangeAccountStatus;
 import com.project.simple_banking_system.service.caseUses.CheckStatement;
 import com.project.simple_banking_system.service.caseUses.PerformTransaction;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Nonnull;
 import jakarta.validation.Valid;
 
 
@@ -33,7 +29,7 @@ import jakarta.validation.Valid;
  * @version 1
  */
 @Tag(name = "Banking System", description = "Operações bancárias principais")
-@RequestMapping("/api/banco")
+@RequestMapping("/api/bank")
 @RestController
 public class BankingSystemController {
 
@@ -49,31 +45,43 @@ public class BankingSystemController {
     @Autowired
     private CheckStatement checkStatement;
 
-    @PostMapping("/account/{accountNumber}/transaction")
-    public ResponseEntity<?> performTransaction(@Valid @PathVariable String accountNumber, @Nonnull @RequestBody TransactionRequestDTO transactionRequest) {
 
-        var result = performTransaction.execute(accountNumber, transactionRequest);
+    @Operation(description = "Recupera os dados de conta associada ao token de acesso.")
+    @PostMapping("/account/access")
+    public ResponseEntity<?> accessAccount() {
+        var result = accessAccount.execute();
+        return ResponseEntity.ok(result);
+
+    }
+
+    @Operation(description = "Realiza transações de retirada, deposito e transferências bancarias.")
+    @PostMapping("/account/transaction")
+    public ResponseEntity<?> performTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
+        var result = performTransaction.execute(transactionRequest);
         return ResponseEntity.ok(result);   
     }
 
-    @PatchMapping("/account/{accountNumber}/disable-account")
-    public ResponseEntity<Void> disableAccount(@Valid @PathVariable String accountNumber, @Nonnull @RequestBody ChangeStatusRequestDTO changeStatusRequestDTO) {
-        changeAccountStatus.execute(accountNumber, changeStatusRequestDTO);
+    @Operation(description = "Muda o Status de uma conta para DESABILITADA.")
+    @PatchMapping("/account/disable-account")
+    public ResponseEntity<Void> disableAccount(@Valid @RequestBody ChangeStatusRequest changeStatusRequest) {
+        changeAccountStatus.execute(changeStatusRequest);
         return ResponseEntity.noContent().build(); // Retorna 204
 
     }
 
-    @PatchMapping("/account/{accountNumber}/enable-account")
-    public ResponseEntity<Void> enableAccount(@Valid @PathVariable String accountNumber, @Nonnull @RequestBody ChangeStatusRequestDTO changeStatusRequestDTO) {
-        changeAccountStatus.execute(accountNumber, changeStatusRequestDTO);
+    @Operation(description = "Muda o Status de uma conta para HABILITADA.")
+    @PatchMapping("/account/enable-account")
+    public ResponseEntity<Void> enableAccount(@Valid @RequestBody ChangeStatusRequest changeStatusRequest) {
+        changeAccountStatus.execute(changeStatusRequest);
         return ResponseEntity.noContent().build(); // Retorna 204
 
     }
 
-    @GetMapping("/account/{accountNumber}/statement")
-    public ResponseEntity<?> checkStatement(@Valid @PathVariable String accountNumber) {
 
-        var result = checkStatement.execute(accountNumber);
+    @Operation(description = "Busca e retorna todo o extrato bancario de uma conta associada.")
+    @PostMapping("/account/statement")
+    public ResponseEntity<?> checkStatement() {
+        var result = checkStatement.execute();
         return ResponseEntity.ok(result);
     }
 
