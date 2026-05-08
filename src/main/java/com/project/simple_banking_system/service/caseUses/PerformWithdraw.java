@@ -4,31 +4,55 @@ import java.math.BigDecimal;
 
 import com.project.simple_banking_system.exceptions.InvalidTransactionException;
 import com.project.simple_banking_system.exceptions.NullElementException;
+import com.project.simple_banking_system.model.DTOs.Response.TransactionResponse;
 import com.project.simple_banking_system.model.entity.Account;
+import com.project.simple_banking_system.model.entity.Transaction;
 import com.project.simple_banking_system.model.valueObjects.Cash;
+import com.project.simple_banking_system.repository.AccountRepository;
+import org.jspecify.annotations.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Valida e realiza um saque no saldo de uma conta bancaria
  * @author Alexssandro
  * @since release 3
- * @version 1
+ * @version 1.1
  */
 public class PerformWithdraw {
+
+
+    @Autowired
+    AccountRepository accountRepository;
 
     /**
      * Executa a operação de saque.
      * @param account Conta bancaria relacionada.
-     * @param withdrawValue Valor do saque 
      */
-    protected static void execute(Account account, Cash withdrawValue) {
+    protected TransactionResponse execute(Account account, @NonNull Transaction transaction) {
 
-        validate(account, withdrawValue);
+        // valida os dados inseridos
+        validate(account, transaction.getValue());
 
-        Cash balance = account.getBalance();
         // atualiza o saldo
-        balance.setValue(balance.getValue().subtract(withdrawValue.getValue()));
-
+        Cash balance = account.getBalance();
+        balance.subtract(transaction.getValue());
         account.setBalance(balance);
+
+        // define as dependencias
+        account.getTransactions().add(transaction);
+        transaction.setAccount(account);
+
+        accountRepository.save(account);
+
+        // retorna um dto de resposta
+        return new TransactionResponse(
+                String.valueOf(transaction.getId()),
+                transaction.getTransactionType().name(),
+                transaction.getValue().toString(),
+                transaction.getAccount().getBalance().toString(),
+                transaction.getReceiver(),
+                transaction.getDate().toString()
+        );
     }
 
 
@@ -39,7 +63,7 @@ public class PerformWithdraw {
      * @exception NullElementException Lançada quando um elemento é nulo.
      * @exception InvalidTransactionException Lançada quando uma operação não é possivel.
      */
-    private static void validate(Account account, Cash withdrawValue) {
+    private void validate(Account account, Cash withdrawValue) {
 
         // conta bancaria é nula
         if(account == null)

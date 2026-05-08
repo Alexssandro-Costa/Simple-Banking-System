@@ -22,7 +22,6 @@ public class Cash {
    }
 
    public Cash() {
-        this(new BigDecimal(0));
    }
 
    public BigDecimal getValue() {
@@ -32,5 +31,21 @@ public class Cash {
    public void setValue(BigDecimal value) {
         this.value = value;
    }
+
+   public void add(Cash cash) {
+       value = value.add(cash.getValue());
+   }
+
+   public void subtract(Cash cash) {
+       value = value.subtract(cash.getValue());
+   }
+
+    @Override
+    public String toString() {
+        return value.toEngineeringString();
+    }
+
+
+
 
 }

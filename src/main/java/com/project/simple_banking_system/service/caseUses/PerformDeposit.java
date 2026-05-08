@@ -4,34 +4,58 @@ import java.math.BigDecimal;
 
 import com.project.simple_banking_system.exceptions.InvalidTransactionException;
 import com.project.simple_banking_system.exceptions.NullElementException;
+import com.project.simple_banking_system.model.DTOs.Response.TransactionResponse;
 import com.project.simple_banking_system.model.entity.Account;
+import com.project.simple_banking_system.model.entity.Transaction;
 import com.project.simple_banking_system.model.valueObjects.Cash;
+import com.project.simple_banking_system.repository.AccountRepository;
+import org.jspecify.annotations.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
  * Valida e realiza um saque no saldo de uma conta bancaria
  * @author Alexssandro
  * @since release 3
- * @version 1
+ * @version 1.1
  */
 public class PerformDeposit {
 
 
+    @Autowired
+    AccountRepository accountRepository;
+
     /**
      * Execute a operação de deposito.
      * @param account Conta bancaria relacionada.
-     * @param depositValue Valor do deposito.
+     * @param transaction Transcação que deve ser realizada.
      */
-    protected static void execute(Account account, Cash depositValue) {
+    protected TransactionResponse execute(Account account, @NonNull Transaction transaction) {
 
-        validate(account, depositValue);
+        // valida os dados passados
+        validate(account, transaction.getValue());
 
+        // realiza a operação
         Cash balance = account.getBalance();
-
-        // atualiza o valor do saldo
-        balance.setValue( balance.getValue().add(depositValue.getValue()) );
-
+        balance.add(transaction.getValue());
         account.setBalance(balance);
+
+        // define as dependencias
+        account.getTransactions().add(transaction);
+        transaction.setAccount(account);
+
+        accountRepository.save(account);
+
+        // retorna um dto de resposta
+        return new TransactionResponse(
+                String.valueOf(transaction.getId()),
+                transaction.getTransactionType().name(),
+                transaction.getValue().toString(),
+                transaction.getAccount().getBalance().toString(),
+                transaction.getReceiver(),
+                transaction.getDate().toString()
+        );
+
     }
 
     
@@ -42,9 +66,8 @@ public class PerformDeposit {
      * @exception NullElementException Lançada quando um elemento é nulo.
      * @exception InvalidTransactionException Lançada quando uma operação não é possivel.
      */
-    private static void validate(Account account, Cash depositValue) {
+    private void validate(Account account, Cash depositValue) {
 
-        
         // conta bancaria é nula
         if(account == null)
             throw new NullElementException("ERRO! Conta bancaria é invalida.");

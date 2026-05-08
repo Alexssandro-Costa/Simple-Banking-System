@@ -1,5 +1,6 @@
 package com.project.simple_banking_system.repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,7 +24,7 @@ public interface AccountRepository extends JpaRepository<Account, UUID>{
      * @param accountNumber Numero da conta bancaria.
      * @return uma conta bancaria.
      */
-    public Account findByAccountNumber(AccountNumber accountNumber);
+    public Optional<Account> findByAccountNumber(AccountNumber accountNumber);
 
 
 

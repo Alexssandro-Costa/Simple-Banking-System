@@ -26,7 +26,7 @@ import com.project.simple_banking_system.repository.TransactionRepository;
  * Classe de serviço que realiza uma transação bancaria.
  * @author Alexssandro
  * @since release 3
- * @version 2.0
+ * @version 2.1
  */
 @Service
 public class PerformTransaction {
@@ -40,26 +40,33 @@ public class PerformTransaction {
     AccountRepository accountRepository;
 
     @Autowired
+    PerformDeposit performDeposit;
+    @Autowired
+    PerformWithdraw performWithdraw;
+    @Autowired
+    PerformTransfer performTransfer;
+
+    @Autowired
     DecodeToken decodeToken;
 
 
     /**
      * Executa a operação de transação.
-     * @param accountNumber Numero da conta.
-     * @param transactionDTO Requisição de transação.
+     * @param transactionRequest Requisição de transação.
      * @exception AccountNotFoundException Lançada quando uma conta bancaria não pode ser achada.
      * @exception InvalidTransactionException Lançada quando uma transação falha
      * 
      */
     @Transactional
     public TransactionResponse execute(TransactionRequest transactionRequest) {
-        
+
+        // valida as informações inseridas;
         validate(transactionRequest);
-        Account account;
+        Account userAccount;
 
         try {
             // busca a conta do client loggado
-            account = clientRepository.findById(decodeToken.execute()).orElseThrow().getAccount();
+            userAccount = clientRepository.findById(decodeToken.execute()).orElseThrow().getAccount();
         } catch (NoSuchElementException e) {
             throw new AccountNotFoundException("Não foi possivel encontrar a conta associada");
         }
@@ -68,66 +75,45 @@ public class PerformTransaction {
         Transaction transaction = new Transaction(
             new Cash(new BigDecimal(transactionRequest.value())), 
             TransactionType.valueOf(transactionRequest.transactionType().toUpperCase()), 
-            new AccountNumber(transactionRequest.sender()), 
-            new AccountNumber(transactionRequest.receiver()));
+            transactionRequest.sender(),
+            transactionRequest.receiver());
        
         if(transaction.getTransactionType() == TransactionType.TRANSFERENCIA) {
 
-            if(transaction.getSender().getValue() == null || transaction.getReceiver().getValue() == null)
-                throw new InvalidTransactionException("Não é possivel realizar uma transferência sem a conta remetente e destinataria.");
-
-            // recupera a conta do destinatario
-            Account receiver = accountRepository.findByAccountNumber(transaction.getReceiver());
-            if(receiver == null)
-                throw new AccountNotFoundException("Não foi possivel encontrar a conta destinataria");
-    
-            PerformTransfer.execute(receiver, account, transaction);
-
-            
-            Transaction receiverTransaction = new Transaction(transaction.getValue(), 
-                transaction.getTransactionType(), 
-                transaction.getSender(), 
-                transaction.getReceiver());
-
-
-            // define as dependencias de receiver
-            receiverTransaction.setAccount(receiver);
-            receiver.getTransactions().add(receiverTransaction);
-
-            // salva a mudança no saldo e a nova transação
-            accountRepository.save(receiver);
+            Account accountReceiver;
+            try {
+                // recupera a conta de destino da transferência
+                accountReceiver = accountRepository.findByAccountNumber(new AccountNumber(transaction.getReceiver())).orElseThrow();
+            } catch (NoSuchElementException e) {
+                throw new AccountNotFoundException("Não foi possivel encontrar a conta destinataria.");
+            }
+            PerformTransfer.execute(userAccount, accountReceiver, transaction);
 
         }
         else if(transaction.getTransactionType() == TransactionType.DEPOSITO) {
-            PerformDeposit.execute(account, transaction.getValue());
+            return performDeposit.execute(userAccount, transaction);
 
         }
         else if(transaction.getTransactionType() == TransactionType.SAQUE) {
-            PerformWithdraw.execute(account, transaction.getValue());
+            return performWithdraw.execute(userAccount, transaction);
         }
 
-         // define as dependepencias
-        transaction.setAccount(account);
-        account.getTransactions().add(transaction);
 
-        // salva a transação no banco e retorna-a.
-        Transaction savedTransaction = transactionRepository.save(transaction);
-        // salva a mudança no saldo
-        accountRepository.save(account);
-        
         // retorna um dto de resposta
-        return new TransactionResponse(String.valueOf(savedTransaction.getId()), 
-        savedTransaction.getTransactionType().name(), 
-        savedTransaction.getValue().getValue().toEngineeringString(), 
-        savedTransaction.getAccount().getBalance().getValue().toEngineeringString(), 
-        savedTransaction.getReceiver().getValue(), 
-        savedTransaction.getDate().toString());
+        return new TransactionResponse(
+                String.valueOf(transaction.getId()),
+                transaction.getTransactionType().name(),
+                transaction.getValue().toString(),
+                transaction.getAccount().getBalance().toString(),
+                transaction.getReceiver(),
+                transaction.getDate().toString()
+        );
 
     } 
 
 
     /**
-     * Verifica se o numero da conta é a Requisição de transação são validos.
+     * Verifica se o número da conta e a Requisição de transação são validos.
      * @param transactionRequest Requisição de transação.
      * @exception NullElementException Lançada quando um elemento informado é nulo.
      * @exception InvalidEnumValueException Lançada quando o tipo de transação passada, não corresponde a um enum valido
@@ -135,14 +121,17 @@ public class PerformTransaction {
     private void validate(TransactionRequest transactionRequest) {
 
         if(transactionRequest == null)
-            throw new NullElementException("Transação passada é invalida.");
+            throw new NullElementException("Transação não pode ser nula.");
         if(transactionRequest.value() == null)
-            throw new NullElementException("Valor de transação passado é invalido.");
+            throw new NullElementException("Valor da transação não pode ser nula.");
         if(transactionRequest.transactionType() == null)
-            throw new NullElementException("Tipo de transação passado é invalido.");
+            throw new NullElementException("Tipo de transação não pode ser nula.");
+        if(transactionRequest.receiver() == null)
+            throw new NullElementException("Destinatário não pode ser nulo.");
+        if(transactionRequest.sender() == null)
+            throw  new NullElementException("Remetente não pode ser nulo.");
 
         try {
-        
             // tenta converter a string para um enum.
             TransactionType.valueOf(transactionRequest.transactionType().toUpperCase());
         } catch (IllegalArgumentException e) {

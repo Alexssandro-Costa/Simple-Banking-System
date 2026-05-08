@@ -55,18 +55,18 @@ public class Transaction {
 
     @AttributeOverride(name = "value", column = @Column(name = "destinatario", nullable = true))
     @Embedded
-    private AccountNumber receiver;
+    private String receiver;
 
     @AttributeOverride(name = "value", column = @Column(name = "remetente", nullable = true))
     @Embedded
-    private AccountNumber sender;
+    private String sender;
 
     /// DEFINE A CHAVE ESTRANGEIRA DE UMA TRANSAÇÃO
     @ManyToOne
     @JoinColumn(name = "conta-id", nullable = false)
     private Account account;
 
-    public Transaction(Cash value, TransactionType transactionType, AccountNumber sender, AccountNumber receiver) {
+    public Transaction(Cash value, TransactionType transactionType, String sender, String receiver) {
         this.value = value;
         this.transactionType = transactionType;
         this.receiver = receiver;
@@ -104,23 +104,21 @@ public class Transaction {
         this.transactionType = transactionType;
     }
 
-    public AccountNumber getReceiver() {
+    public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(AccountNumber receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
-    
-    public AccountNumber getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(AccountNumber sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
-
 
     public Account getAccount() {
         return account;
