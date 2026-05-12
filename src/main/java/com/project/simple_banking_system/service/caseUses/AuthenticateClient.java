@@ -51,16 +51,13 @@ public class AuthenticateClient {
         Client client = null;
 
         try {
-            /// autentica a senha e o cpf passados
+            /// Autentica a senha e o cpf passados
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.cpf(), loginRequest.password());
             Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
             client = (Client) authentication.getPrincipal();
 
         }catch(BadCredentialsException e) {
-            throw new AuthenticationFailedException("Senha ou CPF Invalidos.");
-        }
-        catch (InternalAuthenticationServiceException e) {
             throw new AuthenticationFailedException("Senha ou CPF Invalidos.");
         }
         catch(Exception e) {

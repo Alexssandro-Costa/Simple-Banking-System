@@ -15,6 +15,7 @@ import com.project.simple_banking_system.model.valueObjects.Gender;
 import com.project.simple_banking_system.model.valueObjects.Name;
 import com.project.simple_banking_system.model.valueObjects.Password;
 import com.project.simple_banking_system.model.valueObjects.Phone;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -23,6 +24,7 @@ import com.project.simple_banking_system.model.valueObjects.Phone;
  * @since release 3
  * @version 1
  */
+@Component
 public class ValidateData {
 
     /**

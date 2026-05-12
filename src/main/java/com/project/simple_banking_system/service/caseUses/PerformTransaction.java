@@ -75,8 +75,8 @@ public class PerformTransaction {
         Transaction transaction = new Transaction(
             new Cash(new BigDecimal(transactionRequest.value())), 
             TransactionType.valueOf(transactionRequest.transactionType().toUpperCase()), 
-            transactionRequest.sender(),
-            transactionRequest.receiver());
+            transactionRequest.sender().toUpperCase(),
+            transactionRequest.receiver().toUpperCase());
        
         if(transaction.getTransactionType() == TransactionType.TRANSFERENCIA) {
 
@@ -87,7 +87,7 @@ public class PerformTransaction {
             } catch (NoSuchElementException e) {
                 throw new AccountNotFoundException("Não foi possivel encontrar a conta destinataria.");
             }
-            PerformTransfer.execute(userAccount, accountReceiver, transaction);
+            return performTransfer.execute(userAccount, accountReceiver, transaction);
 
         }
         else if(transaction.getTransactionType() == TransactionType.DEPOSITO) {
@@ -97,17 +97,10 @@ public class PerformTransaction {
         else if(transaction.getTransactionType() == TransactionType.SAQUE) {
             return performWithdraw.execute(userAccount, transaction);
         }
+        else {
+            throw new InvalidEnumValueException("Tipo de transação invalido.");
+        }
 
-
-        // retorna um dto de resposta
-        return new TransactionResponse(
-                String.valueOf(transaction.getId()),
-                transaction.getTransactionType().name(),
-                transaction.getValue().toString(),
-                transaction.getAccount().getBalance().toString(),
-                transaction.getReceiver(),
-                transaction.getDate().toString()
-        );
 
     } 
 

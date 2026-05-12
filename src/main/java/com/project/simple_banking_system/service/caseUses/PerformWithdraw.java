@@ -11,6 +11,8 @@ import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.repository.AccountRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Valida e realiza um saque no saldo de uma conta bancaria
@@ -18,11 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since release 3
  * @version 1.1
  */
+@Service
+@Transactional
 public class PerformWithdraw {
 
 
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     /**
      * Executa a operação de saque.
@@ -38,7 +42,7 @@ public class PerformWithdraw {
         balance.subtract(transaction.getValue());
         account.setBalance(balance);
 
-        // define as dependencias
+        // registra a transação no histórico da conta
         account.getTransactions().add(transaction);
         transaction.setAccount(account);
 

@@ -47,7 +47,7 @@ class PerformDepositTest {
 
         //Given
         Account account = new Account();
-        account.setBalance(new Cash(BigDecimal.valueOf(100)));
+        account.setBalance(new Cash(100));
         Transaction transaction = new Transaction(
                 new Cash(BigDecimal.valueOf(-10)),
                 TransactionType.DEPOSITO,
@@ -67,12 +67,12 @@ class PerformDepositTest {
 
     @Test
     @DisplayName("Deve adicionar 100 ao saldo e retornar um extrato com o novo saldo sendo 120.")
-    void performDeposit_When_OneHundredIsDepositedInBalance_ItShouldReturnAStatementWithTheNewBalanceBeingOneHundredAndTwenty() {
+    void performDeposit_When_OneHundredIsDepositedInBalance_ItShouldReturn_AStatementWithTheNewBalanceBeingOneHundredAndTwenty() {
 
         //Given
         Account account = new Account();
         account.setTransactions(new ArrayList<Transaction>());
-        account.setBalance(new Cash(BigDecimal.valueOf(20)));
+        account.setBalance(new Cash(20));
         Transaction transaction = new Transaction(
                 new Cash(BigDecimal.valueOf(100)),
                 TransactionType.DEPOSITO,

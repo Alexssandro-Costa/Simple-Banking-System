@@ -11,6 +11,8 @@ import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.repository.AccountRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -19,11 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @since release 3
  * @version 1.1
  */
+@Service
+@Transactional
 public class PerformDeposit {
 
 
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     /**
      * Execute a operação de deposito.
@@ -40,7 +44,7 @@ public class PerformDeposit {
         balance.add(transaction.getValue());
         account.setBalance(balance);
 
-        // define as dependencias
+        // registra a transação no histórico da conta
         account.getTransactions().add(transaction);
         transaction.setAccount(account);
 
@@ -80,7 +84,7 @@ public class PerformDeposit {
         if(depositValue == null || depositValue.getValue() == null) 
             throw new NullElementException("Valor de deposito é invalido.");
 
-        // valor de deposito é negativo
+        // valor de depósito é negativo
         if(depositValue.getValue().compareTo(BigDecimal.ZERO) < 0)
             throw new InvalidTransactionException("Valor de deposito não pode ser negativo.");
 

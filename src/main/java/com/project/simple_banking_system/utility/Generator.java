@@ -1,5 +1,7 @@
 package com.project.simple_banking_system.utility;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Random;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Random;
  * @since release 2
  * @version 1.0
  */
+@Component
 public class Generator {
 
     /**

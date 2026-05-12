@@ -2,6 +2,7 @@ package com.project.simple_banking_system.service.caseUses;
 
 import java.util.NoSuchElementException;
 
+import com.project.simple_banking_system.utility.GetEntityFromRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,35 +31,30 @@ public class AccessAccount {
 
     @Autowired
     DecodeToken decodeToken;
+    @Autowired
+    GetEntityFromRepository getEntityFromRepository;
 
 
 
     /**
      * Acessa uma conta bancaria existente.
      * @return Retorna os dados da conta bancaria encapsulados pelo DTO AccessAccountResponse.
-     * @exception DisabledAccountException Lançada quando uma conta disabilitada tenta ser acessada.
+     * @exception DisabledAccountException Lançada quando uma conta desabilitada tenta ser acessada.
      * @exception AccountNotFoundException Lançada quando uma conta não pode ser encontrada.
      */
     public AccessAccountResponse execute() {
 
-        try {
-            // recupera os dados do cliente no banco de dados
-            Client client = clientRepository.findById(decodeToken.execute()).orElseThrow();
+        // recupera os dados do cliente no banco de dados
+        Client client = getEntityFromRepository.getClientById(decodeToken.execute(), clientRepository);
 
-            // verifica se a conta está ativa
-            if( client.getAccount().getStatus() == Status.DESABILITADA) {
-                throw new DisabledAccountException("A conta está DESABILITADA.");
-            }
+        // verifica se a conta está ativa
+        if( client.getAccount().getStatus() == Status.DESABILITADA)
+            throw new DisabledAccountException("A conta está DESABILITADA.");
 
-            // retorna o dto de resposta
-            return new AccessAccountResponse(client.getName().getValue(), 
-            client.getAccount().getAccountNumber().getValue(), 
-            client.getAccount().getBalance().getValue().toEngineeringString());
-
-        }catch(NoSuchElementException e) {
-            throw new AccountNotFoundException("Não foi possivel encontrar a conta associada.");
-
-        }
+        // retorna o dto de resposta
+        return new AccessAccountResponse(client.getName().getValue(),
+                client.getAccount().getAccountNumber().getValue(),
+                client.getAccount().getBalance().getValue().toEngineeringString());
     }
 
 

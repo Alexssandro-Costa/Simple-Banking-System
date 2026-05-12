@@ -1,6 +1,7 @@
 package com.project.simple_banking_system.exceptions;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,14 +12,24 @@ import com.project.simple_banking_system.model.DTOs.Response.ErrorMessageDTO;
 public class GlobalExceptionHandler {
 
     /**
-     * Exceção lançada quando um conta não pode ser encontrada
+     * Exceção lançada quando uma conta não pode ser encontrada no banco de dados.
      * @param e Exceção que deve ser lançada
      * @return ErrorMessageDTO uma mensagem de erro personalizada.
      */
     @ExceptionHandler(AccountNotFoundException.class)
-    public ResponseEntity<ErrorMessageDTO> handleAccountNotFound(AccountNotFoundException e ) {
+    public ResponseEntity<ErrorMessageDTO> handleAccountNotFoundError(AccountNotFoundException e ) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessageDTO(e.getMessage()));
 
+    }
+
+    /**
+     * Exceção lançada quando um cliente não podê ser encontrado no banco de dados.
+     * @param e Exceção que deve ser lançada
+     * @return ErrorMessageDTO uma mensagem de erro personalizada.
+     */
+    @ExceptionHandler(ClientNotFoundException.class)
+    public ResponseEntity<ErrorMessageDTO> handleClientNotFoundError(ClientNotFoundException e) {
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessageDTO(e.getMessage()));
     }
     
     /**
@@ -27,7 +38,7 @@ public class GlobalExceptionHandler {
      * @return ErrorMessageDTO uma mensagem de erro personalizada.
      */
     @ExceptionHandler(InvalidTransactionException.class)
-    public ResponseEntity<ErrorMessageDTO> handleBusinessRules(InvalidTransactionException e) {
+    public ResponseEntity<ErrorMessageDTO> handleBusinessRulesError(InvalidTransactionException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getMessage()));
 
     }
@@ -39,7 +50,7 @@ public class GlobalExceptionHandler {
      * @return ErrorMessageDTO uma mensagem de erro personalizada.
      */
     @ExceptionHandler(DisabledAccountException.class)
-    public ResponseEntity<ErrorMessageDTO> handleBusinessRules(DisabledAccountException e) {
+    public ResponseEntity<ErrorMessageDTO> handleBusinessRulesError(DisabledAccountException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getMessage()));
 
     }
@@ -51,7 +62,7 @@ public class GlobalExceptionHandler {
      * @return ErrorMessageDTO uma mensagem de erro personalizada.
      */
     @ExceptionHandler(InvalidDateException.class)
-    public ResponseEntity<ErrorMessageDTO> handleValidationRules(InvalidDateException e) {
+    public ResponseEntity<ErrorMessageDTO> handleValidationRulesError(InvalidDateException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getMessage()));
     }
 
@@ -61,7 +72,7 @@ public class GlobalExceptionHandler {
      * @return ErrorMessageDTO uma mensagem de erro personalizada.
      */
     @ExceptionHandler(InvalidEnumValueException.class)
-    public ResponseEntity<ErrorMessageDTO> handleValidationRules(InvalidEnumValueException e) {
+    public ResponseEntity<ErrorMessageDTO> handleValidationRulesError(InvalidEnumValueException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getMessage()));
     }
     
@@ -71,7 +82,7 @@ public class GlobalExceptionHandler {
      * @return ErrorMessageDTO uma mensagem de erro personalizada.
      */
     @ExceptionHandler(InvalidFormatException.class)
-    public ResponseEntity<ErrorMessageDTO> handleValidationRules(InvalidFormatException e) {
+    public ResponseEntity<ErrorMessageDTO> handleValidationRulesError(InvalidFormatException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getMessage()));
     }
 
@@ -81,7 +92,7 @@ public class GlobalExceptionHandler {
      * @return ErrorMessageDTO uma mensagem de erro personalizada.
      */
     @ExceptionHandler(NullElementException.class)
-    public ResponseEntity<ErrorMessageDTO> handleNullableElement(NullElementException e) {
+    public ResponseEntity<ErrorMessageDTO> handleNullableElementError(NullElementException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getMessage()));
     }
 
@@ -91,7 +102,7 @@ public class GlobalExceptionHandler {
      * @return ErrorMessageDTO uma mensagem de erro personalizada.
      */
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ErrorMessageDTO> handleNullableElement(NullPointerException e) {
+    public ResponseEntity<ErrorMessageDTO> handleNullableElementError(NullPointerException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getMessage()));
     }
 
@@ -102,7 +113,7 @@ public class GlobalExceptionHandler {
      * @return ErrorMessageDTO Uma mensagem de erro personalizada.
      */
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorMessageDTO> handleAccessError(AccessDeniedException e) {
+    public ResponseEntity<ErrorMessageDTO> handleAccessDeniedError(AccessDeniedException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessageDTO(e.getMessage()));
     }
 
@@ -114,7 +125,7 @@ public class GlobalExceptionHandler {
      * @return ErrorMessageDTO Uma mensagem de erro personalizada.
      */
     @ExceptionHandler(AuthenticationFailedException.class)
-    public ResponseEntity<ErrorMessageDTO> handleValidationError(AuthenticationFailedException e) {
+    public ResponseEntity<ErrorMessageDTO> handleAuthenticationFailedError(AuthenticationFailedException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessageDTO(e.getMessage()));
     }
 
@@ -128,6 +139,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorMessageDTO> handleTokenManipulationError(TokenDecodificationFailedException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body((new ErrorMessageDTO(e.getMessage())));
     }
+
 
     /**
      * Exceção lançada quando um erro generico ocorre.

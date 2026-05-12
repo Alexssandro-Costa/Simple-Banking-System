@@ -46,7 +46,7 @@ class PerformWithdrawTest {
 
         //Given
         Account account = new Account();
-        account.setBalance(new Cash(BigDecimal.valueOf(100)));
+        account.setBalance(new Cash(100));
         Transaction transaction = new Transaction (
                 new Cash(BigDecimal.valueOf(-10)),
                 TransactionType.SAQUE,
@@ -70,7 +70,7 @@ class PerformWithdrawTest {
 
         //Given
         Account account = new Account();
-        account.setBalance(new Cash(BigDecimal.valueOf(10)));
+        account.setBalance(new Cash(10));
         Transaction transaction = new Transaction (
                 new Cash(BigDecimal.valueOf(20)),
                 TransactionType.SAQUE,
@@ -90,11 +90,11 @@ class PerformWithdrawTest {
 
     @Test
     @DisplayName("Deve retirar 80 do saldo e retornar um extrato com o novo saldo sendo 20.")
-    void performWithdraw_When_EightyIsWithdrawnFromTheBalance_ItShouldReturnAStatementWithTheNewBalanceBeingTwenty() {
+    void performWithdraw_When_EightyIsWithdrawnFromTheBalance_ItShouldReturn_AStatementWithTheNewBalanceBeingTwenty() {
 
         //Given
         Account account = new Account();
-        account.setBalance(new Cash(BigDecimal.valueOf(100)));
+        account.setBalance(new Cash(100));
         account.setTransactions(new ArrayList<Transaction>());
 
         Transaction transaction = new Transaction (
