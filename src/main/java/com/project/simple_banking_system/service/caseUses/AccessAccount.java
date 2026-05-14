@@ -34,13 +34,10 @@ public class AccessAccount {
     @Autowired
     GetEntityFromRepository getEntityFromRepository;
 
-
-
     /**
      * Acessa uma conta bancaria existente.
      * @return Retorna os dados da conta bancaria encapsulados pelo DTO AccessAccountResponse.
      * @exception DisabledAccountException Lançada quando uma conta desabilitada tenta ser acessada.
-     * @exception AccountNotFoundException Lançada quando uma conta não pode ser encontrada.
      */
     public AccessAccountResponse execute() {
 

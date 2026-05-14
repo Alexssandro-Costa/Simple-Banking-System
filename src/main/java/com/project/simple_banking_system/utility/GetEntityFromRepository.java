@@ -30,7 +30,7 @@ public class GetEntityFromRepository {
      * Procura uma conta no repositório.
      * @param accountNumberString Número da conta em formato String.
      * @param repository Repositório de contas.
-     * @return retornar a conta do pertencente ao número de conta passado.
+     * @return Account pertencente ao número de conta passado.
      * @exception InvalidFormatException Lançada quando o número de conta inserido está em um formato não existente.
      * @exception AccountNotFoundException Lançada quando não é possível encontrar uma conta correspondente.
      */
@@ -43,7 +43,7 @@ public class GetEntityFromRepository {
      * Procura uma conta no repositório.
      * @param accountNumber Número da conta.
      * @param repository Repositório de contas.
-     * @return retornar a conta do pertencente ao número de conta passado.
+     * @return Account pertencente ao número de conta passado.
      * @exception InvalidFormatException Lançada quando o número de conta inserido está em um formato não existente.
      * @exception AccountNotFoundException Lançada quando não é possível encontrar uma conta correspondente.
      */
@@ -54,7 +54,7 @@ public class GetEntityFromRepository {
                 throw new InvalidFormatException("Numero de conta passado não está no formato padrão.");
             return repository.findByAccountNumber(accountNumber).orElseThrow();
         } catch (NoSuchElementException e) {
-            throw new AccountNotFoundException("Não foi possível encontrar a conta buscada.");
+            throw new AccountNotFoundException("Não foi possível encontrar a conta de número " + accountNumber.getValue());
         }
 
     }
