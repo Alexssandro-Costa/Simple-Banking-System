@@ -1,6 +1,7 @@
 package com.project.simple_banking_system.service.caseUses;
 
 import com.project.simple_banking_system.exceptions.InvalidTransactionException;
+import com.project.simple_banking_system.exceptions.NullElementException;
 import com.project.simple_banking_system.model.DTOs.Response.TransactionResponse;
 import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.entity.Transaction;
@@ -88,4 +89,136 @@ class PerformDepositTest {
         Assertions.assertEquals("120", result.newBalance());
 
     }
+
+    @Test
+    @DisplayName("Deposito deve falhar quando a conta passado for nula.")
+    void performDeposit_ShouldFail_When_TheAccountIsNull() {
+
+        // Given
+        Account account = null;
+        Transaction transaction = new Transaction(
+                new Cash(BigDecimal.valueOf(100)),
+                TransactionType.DEPOSITO,
+                "externo",
+                null
+        );
+        transaction.setDate(Instant.now());
+
+        // When
+
+        NullElementException result = Assertions.assertThrows(NullElementException.class,
+                () -> performDeposit.execute(account, transaction));
+
+
+        // then
+        Assertions.assertEquals("ERRO! Conta bancaria é invalida.",result.getMessage());
+        System.out.println(result.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("Deposito deve falhar quando o saldo da conta for nulo")
+    void performDeposit_ShouldFail_When_TheAccountBalanceIsnull() {
+
+        // given
+        Account account = new Account();
+        account.setTransactions(new ArrayList<Transaction>());
+        Transaction transaction = new Transaction(
+                new Cash(BigDecimal.valueOf(100)),
+                TransactionType.DEPOSITO,
+                "externo",
+                account.getAccountNumber().toString()
+        );
+        transaction.setDate(Instant.now());
+
+        // when
+        NullElementException result = Assertions.assertThrows(NullElementException.class,
+                () -> performDeposit.execute(account, transaction));
+
+        // then
+        Assertions.assertEquals("Saldo bancario é invalido.", result.getMessage());
+    }
+
+    @Test
+    @DisplayName("Deposito deve falhar quando o valor do saldo da conta for nulo")
+    void performDeposit_ShouldFail_When_TheAccountBalanceValueIsnull() {
+
+        // given
+        Account account = new Account();
+        account.setTransactions(new ArrayList<Transaction>());
+        account.setBalance(new Cash());
+        account.getBalance().setValue(null);
+
+        Transaction transaction = new Transaction(
+                new Cash(BigDecimal.valueOf(100)),
+                TransactionType.DEPOSITO,
+                "externo",
+                account.getAccountNumber().toString()
+        );
+        transaction.setDate(Instant.now());
+
+        // when
+        NullElementException result = Assertions.assertThrows(NullElementException.class,
+                () -> performDeposit.execute(account, transaction));
+
+        // then
+        Assertions.assertEquals("Saldo bancario é invalido.", result.getMessage());
+    }
+
+
+    @Test
+    @DisplayName("Deposito deve falhar, quando o valor de transação for nulo.")
+    void performDeposit_ShouldFail_When_TheTransactionValueIsNull() {
+
+        //Given
+        Account account = new Account();
+        account.setTransactions(new ArrayList<Transaction>());
+        account.setBalance(new Cash(20));
+
+        Transaction transaction = new Transaction(
+               null,
+                TransactionType.DEPOSITO,
+                "externo",
+                account.getAccountNumber().toString()
+        );
+        transaction.setDate(Instant.now());
+
+        // when
+        NullElementException result = Assertions.assertThrows(NullElementException.class,
+                () -> performDeposit.execute(account, transaction));
+
+        // then
+        Assertions.assertEquals("Valor de deposito é invalido.", result.getMessage());
+
+    }
+
+
+
+    @Test
+    @DisplayName("Deposito deve falhar, quando o valor do valor de transação for nulo.")
+    void performDeposit_ShouldFail_When_TheValueOfTransactionValueIsNull() {
+
+        //Given
+        Account account = new Account();
+        account.setTransactions(new ArrayList<Transaction>());
+        account.setBalance(new Cash(20));
+
+        Transaction transaction = new Transaction(
+                new Cash(),
+                TransactionType.DEPOSITO,
+                "externo",
+                account.getAccountNumber().toString()
+        );
+        transaction.setValue(null);
+        transaction.setDate(Instant.now());
+
+        // when
+        NullElementException result = Assertions.assertThrows(NullElementException.class,
+                () -> performDeposit.execute(account, transaction));
+
+        // then
+        Assertions.assertEquals("Valor de deposito é invalido.", result.getMessage());
+
+    }
+
 }

@@ -34,7 +34,7 @@ public class PerformDeposit {
      * @param account Conta bancaria relacionada.
      * @param transaction Transcação que deve ser realizada.
      */
-    protected TransactionResponse execute(Account account, @NonNull Transaction transaction) {
+    protected TransactionResponse execute(@NonNull Account account, @NonNull Transaction transaction) {
 
         // valida os dados passados
         validate(account, transaction.getValue());
