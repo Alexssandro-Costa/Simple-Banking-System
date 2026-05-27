@@ -4,12 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import java.io.PrintStream;
+
 @SpringBootApplication
 @EnableJpaAuditing
 public class SimpleBankingSystemApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SimpleBankingSystemApplication.class, args);
+			SpringApplication.run(SimpleBankingSystemApplication.class, args);
 
 	}
 

@@ -51,7 +51,7 @@ public class GetEntityFromRepository {
 
         try {
             if(!accountNumber.isStandardized())
-                throw new InvalidFormatException("Numero de conta passado não está no formato padrão.");
+                throw new InvalidFormatException("Numero de conta passado não está em um formato aceito.");
             return repository.findByAccountNumber(accountNumber).orElseThrow();
         } catch (NoSuchElementException e) {
             throw new AccountNotFoundException("Não foi possível encontrar a conta de número " + accountNumber.getValue());
@@ -67,6 +67,8 @@ public class GetEntityFromRepository {
      * @exception ClientNotFoundException Lançada quando não é possível encontrar um cliente com Id correspondente.
      */
     public Client getClientById(@NonNull UUID id, @NonNull ClientRepository repository) {
+
+
         try {
             return repository.findById(id).orElseThrow();
         } catch (NoSuchElementException e) {

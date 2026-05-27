@@ -112,7 +112,6 @@ class PerformDepositTest {
 
         // then
         Assertions.assertEquals("ERRO! Conta bancaria é invalida.",result.getMessage());
-        System.out.println(result.getMessage());
 
     }
 

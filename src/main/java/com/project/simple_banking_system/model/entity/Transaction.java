@@ -37,6 +37,7 @@ import jakarta.persistence.Table;
 public class Transaction {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
@@ -53,12 +54,10 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
-    @AttributeOverride(name = "value", column = @Column(name = "destinatario", nullable = true))
-    @Embedded
+    @Column(name = "destinatario", nullable = true)
     private String receiver;
 
-    @AttributeOverride(name = "value", column = @Column(name = "remetente", nullable = true))
-    @Embedded
+    @Column(name = "remetente", nullable = true)
     private String sender;
 
     /// DEFINE A CHAVE ESTRANGEIRA DE UMA TRANSAÇÃO

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,6 +40,7 @@ import jakarta.persistence.Table;
 public class Client extends Person implements UserDetails{
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
@@ -73,7 +75,7 @@ public class Client extends Person implements UserDetails{
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(@NonNull Account account) {
         this.account = account;
         account.setClient(this);
     }
@@ -98,7 +100,7 @@ public class Client extends Person implements UserDetails{
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return null;
     }
 
 
