@@ -71,7 +71,7 @@ public class PerformWithdraw {
 
         // conta bancaria é nula
         if(account == null)
-            throw new NullElementException("ERRO! Conta bancaria é invalida.");
+            throw new NullElementException("Conta bancaria é invalida.");
 
         // saldo é nulo
         if(account.getBalance() == null || account.getBalance().getValue() == null)

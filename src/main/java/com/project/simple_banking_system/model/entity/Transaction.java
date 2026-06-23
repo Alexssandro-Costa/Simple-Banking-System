@@ -32,7 +32,6 @@ import jakarta.persistence.Table;
  * @version 1
  */
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "transacao")
 public class Transaction {
 

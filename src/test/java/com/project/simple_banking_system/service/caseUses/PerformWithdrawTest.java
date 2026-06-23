@@ -1,16 +1,14 @@
 package com.project.simple_banking_system.service.caseUses;
 
 import com.project.simple_banking_system.exceptions.InvalidTransactionException;
+import com.project.simple_banking_system.exceptions.NullElementException;
 import com.project.simple_banking_system.model.DTOs.Response.TransactionResponse;
 import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.entity.Transaction;
 import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.model.valueObjects.TransactionType;
 import com.project.simple_banking_system.repository.AccountRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class PerformWithdrawTest {
 
+    private Account account;
+    private Transaction transaction;
 
     @Mock
     private AccountRepository accountRepository;
@@ -39,20 +39,75 @@ class PerformWithdrawTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @BeforeEach
+    void initTestingVariables() {
+
+        account = new Account();
+        transaction = new Transaction(
+                new Cash(0),
+                TransactionType.SAQUE,
+                null,
+                null
+        );
+    }
+
+
+
+    @Test
+    @DisplayName("Saque deve falhar quando a conta for nula")
+    void PerformWithdraw_ShouldFail_When_AccountIsNull() {
+
+        // given
+        account = null;
+
+        // when
+        NullElementException exception = assertThrows(NullElementException.class,
+                () -> performWithdraw.execute(account, transaction)
+        );
+
+        // then
+        assertEquals("Conta bancaria é invalida.", exception.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("saque deve falhar quando o saldo da conta for nulo.")
+    void performWithdraw_ShouldFail_when_AccountBalanceIsNull() {
+
+        // given
+        account.setBalance(null);
+
+        // when
+        NullElementException exception = assertThrows(NullElementException.class,
+                () -> performWithdraw.execute(account, transaction));
+
+        assertEquals("Saldo bancario é invalido.", exception.getMessage());
+    }
+
+
+    @Test
+    @DisplayName("Saque deve falhar quando o valor de saque for nulo")
+    void performWithdraw_ShouldFail_When_WithdrawValueIsNull() {
+
+        // given
+        account.setBalance(new Cash(100));
+        transaction.setValue(null);
+
+        // when
+        NullElementException exception = assertThrows(NullElementException.class,
+                () -> performWithdraw.execute(account, transaction));
+
+        //then
+        assertEquals("Valor de saque é invalido.", exception.getMessage());
+    }
 
     @Test
     @DisplayName("Saque deve falhar quando o valor passado for negativo")
     void performWithdraw_ShouldFail_When_ValueIsNegative() {
 
         //Given
-        Account account = new Account();
-        account.setBalance(new Cash(100));
-        Transaction transaction = new Transaction (
-                new Cash(BigDecimal.valueOf(-10)),
-                TransactionType.SAQUE,
-                account.getAccountNumber().toString(),
-                "externo"
-        );
+        account.setBalance(new Cash(0));
+        transaction.setValue(new Cash(-10));
 
         // When
         InvalidTransactionException exception = Assertions.assertThrows(InvalidTransactionException.class,
@@ -69,14 +124,8 @@ class PerformWithdrawTest {
     void performWithdraw_ShouldFail_When_WithdrawAmmountIsGreaterThanTheBalance() {
 
         //Given
-        Account account = new Account();
         account.setBalance(new Cash(10));
-        Transaction transaction = new Transaction (
-                new Cash(BigDecimal.valueOf(20)),
-                TransactionType.SAQUE,
-                account.getAccountNumber().toString(),
-                "externo"
-        );
+        transaction.setValue(new Cash(20));
 
         // When
         InvalidTransactionException exception = Assertions.assertThrows(InvalidTransactionException.class,
@@ -93,16 +142,12 @@ class PerformWithdrawTest {
     void performWithdraw_When_EightyIsWithdrawnFromTheBalance_ItShouldReturn_AStatementWithTheNewBalanceBeingTwenty() {
 
         //Given
-        Account account = new Account();
         account.setBalance(new Cash(100));
         account.setTransactions(new ArrayList<Transaction>());
 
-        Transaction transaction = new Transaction (
-                new Cash(BigDecimal.valueOf(80)),
-                TransactionType.SAQUE,
-                account.getAccountNumber().toString(),
-                "externo"
-        );
+        transaction.setValue(new Cash(80));
+        transaction.setSender(account.getAccountNumber().toString());
+        transaction.setReceiver("externo");
         transaction.setDate(Instant.now());
 
         //When
