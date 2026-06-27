@@ -1,0 +1,177 @@
+<html>
+<head>
+<title>ValidateData.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #67a37c; font-style: italic;}
+.s5 { color: #7a7e85;}
+.s6 { color: #6aab73;}
+.s7 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ValidateData.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">utility</span><span class="s2">;</span>
+
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalDate</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">Period</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">InvalidDateException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">InvalidEnumValueException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">InvalidFormatException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">NullElementException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">DTOs</span><span class="s2">.</span><span class="s1">Request</span><span class="s2">.</span><span class="s1">RegisterRequest</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Cpf</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">DateBirth</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Gender</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Name</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Password</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Phone</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Component</span><span class="s2">;</span>
+
+
+<span class="s3">/**</span>
+ <span class="s3">* Verifica a formatação e a validade dos dados inseridos.</span>
+ <span class="s3">* </span><span class="s4">@author </span><span class="s3">Alexssandro.</span>
+ <span class="s3">* </span><span class="s4">@since </span><span class="s3">release 3</span>
+ <span class="s3">* </span><span class="s4">@version </span><span class="s3">1</span>
+ <span class="s3">*/</span>
+<span class="s1">@Component</span>
+<span class="s0">public class </span><span class="s1">ValidateData </span><span class="s2">{</span>
+
+    <span class="s3">/**</span>
+     <span class="s3">* Executa a operação de validação.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">registerRequestDTO Requisição de registro.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public static void </span><span class="s1">execute</span><span class="s2">(</span><span class="s1">RegisterRequest registerRequestDTO</span><span class="s2">) {</span>
+
+        <span class="s1">validateName</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Name</span><span class="s2">(</span><span class="s1">registerRequestDTO</span><span class="s2">.</span><span class="s1">name</span><span class="s2">()));</span>
+        <span class="s1">validateCpf</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Cpf</span><span class="s2">(</span><span class="s1">registerRequestDTO</span><span class="s2">.</span><span class="s1">cpf</span><span class="s2">()));</span>
+        <span class="s1">validateDateBirth</span><span class="s2">(</span><span class="s0">new </span><span class="s1">DateBirth</span><span class="s2">( </span><span class="s1">LocalDate</span><span class="s2">.</span><span class="s1">parse</span><span class="s2">(</span><span class="s1">registerRequestDTO</span><span class="s2">.</span><span class="s1">dateBirth</span><span class="s2">())));</span>
+        <span class="s1">validateGender</span><span class="s2">(</span><span class="s1">registerRequestDTO</span><span class="s2">.</span><span class="s1">gender</span><span class="s2">());</span>
+        <span class="s1">validatePhone</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Phone</span><span class="s2">(</span><span class="s1">registerRequestDTO</span><span class="s2">.</span><span class="s1">phone</span><span class="s2">()));</span>
+        <span class="s1">validatePassword</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Password</span><span class="s2">(</span><span class="s1">registerRequestDTO</span><span class="s2">.</span><span class="s1">password</span><span class="s2">()));</span>
+    <span class="s2">}</span>
+
+
+    <span class="s3">/**</span>
+     <span class="s3">* Verifica se o nome passado é valido.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">name nome</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">NullElementException Lançada se o elemento for nulo.</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">InvalidFormatException Lançada se o elemento não estiver no formato padrão.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public static void </span><span class="s1">validateName</span><span class="s2">(</span><span class="s1">Name name</span><span class="s2">) {</span>
+
+        <span class="s5">// elementos são nulos</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">name </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">name</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">() == </span><span class="s0">null</span><span class="s2">)</span>
+            <span class="s0">throw new </span><span class="s1">NullElementException</span><span class="s2">(</span><span class="s6">&quot;O Nome passado é invalido.&quot;</span><span class="s2">);</span>
+
+        <span class="s5">// elemento não está em um formato aceito</span>
+        <span class="s0">if</span><span class="s2">(!</span><span class="s1">name</span><span class="s2">.</span><span class="s1">isStandardized</span><span class="s2">())</span>
+            <span class="s0">throw new </span><span class="s1">InvalidFormatException</span><span class="s2">(</span><span class="s6">&quot;O nome não está em um formato valido.&quot;</span><span class="s2">);</span>
+            
+    <span class="s2">}</span>
+
+    
+    <span class="s3">/**</span>
+     <span class="s3">* Verifica se o CPF passado é valido.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">cpf cpf</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">NullElementException Lançada se o elemento for nulo.</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">InvalidFormatException Lançada se o elemento não estiver no formato padrão.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public static void </span><span class="s1">validateCpf</span><span class="s2">(</span><span class="s1">Cpf cpf</span><span class="s2">) {</span>
+
+        <span class="s5">// elementos são nulos</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">cpf </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">cpf</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">() == </span><span class="s0">null</span><span class="s2">)</span>
+            <span class="s0">throw new </span><span class="s1">NullElementException</span><span class="s2">(</span><span class="s6">&quot;O CPF passado é invalido.&quot;</span><span class="s2">);</span>
+
+        <span class="s5">// elemento não está em um formato aceito</span>
+        <span class="s0">if</span><span class="s2">(!</span><span class="s1">cpf</span><span class="s2">.</span><span class="s1">isStandardized</span><span class="s2">())</span>
+            <span class="s0">throw new </span><span class="s1">InvalidFormatException</span><span class="s2">(</span><span class="s6">&quot;O CPF não está em um formato valido.&quot;</span><span class="s2">);</span>
+
+    <span class="s2">} </span>
+
+    <span class="s3">/**</span>
+     <span class="s3">* Verifica se a data de nascimento inserida é valida.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">dateBirth data de nascimento</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">NullElementException Lançada se o elemento for nulo.</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">InvalidDateException Lançada se o data for invalida.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public static void </span><span class="s1">validateDateBirth</span><span class="s2">(</span><span class="s1">DateBirth dateBirth</span><span class="s2">) {</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">dateBirth </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">dateBirth</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">() == </span><span class="s0">null</span><span class="s2">) </span>
+            <span class="s0">throw new </span><span class="s1">NullElementException</span><span class="s2">(</span><span class="s6">&quot;A data de nascimento passada é invalida.&quot;</span><span class="s2">);</span>
+        
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">dateBirth</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">().</span><span class="s1">isAfter</span><span class="s2">(</span><span class="s1">LocalDate</span><span class="s2">.</span><span class="s1">now</span><span class="s2">()))</span>
+            <span class="s0">throw new </span><span class="s1">InvalidDateException</span><span class="s2">(</span><span class="s6">&quot;Data de nascimento não pode estar no futuro.&quot;</span><span class="s2">);</span>
+
+        <span class="s0">int </span><span class="s1">years </span><span class="s2">= </span><span class="s1">Period</span><span class="s2">.</span><span class="s1">between</span><span class="s2">(</span><span class="s1">dateBirth</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">(), </span><span class="s1">LocalDate</span><span class="s2">.</span><span class="s1">now</span><span class="s2">()).</span><span class="s1">getYears</span><span class="s2">();</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">years </span><span class="s2">&lt; </span><span class="s7">18</span><span class="s2">)</span>
+            <span class="s0">throw new </span><span class="s1">InvalidDateException</span><span class="s2">(</span><span class="s6">&quot;Usuario deve ter mais que 18 anos.&quot;</span><span class="s2">);</span>
+
+    <span class="s2">}</span>
+
+    <span class="s3">/**</span>
+     <span class="s3">* Verifica se o Genêro passado é valido.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">gender Genêro</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">NullElementException Lançada se o elemento for nulo.</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">InvalidEnumValueException Lançada quando um valor não está presente no enum testado.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public static void </span><span class="s1">validateGender</span><span class="s2">(</span><span class="s1">String gender</span><span class="s2">) {</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">gender </span><span class="s2">== </span><span class="s0">null</span><span class="s2">)</span>
+            <span class="s0">throw new </span><span class="s1">NullElementException</span><span class="s2">(</span><span class="s6">&quot;Genêro passado não é valido.&quot;</span><span class="s2">);</span>
+
+        <span class="s5">// verifica se o valor passado é um genero existente.</span>
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s5">// tenta converter a string para um enum</span>
+            <span class="s1">Gender</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">gender</span><span class="s2">.</span><span class="s1">toUpperCase</span><span class="s2">());</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">IllegalArgumentException e</span><span class="s2">) {</span>
+            <span class="s0">throw new </span><span class="s1">InvalidEnumValueException</span><span class="s2">(</span><span class="s6">&quot;Genêro não é uma opção valida.&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+    <span class="s2">}    </span>
+    
+    <span class="s3">/**</span>
+     <span class="s3">* Verifica se o numero de telefone passado é valido.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">phone Numero de telefone.</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">NullElementException Lançada se o elemento for nulo.</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">InvalidFormatException Lançada se o elemento não estiver no formato padrão.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public static void </span><span class="s1">validatePhone</span><span class="s2">(</span><span class="s1">Phone phone</span><span class="s2">) {</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">phone </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">phone</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">() == </span><span class="s0">null</span><span class="s2">)</span>
+            <span class="s0">throw new </span><span class="s1">NullElementException</span><span class="s2">(</span><span class="s6">&quot;O numero de telefone passado é invalido.&quot;</span><span class="s2">);</span>
+        <span class="s0">if</span><span class="s2">(!</span><span class="s1">phone</span><span class="s2">.</span><span class="s1">isStandardized</span><span class="s2">())</span>
+            <span class="s0">throw new </span><span class="s1">InvalidFormatException</span><span class="s2">(</span><span class="s6">&quot;Numero de telefone passado está em um formato não valido.&quot;</span><span class="s2">);</span>
+
+    <span class="s2">}</span>
+    
+    <span class="s3">/**</span>
+     <span class="s3">* Verifica se a senha passada é Valida.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">password Senha.</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">NullElementException Lançada se o elemento for nulo.</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">InvalidFormatException Lançada se o elemento não estiver no formato padrão.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public static void </span><span class="s1">validatePassword</span><span class="s2">(</span><span class="s1">Password password</span><span class="s2">) {</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">password </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">password</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">() == </span><span class="s0">null</span><span class="s2">) </span>
+            <span class="s0">throw new </span><span class="s1">NullElementException</span><span class="s2">(</span><span class="s6">&quot;O a senha passada é invalida&quot;</span><span class="s2">);</span>
+        <span class="s0">if</span><span class="s2">(!</span><span class="s1">password</span><span class="s2">.</span><span class="s1">isStandardized</span><span class="s2">())</span>
+            <span class="s0">throw new </span><span class="s1">InvalidFormatException</span><span class="s2">(</span><span class="s6">&quot;A senha passado está em um formato não valido&quot;</span><span class="s2">);</span>
+
+    <span class="s2">}</span>
+    
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

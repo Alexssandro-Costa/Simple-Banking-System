@@ -1,0 +1,50 @@
+<html>
+<head>
+<title>recordToolUse.sh</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bcbec4; font-weight: bold;}
+.s1 { color: #bcbec4;}
+.s2 { color: #7a7e85;}
+.s3 { color: #cf8e6d;}
+.s4 { color: #bcbec4;}
+.s5 { color: #6aab73;}
+.s6 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+recordToolUse.sh</font>
+</center></td></tr></table>
+<pre><span class="s0">#!/usr/bin/env bash</span>
+<span class="s2"># Records run_in_terminal and appmod-* tool calls as JSONL for the extension to process.</span>
+
+<span class="s1">INPUT=</span><span class="s3">$</span><span class="s4">(</span><span class="s1">cat</span><span class="s4">)</span>
+
+<span class="s1">TOOL_NAME=</span><span class="s5">&quot;</span><span class="s3">$</span><span class="s4">{</span><span class="s1">INPUT#*\&quot;tool_name\&quot;:\&quot;</span><span class="s4">}</span><span class="s5">&quot;</span>
+<span class="s1">TOOL_NAME=</span><span class="s5">&quot;</span><span class="s3">$</span><span class="s4">{</span><span class="s1">TOOL_NAME%%\&quot;*</span><span class="s4">}</span><span class="s5">&quot;</span>
+
+<span class="s3">case </span><span class="s5">&quot;</span><span class="s4">$TOOL_NAME</span><span class="s5">&quot; </span><span class="s3">in</span>
+  <span class="s1">run_in_terminal|appmod-*</span><span class="s4">) </span><span class="s3">;;</span>
+  <span class="s1">*</span><span class="s4">) </span><span class="s1">exit </span><span class="s6">0 </span><span class="s3">;;</span>
+<span class="s3">esac</span>
+
+<span class="s3">case </span><span class="s5">&quot;</span><span class="s4">$INPUT</span><span class="s5">&quot; </span><span class="s3">in</span>
+  <span class="s1">*</span><span class="s5">'&quot;session_id&quot;:&quot;'</span><span class="s1">*</span><span class="s4">) </span><span class="s3">;;</span>
+  <span class="s1">*</span><span class="s4">) </span><span class="s1">exit </span><span class="s6">0 </span><span class="s3">;;</span>
+<span class="s3">esac</span>
+
+<span class="s1">SESSION_ID=</span><span class="s5">&quot;</span><span class="s3">$</span><span class="s4">{</span><span class="s1">INPUT#*\&quot;session_id\&quot;:\&quot;</span><span class="s4">}</span><span class="s5">&quot;</span>
+<span class="s1">SESSION_ID=</span><span class="s5">&quot;</span><span class="s3">$</span><span class="s4">{</span><span class="s1">SESSION_ID%%\&quot;*</span><span class="s4">}</span><span class="s5">&quot;</span>
+<span class="s4">[ </span><span class="s1">-z </span><span class="s5">&quot;</span><span class="s4">$SESSION_ID</span><span class="s5">&quot; </span><span class="s4">] </span><span class="s3">&amp;&amp; </span><span class="s1">exit </span><span class="s6">0</span>
+
+<span class="s1">HOOKS_DIR=</span><span class="s5">&quot;.github/java-upgrade/hooks&quot;</span>
+<span class="s1">mkdir -p </span><span class="s5">&quot;</span><span class="s4">$HOOKS_DIR</span><span class="s5">&quot;</span>
+
+<span class="s1">LINE=</span><span class="s3">$</span><span class="s4">(</span><span class="s1">printf </span><span class="s5">'%s' &quot;</span><span class="s4">$INPUT</span><span class="s5">&quot; </span><span class="s1">| tr -d </span><span class="s5">'\r\n'</span><span class="s4">)</span>
+<span class="s1">printf </span><span class="s5">'%s\n' &quot;</span><span class="s4">$LINE</span><span class="s5">&quot; </span><span class="s4">&gt;&gt; </span><span class="s5">&quot;</span><span class="s4">$HOOKS_DIR</span><span class="s5">/</span><span class="s3">$</span><span class="s4">{</span><span class="s1">SESSION_ID</span><span class="s4">}</span><span class="s5">.json&quot;</span>
+</pre>
+</body>
+</html>

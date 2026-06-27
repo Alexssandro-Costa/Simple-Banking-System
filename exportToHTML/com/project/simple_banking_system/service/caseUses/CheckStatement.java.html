@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>CheckStatement.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #67a37c; font-style: italic;}
+.s5 { color: #7a7e85;}
+.s6 { color: #2aacb8;}
+.s7 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CheckStatement.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">caseUses</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">NoSuchElementException</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Service</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">AccountNotFoundException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">NullElementException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">DTOs</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">CheckStatementResponse</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">Client</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">Transaction</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">ClientRepository</span><span class="s2">;</span>
+
+<span class="s3">/**</span>
+ <span class="s3">* Classe de serviço que busca todo o extrato de uma conta bancaria.</span>
+ <span class="s3">* </span><span class="s4">@author </span><span class="s3">Alexssandro</span>
+ <span class="s3">* </span><span class="s4">@since </span><span class="s3">release 3</span>
+ <span class="s3">* </span><span class="s4">@version </span><span class="s3">2.0</span>
+ <span class="s3">*/</span>
+<span class="s1">@Service</span>
+<span class="s0">public class </span><span class="s1">CheckStatement </span><span class="s2">{</span>
+
+    <span class="s5">// inicializa automaticamente</span>
+    <span class="s1">@Autowired</span>
+    <span class="s1">ClientRepository clientRepository</span><span class="s2">;</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s1">DecodeToken decodeToken</span><span class="s2">;</span>
+  
+    <span class="s3">/**</span>
+    <span class="s3">* Executa a busca do extratos bancario de uma conta.</span>
+    <span class="s3">* </span><span class="s4">@return </span><span class="s3">TransactionsDTO - Uma lista das transações realizadas pela conta.</span>
+    <span class="s3">* </span><span class="s4">@exception </span><span class="s3">AccountNotFoundException Lançada quando uma conta não pode ser encontrada.</span>
+    <span class="s3">* </span><span class="s4">@exception </span><span class="s3">NullElementException Lançada quando um elemento é nulo.</span>
+    <span class="s3">*/</span>
+  <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CheckStatementResponse</span><span class="s2">&gt; </span><span class="s1">execute</span><span class="s2">() {</span>
+
+    <span class="s0">try </span><span class="s2">{</span>
+
+      <span class="s5">// autentica e recupera o cliente </span>
+      <span class="s1">Client client </span><span class="s2">= </span><span class="s1">clientRepository</span><span class="s2">.</span><span class="s1">findById</span><span class="s2">(</span><span class="s1">decodeToken</span><span class="s2">.</span><span class="s1">execute</span><span class="s2">()).</span><span class="s1">orElseThrow</span><span class="s2">();</span>
+
+      <span class="s5">// recupera todas as transações realizadas pela conta</span>
+      <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Transaction</span><span class="s2">&gt; </span><span class="s1">transactions </span><span class="s2">= </span><span class="s1">client</span><span class="s2">.</span><span class="s1">getAccount</span><span class="s2">().</span><span class="s1">getTransactions</span><span class="s2">();</span>
+      <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CheckStatementResponse</span><span class="s2">&gt; </span><span class="s1">checkStatementResponseList </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">CheckStatementResponse</span><span class="s2">&gt;();</span>
+
+
+      <span class="s5">// transforma as transações em DTOs</span>
+      <span class="s0">for</span><span class="s2">(</span><span class="s0">int </span><span class="s1">index </span><span class="s2">= </span><span class="s6">0</span><span class="s2">; </span><span class="s1">index </span><span class="s2">&lt; </span><span class="s1">transactions</span><span class="s2">.</span><span class="s1">size</span><span class="s2">(); </span><span class="s1">index </span><span class="s2">++) {</span>
+
+        <span class="s1">checkStatementResponseList</span><span class="s2">.</span><span class="s1">add</span><span class="s2">( </span><span class="s0">new </span><span class="s1">CheckStatementResponse</span><span class="s2">(</span>
+          <span class="s1">transactions</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">index</span><span class="s2">).</span><span class="s1">getId</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">(), </span>
+          <span class="s1">transactions</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">index</span><span class="s2">).</span><span class="s1">getTransactionType</span><span class="s2">().</span><span class="s1">name</span><span class="s2">(),</span>
+          <span class="s1">transactions</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">index</span><span class="s2">).</span><span class="s1">getValue</span><span class="s2">().</span><span class="s1">getValue</span><span class="s2">().</span><span class="s1">toEngineeringString</span><span class="s2">(),</span>
+          <span class="s1">String</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">transactions</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">index</span><span class="s2">).</span><span class="s1">getReceiver</span><span class="s2">()),</span>
+          <span class="s1">transactions</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">index</span><span class="s2">).</span><span class="s1">getDate</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">()</span>
+        <span class="s2">));</span>
+      <span class="s2">}</span>
+
+
+      <span class="s0">return </span><span class="s1">checkStatementResponseList</span><span class="s2">;</span>
+        
+      <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">NoSuchElementException e</span><span class="s2">) {</span>
+        <span class="s0">throw new </span><span class="s1">AccountNotFoundException</span><span class="s2">(</span><span class="s7">&quot;Não foi possivel encontrar a conta associada&quot;</span><span class="s2">);</span>
+      <span class="s2">}</span>
+
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>TokenConfig.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+TokenConfig.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">springSecurity</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">Instant</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Optional</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">UUID</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Component</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">auth0</span><span class="s2">.</span><span class="s1">jwt</span><span class="s2">.</span><span class="s1">JWT</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">auth0</span><span class="s2">.</span><span class="s1">jwt</span><span class="s2">.</span><span class="s1">algorithms</span><span class="s2">.</span><span class="s1">Algorithm</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">auth0</span><span class="s2">.</span><span class="s1">jwt</span><span class="s2">.</span><span class="s1">interfaces</span><span class="s2">.</span><span class="s1">DecodedJWT</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">AuthenticationFailedException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">Client</span><span class="s2">;</span>
+
+
+<span class="s1">@Component</span>
+<span class="s0">public class </span><span class="s1">TokenConfig </span><span class="s2">{</span>
+    
+    <span class="s0">private </span><span class="s1">String secret </span><span class="s2">= </span><span class="s3">&quot;secret&quot;</span><span class="s2">;</span>
+
+    <span class="s0">public </span><span class="s1">String generateToken</span><span class="s2">(</span><span class="s1">Client client</span><span class="s2">) {</span>
+
+        <span class="s1">Algorithm algorithm </span><span class="s2">= </span><span class="s1">Algorithm</span><span class="s2">.</span><span class="s1">HMAC256</span><span class="s2">(</span><span class="s1">secret</span><span class="s2">);</span>
+
+
+        <span class="s0">return </span><span class="s1">JWT</span><span class="s2">.</span><span class="s1">create</span><span class="s2">()</span>
+            <span class="s2">.</span><span class="s1">withClaim</span><span class="s2">(</span><span class="s3">&quot;cliente-id&quot;</span><span class="s2">, </span><span class="s1">client</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">())</span>
+            <span class="s2">.</span><span class="s1">withSubject</span><span class="s2">(</span><span class="s1">client</span><span class="s2">.</span><span class="s1">getUsername</span><span class="s2">())</span>
+            <span class="s2">.</span><span class="s1">withExpiresAt</span><span class="s2">(</span><span class="s1">Instant</span><span class="s2">.</span><span class="s1">now</span><span class="s2">().</span><span class="s1">plusSeconds</span><span class="s2">(</span><span class="s4">86400</span><span class="s2">))</span>
+            <span class="s2">.</span><span class="s1">withIssuedAt</span><span class="s2">(</span><span class="s1">Instant</span><span class="s2">.</span><span class="s1">now</span><span class="s2">())</span>
+            <span class="s2">.</span><span class="s1">sign</span><span class="s2">(</span><span class="s1">algorithm</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">Optional</span><span class="s2">&lt;</span><span class="s1">JWTUserData</span><span class="s2">&gt; </span><span class="s1">validateToken</span><span class="s2">(</span><span class="s1">String token</span><span class="s2">) {</span>
+
+
+        <span class="s0">try </span><span class="s2">{</span>
+
+            <span class="s1">Algorithm algorithm </span><span class="s2">= </span><span class="s1">Algorithm</span><span class="s2">.</span><span class="s1">HMAC256</span><span class="s2">(</span><span class="s1">secret</span><span class="s2">);</span>
+
+            <span class="s1">DecodedJWT decode </span><span class="s2">= </span><span class="s1">JWT</span><span class="s2">.</span><span class="s1">require</span><span class="s2">(</span><span class="s1">algorithm</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">build</span><span class="s2">().</span><span class="s1">verify</span><span class="s2">(</span><span class="s1">token</span><span class="s2">);</span>
+
+            <span class="s0">return </span><span class="s1">Optional</span><span class="s2">.</span><span class="s1">of</span><span class="s2">(</span><span class="s0">new </span><span class="s1">JWTUserData</span><span class="s2">(</span><span class="s1">decode</span><span class="s2">.</span><span class="s1">getClaim</span><span class="s2">(</span><span class="s3">&quot;cliente-id&quot;</span><span class="s2">).</span><span class="s1">asString</span><span class="s2">(), </span><span class="s1">decode</span><span class="s2">.</span><span class="s1">getSubject</span><span class="s2">()));</span>
+
+        <span class="s2">}</span><span class="s0">catch</span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s0">return </span><span class="s1">Optional</span><span class="s2">.</span><span class="s1">empty</span><span class="s2">();</span>
+        <span class="s2">}</span>
+    
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

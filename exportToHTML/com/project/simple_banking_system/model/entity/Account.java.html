@@ -1,0 +1,146 @@
+<html>
+<head>
+<title>Account.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #67a37c; font-style: italic;}
+.s5 { color: #6aab73;}
+.s6 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Account.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Collection</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">UUID</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">jspecify</span><span class="s2">.</span><span class="s1">annotations</span><span class="s2">.</span><span class="s1">Nullable</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">GrantedAuthority</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">userdetails</span><span class="s2">.</span><span class="s1">UserDetails</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">AccountNumber</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Cash</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Password</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Status</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">AttributeOverride</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">Column</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">Embedded</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">Entity</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">EnumType</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">Enumerated</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">GeneratedValue</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">GenerationType</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">Id</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">JoinColumn</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">OneToMany</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">OneToOne</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">Table</span><span class="s2">;</span>
+
+
+<span class="s3">/**</span>
+ <span class="s3">* Entidade que armazena as informações de uma conta bancaria.</span>
+ <span class="s3">* </span><span class="s4">@author </span><span class="s3">Alexssandro</span>
+ <span class="s3">* </span><span class="s4">@since </span><span class="s3">release 1</span>
+ <span class="s3">* </span><span class="s4">@version </span><span class="s3">3</span>
+ <span class="s3">*/</span>
+<span class="s1">@Entity</span>
+<span class="s1">@Table</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;conta&quot;</span><span class="s2">)</span>
+<span class="s0">public class </span><span class="s1">Account</span><span class="s2">{</span>
+
+    <span class="s1">@Id</span>
+    <span class="s1">@Column</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;id&quot;</span><span class="s2">)</span>
+    <span class="s1">@GeneratedValue</span><span class="s2">(</span><span class="s1">strategy </span><span class="s2">= </span><span class="s1">GenerationType</span><span class="s2">.</span><span class="s1">AUTO</span><span class="s2">)</span>
+    <span class="s0">private </span><span class="s1">UUID id</span><span class="s2">;</span>
+
+
+    <span class="s1">@AttributeOverride</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;value&quot;</span><span class="s2">, </span><span class="s1">column </span><span class="s2">= </span><span class="s1">@Column</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;numero-conta&quot;</span><span class="s2">, </span><span class="s1">nullable </span><span class="s2">= </span><span class="s0">false</span><span class="s2">, </span><span class="s1">unique</span><span class="s2">=</span><span class="s0">true</span><span class="s2">))</span>
+    <span class="s1">@Embedded</span>
+    <span class="s0">private </span><span class="s1">AccountNumber accountNumber</span><span class="s2">;</span>
+
+    <span class="s1">@AttributeOverride</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;value&quot;</span><span class="s2">, </span><span class="s1">column </span><span class="s2">= </span><span class="s1">@Column</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;balanco&quot;</span><span class="s2">, </span><span class="s1">nullable </span><span class="s2">= </span><span class="s0">false</span><span class="s2">))</span>
+    <span class="s1">@Embedded</span>
+    <span class="s0">private </span><span class="s1">Cash balance</span><span class="s2">;</span>
+
+
+    <span class="s1">@Column</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;status&quot;</span><span class="s2">, </span><span class="s1">nullable </span><span class="s2">= </span><span class="s0">false</span><span class="s2">)</span>
+    <span class="s1">@Enumerated</span><span class="s2">(</span><span class="s1">EnumType</span><span class="s2">.</span><span class="s1">STRING</span><span class="s2">)</span>
+    <span class="s0">private </span><span class="s1">Status status</span><span class="s2">;</span>
+
+    <span class="s6">// designa a relação de chave estrangeira com cliente</span>
+    <span class="s1">@OneToOne</span>
+    <span class="s1">@JoinColumn</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;cliente-id&quot;</span><span class="s2">)</span>
+    <span class="s0">private </span><span class="s1">Client client</span><span class="s2">;</span>
+
+    <span class="s6">// designa a relação com transactions</span>
+    <span class="s1">@OneToMany</span><span class="s2">(</span><span class="s1">mappedBy </span><span class="s2">= </span><span class="s5">&quot;account&quot;</span><span class="s2">)</span>
+    <span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Transaction</span><span class="s2">&gt; </span><span class="s1">transactions</span><span class="s2">;</span>
+
+
+    <span class="s0">public </span><span class="s1">Account</span><span class="s2">() {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">accountNumber </span><span class="s2">= </span><span class="s0">new </span><span class="s1">AccountNumber</span><span class="s2">();</span>
+        <span class="s1">balance </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Cash</span><span class="s2">();</span>
+        <span class="s1">status </span><span class="s2">= </span><span class="s1">Status</span><span class="s2">.</span><span class="s1">HABILITADA</span><span class="s2">;</span>
+
+    <span class="s2">}</span>
+
+
+    <span class="s0">public </span><span class="s1">UUID getId</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">id</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setId</span><span class="s2">(</span><span class="s1">UUID id</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">id </span><span class="s2">= </span><span class="s1">id</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">AccountNumber getAccountNumber</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">accountNumber</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">Cash getBalance</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">balance</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setBalance</span><span class="s2">(</span><span class="s1">Cash balance</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">balance </span><span class="s2">= </span><span class="s1">balance</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">public </span><span class="s1">Status getStatus</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">status</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setStatus</span><span class="s2">(</span><span class="s1">Status status</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">status </span><span class="s2">= </span><span class="s1">status</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">Client getClient</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">client</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setClient</span><span class="s2">(</span><span class="s1">Client client</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">client </span><span class="s2">= </span><span class="s1">client</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Transaction</span><span class="s2">&gt; </span><span class="s1">getTransactions</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">transactions</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">setTransactions</span><span class="s2">(</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Transaction</span><span class="s2">&gt; </span><span class="s1">transactions</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">transactions </span><span class="s2">= </span><span class="s1">transactions</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

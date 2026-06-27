@@ -1,0 +1,178 @@
+<html>
+<head>
+<title>GlobalExceptionHandler.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #67a37c; font-style: italic;}
+.s5 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+GlobalExceptionHandler.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpStatus</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpStatusCode</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">ResponseEntity</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">ExceptionHandler</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">RestControllerAdvice</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">DTOs</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">ErrorMessageDTO</span><span class="s2">;</span>
+
+<span class="s1">@RestControllerAdvice</span>
+<span class="s0">public class </span><span class="s1">GlobalExceptionHandler </span><span class="s2">{</span>
+
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando uma conta não pode ser encontrada no banco de dados.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">AccountNotFoundException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleAccountNotFoundError</span><span class="s2">(</span><span class="s1">AccountNotFoundException e </span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">NOT_FOUND</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">()));</span>
+
+    <span class="s2">}</span>
+
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando um cliente não podê ser encontrado no banco de dados.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">ClientNotFoundException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleClientNotFoundError</span><span class="s2">(</span><span class="s1">ClientNotFoundException e</span><span class="s2">) {</span>
+        <span class="s0">return  </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">NOT_FOUND</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">()));</span>
+    <span class="s2">}</span>
+    
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando uma transação não pode ser realizada.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">InvalidTransactionException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleBusinessRulesError</span><span class="s2">(</span><span class="s1">InvalidTransactionException e</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">BAD_REQUEST</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">()));</span>
+
+    <span class="s2">}</span>
+
+    
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando uma classe desabilitada está tentando ser acessada.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">DisabledAccountException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleBusinessRulesError</span><span class="s2">(</span><span class="s1">DisabledAccountException e</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">BAD_REQUEST</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">()));</span>
+
+    <span class="s2">}</span>
+
+
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando uma data não pode ser validada corretamente</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">InvalidDateException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleValidationRulesError</span><span class="s2">(</span><span class="s1">InvalidDateException e</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">BAD_REQUEST</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">()));</span>
+    <span class="s2">}</span>
+
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando o valor de um enum não pode ser validado corretamente</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">InvalidEnumValueException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleValidationRulesError</span><span class="s2">(</span><span class="s1">InvalidEnumValueException e</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">BAD_REQUEST</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">()));</span>
+    <span class="s2">}</span>
+    
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando a formatação de um ValueObject é invalida</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">InvalidFormatException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleValidationRulesError</span><span class="s2">(</span><span class="s1">InvalidFormatException e</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">BAD_REQUEST</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">()));</span>
+    <span class="s2">}</span>
+
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando um elemento é nulo.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">NullElementException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleNullableElementError</span><span class="s2">(</span><span class="s1">NullElementException e</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">BAD_REQUEST</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">()));</span>
+    <span class="s2">}</span>
+
+      <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando um elemento é nulo.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">NullPointerException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleNullableElementError</span><span class="s2">(</span><span class="s1">NullPointerException e</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">BAD_REQUEST</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">()));</span>
+    <span class="s2">}</span>
+
+    
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando o acesso a uma conta é negado</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada.</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO Uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">AccessDeniedException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleAccessDeniedError</span><span class="s2">(</span><span class="s1">AccessDeniedException e</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">UNAUTHORIZED</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">()));</span>
+    <span class="s2">}</span>
+
+
+    
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando uma authenticação falha.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada.</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO Uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">AuthenticationFailedException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleAuthenticationFailedError</span><span class="s2">(</span><span class="s1">AuthenticationFailedException e</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">UNAUTHORIZED</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">()));</span>
+    <span class="s2">}</span>
+
+
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando a decodificação de um token de acesso passado falha.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada.</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO Uma mensagem de erro personalizada.</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">TokenDecodificationFailedException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleTokenManipulationError</span><span class="s2">(</span><span class="s1">TokenDecodificationFailedException e</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">UNAUTHORIZED</span><span class="s2">).</span><span class="s1">body</span><span class="s2">((</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">())));</span>
+    <span class="s2">}</span>
+
+
+    <span class="s3">/**</span>
+     <span class="s3">* Exceção lançada quando um erro generico ocorre.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">e Exceção que deve ser lançada </span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">ErrorMessageDTO Uma mensagem de erro personalizada</span>
+     <span class="s3">*/</span>
+    <span class="s1">@ExceptionHandler</span><span class="s2">(</span><span class="s1">Exception</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;</span><span class="s1">ErrorMessageDTO</span><span class="s2">&gt; </span><span class="s1">handleGeneralError</span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">status</span><span class="s2">(</span><span class="s1">HttpStatus</span><span class="s2">.</span><span class="s1">INTERNAL_SERVER_ERROR</span><span class="s2">).</span><span class="s1">body</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ErrorMessageDTO</span><span class="s2">(</span><span class="s5">&quot;Erro interno no servido&quot;</span><span class="s2">));</span>
+
+    <span class="s2">}</span>
+
+    
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

@@ -25,6 +25,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class PerformTransferTest {
 
 
+    private Account sender;
+    private Account receiver;
+    private Transaction transaction;
+
     @Mock
     AccountRepository accountRepository;
 
@@ -35,6 +39,22 @@ class PerformTransferTest {
     void setup() {
         MockitoAnnotations.openMocks(this);
     }
+
+    @BeforeEach
+    void initTestingVariables() {
+
+        sender = new Account();
+        sender.setBalance(new Cash(0));
+
+        receiver = new Account();
+        receiver.setBalance(new Cash(0));
+
+        transaction = new Transaction(new Cash(0),
+                TransactionType.TRANSFERENCIA,
+                null,
+                null);
+    }
+
 
 
     @Test

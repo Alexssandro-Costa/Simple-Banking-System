@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>AuthController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+AuthController.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">controller</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">ResponseEntity</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">GetMapping</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">PostMapping</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">RequestBody</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">RequestMapping</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">RestController</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">DTOs</span><span class="s2">.</span><span class="s1">Request</span><span class="s2">.</span><span class="s1">LoginRequest</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">DTOs</span><span class="s2">.</span><span class="s1">Request</span><span class="s2">.</span><span class="s1">RegisterRequest</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">caseUses</span><span class="s2">.</span><span class="s1">AuthenticateClient</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">caseUses</span><span class="s2">.</span><span class="s1">RegisterNewClient</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">io</span><span class="s2">.</span><span class="s1">swagger</span><span class="s2">.</span><span class="s1">v3</span><span class="s2">.</span><span class="s1">oas</span><span class="s2">.</span><span class="s1">annotations</span><span class="s2">.</span><span class="s1">Operation</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">validation</span><span class="s2">.</span><span class="s1">Valid</span><span class="s2">;</span>
+
+<span class="s1">@RestController</span>
+<span class="s1">@RequestMapping</span><span class="s2">(</span><span class="s3">&quot;/auth&quot;</span><span class="s2">)</span>
+<span class="s0">public class </span><span class="s1">AuthController </span><span class="s2">{</span>
+ 
+
+    <span class="s1">@Autowired </span>
+    <span class="s1">RegisterNewClient registerNewClient</span><span class="s2">;</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s1">AuthenticateClient authenticateClient</span><span class="s2">;</span>
+
+
+    <span class="s1">@GetMapping</span><span class="s2">(</span><span class="s3">&quot;/test&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String test</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s3">&quot;Olá Mundo.&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Operation</span><span class="s2">(</span><span class="s1">summary </span><span class="s2">= </span><span class="s3">&quot;autentica uma tentativa de login&quot;</span><span class="s2">)</span>
+    <span class="s1">@PostMapping</span><span class="s2">(</span><span class="s3">&quot;/login&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;?&gt; </span><span class="s1">login</span><span class="s2">(</span><span class="s1">@Valid @RequestBody LoginRequest loginRequest</span><span class="s2">) {</span>
+        <span class="s1">var result </span><span class="s2">= </span><span class="s1">authenticateClient</span><span class="s2">.</span><span class="s1">execute</span><span class="s2">(</span><span class="s1">loginRequest</span><span class="s2">); </span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">ok</span><span class="s2">(</span><span class="s1">result</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Operation</span><span class="s2">(</span><span class="s1">summary </span><span class="s2">= </span><span class="s3">&quot;Registra um novo cliente&quot;</span><span class="s2">, </span><span class="s1">description </span><span class="s2">= </span><span class="s3">&quot;Cria uma conta e um cliente no banco&quot;</span><span class="s2">)</span>
+    <span class="s1">@PostMapping</span><span class="s2">(</span><span class="s3">&quot;/register&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">ResponseEntity</span><span class="s2">&lt;?&gt; </span><span class="s1">register</span><span class="s2">(</span><span class="s1">@Valid @RequestBody RegisterRequest registerRequest</span><span class="s2">) {</span>
+        <span class="s1">var result </span><span class="s2">= </span><span class="s1">registerNewClient</span><span class="s2">.</span><span class="s1">execute</span><span class="s2">(</span><span class="s1">registerRequest</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s1">ResponseEntity</span><span class="s2">.</span><span class="s1">ok</span><span class="s2">(</span><span class="s1">result</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

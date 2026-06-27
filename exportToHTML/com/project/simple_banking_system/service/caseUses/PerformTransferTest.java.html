@@ -1,0 +1,166 @@
+<html>
+<head>
+<title>PerformTransferTest.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #6aab73;}
+.s5 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+PerformTransferTest.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">caseUses</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">InvalidTransactionException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">DTOs</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">TransactionResponse</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">Account</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">Transaction</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Cash</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">TransactionType</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">AccountRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">aspectj</span><span class="s2">.</span><span class="s1">lang</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Before</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">junit</span><span class="s2">.</span><span class="s1">jupiter</span><span class="s2">.</span><span class="s1">api</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">junit</span><span class="s2">.</span><span class="s1">jupiter</span><span class="s2">.</span><span class="s1">api</span><span class="s2">.</span><span class="s1">extension</span><span class="s2">.</span><span class="s1">ExtendWith</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">mockito</span><span class="s2">.</span><span class="s1">InjectMocks</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">mockito</span><span class="s2">.</span><span class="s1">Mock</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">mockito</span><span class="s2">.</span><span class="s1">MockitoAnnotations</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">mockito</span><span class="s2">.</span><span class="s1">junit</span><span class="s2">.</span><span class="s1">jupiter</span><span class="s2">.</span><span class="s1">MockitoExtension</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">math</span><span class="s2">.</span><span class="s1">BigDecimal</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">Instant</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+
+<span class="s0">import static </span><span class="s1">org</span><span class="s2">.</span><span class="s1">junit</span><span class="s2">.</span><span class="s1">jupiter</span><span class="s2">.</span><span class="s1">api</span><span class="s2">.</span><span class="s1">Assertions</span><span class="s2">.*;</span>
+
+<span class="s1">@ExtendWith</span><span class="s2">(</span><span class="s1">MockitoExtension</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+<span class="s0">class </span><span class="s1">PerformTransferTest </span><span class="s2">{</span>
+
+
+    <span class="s0">private </span><span class="s1">Account sender</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Account receiver</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">Transaction transaction</span><span class="s2">;</span>
+
+    <span class="s1">@Mock</span>
+    <span class="s1">AccountRepository accountRepository</span><span class="s2">;</span>
+
+    <span class="s1">@InjectMocks</span>
+    <span class="s1">PerformTransfer performTransfer</span><span class="s2">;</span>
+
+
+    <span class="s0">void </span><span class="s1">setup</span><span class="s2">() {</span>
+        <span class="s1">MockitoAnnotations</span><span class="s2">.</span><span class="s1">openMocks</span><span class="s2">(</span><span class="s0">this</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@BeforeEach</span>
+    <span class="s0">void </span><span class="s1">initTestingVariables</span><span class="s2">() {</span>
+
+        <span class="s1">sender </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Account</span><span class="s2">();</span>
+        <span class="s1">sender</span><span class="s2">.</span><span class="s1">setBalance</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s3">0</span><span class="s2">));</span>
+
+        <span class="s1">receiver </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Account</span><span class="s2">();</span>
+        <span class="s1">receiver</span><span class="s2">.</span><span class="s1">setBalance</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s3">0</span><span class="s2">));</span>
+
+        <span class="s1">transaction </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Transaction</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s3">0</span><span class="s2">),</span>
+                <span class="s1">TransactionType</span><span class="s2">.</span><span class="s1">TRANSFERENCIA</span><span class="s2">,</span>
+                <span class="s0">null</span><span class="s2">,</span>
+                <span class="s0">null</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+
+
+    <span class="s1">@Test</span>
+    <span class="s1">@DisplayName</span><span class="s2">(</span><span class="s4">&quot;deve lançar InvalidTransactionException quando o valor de transferencia for negativo&quot;</span><span class="s2">)</span>
+    <span class="s0">void </span><span class="s1">performTransfer_ShouldFail_When_ValueIsNegative</span><span class="s2">() {</span>
+
+        <span class="s5">// Given</span>
+        <span class="s1">Account sender </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Account</span><span class="s2">();</span>
+        <span class="s1">sender</span><span class="s2">.</span><span class="s1">setBalance</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s3">95D</span><span class="s2">));</span>
+
+        <span class="s1">Account receiver </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Account</span><span class="s2">();</span>
+        <span class="s1">receiver</span><span class="s2">.</span><span class="s1">setBalance</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s3">0</span><span class="s2">));</span>
+
+        <span class="s1">Transaction transaction </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Transaction </span><span class="s2">(</span>
+                <span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s1">BigDecimal</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(-</span><span class="s3">10</span><span class="s2">)),</span>
+                <span class="s1">TransactionType</span><span class="s2">.</span><span class="s1">SAQUE</span><span class="s2">,</span>
+                <span class="s1">sender</span><span class="s2">.</span><span class="s1">getAccountNumber</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">(),</span>
+                <span class="s1">receiver</span><span class="s2">.</span><span class="s1">getAccountNumber</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">()</span>
+        <span class="s2">);</span>
+
+
+        <span class="s5">// When</span>
+        <span class="s1">InvalidTransactionException exception </span><span class="s2">= </span><span class="s1">Assertions</span><span class="s2">.</span><span class="s1">assertThrows</span><span class="s2">(</span><span class="s1">InvalidTransactionException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">,</span>
+                <span class="s2">() </span><span class="s1">-&gt; performTransfer</span><span class="s2">.</span><span class="s1">execute</span><span class="s2">(</span><span class="s1">sender</span><span class="s2">, </span><span class="s1">receiver</span><span class="s2">, </span><span class="s1">transaction</span><span class="s2">));</span>
+
+
+        <span class="s5">// then</span>
+        <span class="s1">Assertions</span><span class="s2">.</span><span class="s1">assertEquals</span><span class="s2">(</span><span class="s4">&quot;Valor da transação, não pode ser negativo.&quot;</span><span class="s2">, </span><span class="s1">exception</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+    <span class="s2">}</span>
+
+
+    <span class="s1">@Test</span>
+    <span class="s1">@DisplayName</span><span class="s2">(</span><span class="s4">&quot;deve lançar InvalidTransactionException quando o valor de transferencia for maior que o saldo.&quot;</span><span class="s2">)</span>
+    <span class="s0">void </span><span class="s1">performTransfer_ShouldFail_When_ValueIsGreaterThanTheBalance</span><span class="s2">() {</span>
+
+        <span class="s5">// Given</span>
+        <span class="s1">Account sender </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Account</span><span class="s2">();</span>
+        <span class="s1">sender</span><span class="s2">.</span><span class="s1">setBalance</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s3">95D</span><span class="s2">));</span>
+
+        <span class="s1">Account receiver </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Account</span><span class="s2">();</span>
+        <span class="s1">receiver</span><span class="s2">.</span><span class="s1">setBalance</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s3">0</span><span class="s2">));</span>
+
+        <span class="s1">Transaction transaction </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Transaction </span><span class="s2">(</span>
+                <span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s1">BigDecimal</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s3">96</span><span class="s2">)),</span>
+                <span class="s1">TransactionType</span><span class="s2">.</span><span class="s1">SAQUE</span><span class="s2">,</span>
+                <span class="s1">sender</span><span class="s2">.</span><span class="s1">getAccountNumber</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">(),</span>
+                <span class="s1">receiver</span><span class="s2">.</span><span class="s1">getAccountNumber</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">()</span>
+        <span class="s2">);</span>
+
+        <span class="s5">// When</span>
+        <span class="s1">InvalidTransactionException exception </span><span class="s2">= </span><span class="s1">Assertions</span><span class="s2">.</span><span class="s1">assertThrows</span><span class="s2">(</span><span class="s1">InvalidTransactionException</span><span class="s2">.</span><span class="s0">class</span><span class="s2">,</span>
+                <span class="s2">() </span><span class="s1">-&gt; performTransfer</span><span class="s2">.</span><span class="s1">execute</span><span class="s2">(</span><span class="s1">sender</span><span class="s2">, </span><span class="s1">receiver</span><span class="s2">, </span><span class="s1">transaction</span><span class="s2">));</span>
+
+        <span class="s5">// then</span>
+        <span class="s1">Assertions</span><span class="s2">.</span><span class="s1">assertEquals</span><span class="s2">(</span><span class="s4">&quot;Valor da transação, não pode ser maior que o saldo.&quot;</span><span class="s2">, </span><span class="s1">exception</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+    <span class="s2">}</span>
+
+
+    <span class="s1">@Test</span>
+    <span class="s1">@DisplayName</span><span class="s2">(</span><span class="s4">&quot;Deve transferir 20 e retornar um extrato com o novo saldo sendo 100&quot;</span><span class="s2">)</span>
+    <span class="s0">void </span><span class="s1">performTransfer_When_TwentyIsTransferred_ItShouldReturn_ItShouldReturn_AStatementWithTheNewBalanceBeingOneHundred</span><span class="s2">() {</span>
+
+        <span class="s5">// Given</span>
+        <span class="s1">Account sender </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Account</span><span class="s2">();</span>
+        <span class="s1">sender</span><span class="s2">.</span><span class="s1">setBalance</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s3">120D</span><span class="s2">));</span>
+        <span class="s1">sender</span><span class="s2">.</span><span class="s1">setTransactions</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Transaction</span><span class="s2">&gt;());</span>
+
+        <span class="s1">Account receiver </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Account</span><span class="s2">();</span>
+        <span class="s1">receiver</span><span class="s2">.</span><span class="s1">setBalance</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s3">0D</span><span class="s2">));</span>
+        <span class="s1">receiver</span><span class="s2">.</span><span class="s1">setTransactions</span><span class="s2">(</span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Transaction</span><span class="s2">&gt;());</span>
+
+        <span class="s1">Transaction transaction </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Transaction </span><span class="s2">(</span>
+                <span class="s0">new </span><span class="s1">Cash</span><span class="s2">(</span><span class="s1">BigDecimal</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s3">20D</span><span class="s2">)),</span>
+                <span class="s1">TransactionType</span><span class="s2">.</span><span class="s1">TRANSFERENCIA</span><span class="s2">,</span>
+                <span class="s1">sender</span><span class="s2">.</span><span class="s1">getAccountNumber</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">(),</span>
+                <span class="s1">receiver</span><span class="s2">.</span><span class="s1">getAccountNumber</span><span class="s2">().</span><span class="s1">toString</span><span class="s2">()</span>
+        <span class="s2">);</span>
+        <span class="s1">transaction</span><span class="s2">.</span><span class="s1">setDate</span><span class="s2">(</span><span class="s1">Instant</span><span class="s2">.</span><span class="s1">now</span><span class="s2">());</span>
+
+        <span class="s5">// when</span>
+        <span class="s1">TransactionResponse result </span><span class="s2">= </span><span class="s1">performTransfer</span><span class="s2">.</span><span class="s1">execute</span><span class="s2">(</span><span class="s1">sender</span><span class="s2">, </span><span class="s1">receiver</span><span class="s2">, </span><span class="s1">transaction</span><span class="s2">);</span>
+
+        <span class="s5">// then</span>
+        <span class="s1">Assertions</span><span class="s2">.</span><span class="s1">assertEquals</span><span class="s2">(</span><span class="s4">&quot;100.0&quot;</span><span class="s2">, </span><span class="s1">result</span><span class="s2">.</span><span class="s1">newBalance</span><span class="s2">());</span>
+
+    <span class="s2">}</span>
+
+<span class="s2">}</span></pre>
+</body>
+</html>

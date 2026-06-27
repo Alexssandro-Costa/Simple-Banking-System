@@ -1,7 +1,4 @@
 HELP.md
-target/
-target
-.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -17,7 +14,6 @@ target
 ### IntelliJ IDEA ###
 .idea
 *.iws
-*.iml
 *.ipr
 
 ### NetBeans ###
@@ -26,9 +22,31 @@ target
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+
+# IDE
+*.iml
+.idea/
 .vscode/
+*.swp
+*.swo
+
+# Build
+target/
+build/
+*.class
+
+# Environment
+application-local.properties
+application-dev.properties
+.env
+.env.local
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# OS
+.DS_Store
+Thumbs.db

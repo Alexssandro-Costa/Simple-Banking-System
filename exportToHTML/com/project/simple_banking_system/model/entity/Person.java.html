@@ -1,0 +1,115 @@
+<html>
+<head>
+<title>Person.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #67a37c; font-style: italic;}
+.s5 { color: #6aab73;}
+.s6 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Person.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Cpf</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">DateBirth</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Gender</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Name</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Phone</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">AttributeOverride</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">Column</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">Embedded</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">EnumType</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">Enumerated</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">MappedSuperclass</span><span class="s2">;</span>
+
+
+<span class="s3">/**</span>
+ <span class="s3">* Classe abstrata que armazena as informações de um individuo.</span>
+ <span class="s3">* </span><span class="s4">@author </span><span class="s3">Alexssandro</span>
+ <span class="s3">* </span><span class="s4">@since </span><span class="s3">release 1</span>
+ <span class="s3">* </span><span class="s4">@version </span><span class="s3">2</span>
+ <span class="s3">*/</span>
+<span class="s1">@MappedSuperclass</span>
+<span class="s0">public abstract class </span><span class="s1">Person </span><span class="s2">{</span>
+
+    <span class="s1">@AttributeOverride</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;value&quot;</span><span class="s2">, </span><span class="s1">column </span><span class="s2">= </span><span class="s1">@Column</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;nome&quot;</span><span class="s2">, </span><span class="s1">nullable </span><span class="s2">= </span><span class="s0">false</span><span class="s2">, </span><span class="s1">length </span><span class="s2">= </span><span class="s6">120</span><span class="s2">))</span>
+    <span class="s1">@Embedded</span>
+    <span class="s0">private </span><span class="s1">Name name</span><span class="s2">;</span>
+
+
+    <span class="s1">@AttributeOverride</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;value&quot;</span><span class="s2">, </span><span class="s1">column </span><span class="s2">= </span><span class="s1">@Column</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;cpf&quot;</span><span class="s2">, </span><span class="s1">nullable </span><span class="s2">= </span><span class="s0">false</span><span class="s2">, </span><span class="s1">unique</span><span class="s2">=</span><span class="s0">true</span><span class="s2">))</span>
+    <span class="s1">@Embedded</span>
+    <span class="s0">private </span><span class="s1">Cpf cpf</span><span class="s2">;</span>
+
+
+    <span class="s1">@Column</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;genero&quot;</span><span class="s2">, </span><span class="s1">nullable </span><span class="s2">= </span><span class="s0">false</span><span class="s2">, </span><span class="s1">length </span><span class="s2">= </span><span class="s6">50</span><span class="s2">)</span>
+    <span class="s1">@Enumerated</span><span class="s2">(</span><span class="s1">EnumType</span><span class="s2">.</span><span class="s1">STRING</span><span class="s2">)</span>
+    <span class="s0">private </span><span class="s1">Gender gender</span><span class="s2">;</span>
+
+
+    <span class="s1">@AttributeOverride</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;value&quot;</span><span class="s2">, </span><span class="s1">column </span><span class="s2">= </span><span class="s1">@Column</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;telefone&quot;</span><span class="s2">, </span><span class="s1">nullable </span><span class="s2">= </span><span class="s0">false</span><span class="s2">, </span><span class="s1">length </span><span class="s2">= </span><span class="s6">30</span><span class="s2">))</span>
+    <span class="s1">@Embedded</span>
+    <span class="s0">private </span><span class="s1">Phone phone</span><span class="s2">;</span>
+
+    
+    <span class="s1">@AttributeOverride</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;value&quot;</span><span class="s2">, </span><span class="s1">column </span><span class="s2">= </span><span class="s1">@Column</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s5">&quot;data-nascimento&quot;</span><span class="s2">, </span><span class="s1">nullable </span><span class="s2">= </span><span class="s0">false</span><span class="s2">, </span><span class="s1">length </span><span class="s2">= </span><span class="s6">15</span><span class="s2">))</span>
+    <span class="s1">@Embedded</span>
+    <span class="s0">private </span><span class="s1">DateBirth dateBirth</span><span class="s2">;</span>
+
+    <span class="s0">protected </span><span class="s1">Person</span><span class="s2">(</span><span class="s1">Name name</span><span class="s2">, </span><span class="s1">Cpf cpf</span><span class="s2">, </span><span class="s1">Gender gender</span><span class="s2">, </span><span class="s1">Phone phone</span><span class="s2">, </span><span class="s1">DateBirth dateBirth</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">name </span><span class="s2">= </span><span class="s1">name</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">cpf </span><span class="s2">= </span><span class="s1">cpf</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">gender </span><span class="s2">= </span><span class="s1">gender</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">phone </span><span class="s2">= </span><span class="s1">phone</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">dateBirth </span><span class="s2">= </span><span class="s1">dateBirth</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">protected </span><span class="s1">Person</span><span class="s2">() {</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">Name getName</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">name</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public void </span><span class="s1">setName</span><span class="s2">(</span><span class="s1">Name name</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">name </span><span class="s2">= </span><span class="s1">name</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">Cpf getCpf</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">cpf</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public void </span><span class="s1">setCpf</span><span class="s2">(</span><span class="s1">Cpf cpf</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">cpf </span><span class="s2">= </span><span class="s1">cpf</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">Gender getGender</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">gender</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public void </span><span class="s1">setGender</span><span class="s2">(</span><span class="s1">Gender gender</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">gender </span><span class="s2">= </span><span class="s1">gender</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">Phone getPhone</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">phone</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public void </span><span class="s1">setPhone</span><span class="s2">(</span><span class="s1">Phone phone</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">phone </span><span class="s2">= </span><span class="s1">phone</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">DateBirth getDateBirth</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">dateBirth</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public void </span><span class="s1">setDateBirth</span><span class="s2">(</span><span class="s1">DateBirth dateBirth</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">dateBirth </span><span class="s2">= </span><span class="s1">dateBirth</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

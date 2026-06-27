@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>SecurityConfig.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SecurityConfig.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">springSecurity</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">context</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Bean</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">context</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Configuration</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpMethod</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">authentication</span><span class="s2">.</span><span class="s1">AuthenticationManager</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">authentication</span><span class="s2">.</span><span class="s1">configuration</span><span class="s2">.</span><span class="s1">AuthenticationConfiguration</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">builders</span><span class="s2">.</span><span class="s1">HttpSecurity</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">configuration</span><span class="s2">.</span><span class="s1">EnableWebSecurity</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">SessionCreationPolicy</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">crypto</span><span class="s2">.</span><span class="s1">bcrypt</span><span class="s2">.</span><span class="s1">BCryptPasswordEncoder</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">crypto</span><span class="s2">.</span><span class="s1">password</span><span class="s2">.</span><span class="s1">PasswordEncoder</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">SecurityFilterChain</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">authentication</span><span class="s2">.</span><span class="s1">UsernamePasswordAuthenticationFilter</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">DispatcherType</span><span class="s2">;</span>
+
+<span class="s1">@Configuration</span>
+<span class="s1">@EnableWebSecurity</span>
+<span class="s0">public class </span><span class="s1">SecurityConfig </span><span class="s2">{</span>
+
+
+    <span class="s1">@Autowired</span>
+    <span class="s1">SecurityFilter securityFilter</span><span class="s2">;</span>
+
+    <span class="s1">@Bean</span>
+    <span class="s0">public </span><span class="s1">SecurityFilterChain securityFilterChain</span><span class="s2">(</span><span class="s1">HttpSecurity http</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">http</span>
+        <span class="s2">.</span><span class="s1">csrf</span><span class="s2">(</span><span class="s1">csrf -&gt; csrf</span><span class="s2">.</span><span class="s1">disable</span><span class="s2">())</span>
+        <span class="s2">.</span><span class="s1">cors</span><span class="s2">(</span><span class="s1">cors -&gt; cors</span><span class="s2">.</span><span class="s1">configure</span><span class="s2">(</span><span class="s1">http</span><span class="s2">))</span>
+        <span class="s2">.</span><span class="s1">sessionManagement</span><span class="s2">(</span><span class="s1">session -&gt; session</span><span class="s2">.</span><span class="s1">sessionCreationPolicy</span><span class="s2">(</span><span class="s1">SessionCreationPolicy</span><span class="s2">.</span><span class="s1">STATELESS</span><span class="s2">))</span>
+        <span class="s2">.</span><span class="s1">authorizeHttpRequests</span><span class="s2">(</span><span class="s1">authorize -&gt; authorize</span>
+            <span class="s2">.</span><span class="s1">dispatcherTypeMatchers</span><span class="s2">(</span><span class="s1">DispatcherType</span><span class="s2">.</span><span class="s1">ERROR</span><span class="s2">).</span><span class="s1">permitAll</span><span class="s2">()</span>
+            <span class="s3">//  Liberação TOTAL para o Swagger</span>
+            <span class="s2">.</span><span class="s1">requestMatchers</span><span class="s2">(</span>
+                <span class="s4">&quot;/v3/api-docs/**&quot;</span><span class="s2">,</span>
+                <span class="s4">&quot;/v3/api-docs.yaml&quot;</span><span class="s2">,</span>
+                <span class="s4">&quot;/swagger-ui/**&quot;</span><span class="s2">,</span>
+                <span class="s4">&quot;/swagger-ui.html&quot;</span><span class="s2">,</span>
+                <span class="s4">&quot;/swagger-resources/**&quot;</span><span class="s2">,</span>
+                <span class="s4">&quot;/webjars/**&quot;</span>
+            <span class="s2">).</span><span class="s1">permitAll</span><span class="s2">()</span>
+            <span class="s2">.</span><span class="s1">requestMatchers</span><span class="s2">(</span><span class="s1">HttpMethod</span><span class="s2">.</span><span class="s1">POST</span><span class="s2">, </span><span class="s4">&quot;/auth/login&quot;</span><span class="s2">).</span><span class="s1">permitAll</span><span class="s2">()</span>
+            <span class="s2">.</span><span class="s1">requestMatchers</span><span class="s2">(</span><span class="s1">HttpMethod</span><span class="s2">.</span><span class="s1">POST</span><span class="s2">, </span><span class="s4">&quot;/auth/register&quot;</span><span class="s2">).</span><span class="s1">permitAll</span><span class="s2">()</span>
+            <span class="s2">.</span><span class="s1">requestMatchers</span><span class="s2">(</span><span class="s1">HttpMethod</span><span class="s2">.</span><span class="s1">GET</span><span class="s2">, </span><span class="s4">&quot;/auth/test&quot;</span><span class="s2">).</span><span class="s1">permitAll</span><span class="s2">()</span>
+            <span class="s2">.</span><span class="s1">anyRequest</span><span class="s2">().</span><span class="s1">authenticated</span><span class="s2">())</span>
+        <span class="s2">.</span><span class="s1">addFilterBefore</span><span class="s2">(</span><span class="s1">securityFilter</span><span class="s2">, </span><span class="s1">UsernamePasswordAuthenticationFilter</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+        <span class="s2">.</span><span class="s1">build</span><span class="s2">();</span>
+
+    <span class="s2">}</span>
+
+
+    <span class="s1">@Bean</span>
+    <span class="s0">public </span><span class="s1">AuthenticationManager authenticationManager</span><span class="s2">(</span><span class="s1">AuthenticationConfiguration authenticationConfiguration</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">authenticationConfiguration</span><span class="s2">.</span><span class="s1">getAuthenticationManager</span><span class="s2">();</span>
+
+    <span class="s2">}</span>
+
+
+    <span class="s1">@Bean</span>
+    <span class="s0">public </span><span class="s1">PasswordEncoder passwordEncoder</span><span class="s2">() {</span>
+        <span class="s0">return new </span><span class="s1">BCryptPasswordEncoder</span><span class="s2">();</span>
+    <span class="s2">}</span>
+    
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

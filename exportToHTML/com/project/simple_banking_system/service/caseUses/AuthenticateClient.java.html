@@ -1,0 +1,99 @@
+<html>
+<head>
+<title>AuthenticateClient.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #67a37c; font-style: italic;}
+.s5 { color: #6aab73;}
+.s6 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+AuthenticateClient.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">caseUses</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">authentication</span><span class="s2">.</span><span class="s1">AuthenticationManager</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">authentication</span><span class="s2">.</span><span class="s1">BadCredentialsException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">authentication</span><span class="s2">.</span><span class="s1">InternalAuthenticationServiceException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">authentication</span><span class="s2">.</span><span class="s1">UsernamePasswordAuthenticationToken</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Service</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">Authentication</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">springSecurity</span><span class="s2">.</span><span class="s1">TokenConfig</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">AccountNotFoundException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">AuthenticationFailedException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">DTOs</span><span class="s2">.</span><span class="s1">Request</span><span class="s2">.</span><span class="s1">LoginRequest</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">DTOs</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">LoginResponse</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">Client</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">ClientRepository</span><span class="s2">;</span>
+
+
+<span class="s3">/**</span>
+ <span class="s3">* Autentica as credenciais do usuario.</span>
+ <span class="s3">* </span><span class="s4">@author </span><span class="s3">Alexssandro</span>
+ <span class="s3">* </span><span class="s4">@since </span><span class="s3">release 3</span>
+ <span class="s3">* </span><span class="s4">@version </span><span class="s3">1.0</span>
+ <span class="s3">*/</span>
+<span class="s1">@Service</span>
+<span class="s0">public class </span><span class="s1">AuthenticateClient </span><span class="s2">{</span>
+
+    
+    <span class="s1">@Autowired</span>
+    <span class="s1">ClientRepository clientRepository</span><span class="s2">;</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s1">AuthenticationManager authenticationManager</span><span class="s2">;</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s1">TokenConfig tokenConfig</span><span class="s2">;</span>
+
+
+    <span class="s3">/**</span>
+     <span class="s3">* Autentica as credênciais do usuario.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">loginRequest Requisição de login contêndo o userName e o Password. </span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">Retorna um token JWT encapsulado pelo DTO LoginResponse.</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">AuthenticationFailedException Lançada quando a autênticação não pode ser realizada.</span>
+     <span class="s3">* </span><span class="s4">@exception </span><span class="s3">AccountNotFoundException Lançada quando não pode ser encontrada uma conta relacionada.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public </span><span class="s1">LoginResponse execute</span><span class="s2">(</span><span class="s1">LoginRequest loginRequest</span><span class="s2">) {</span>
+
+        
+        
+        <span class="s1">Client client </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
+
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s3">/// Autentica a senha e o cpf passados</span>
+            <span class="s1">UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken </span><span class="s2">= </span><span class="s0">new </span><span class="s1">UsernamePasswordAuthenticationToken</span><span class="s2">(</span><span class="s1">loginRequest</span><span class="s2">.</span><span class="s1">cpf</span><span class="s2">(), </span><span class="s1">loginRequest</span><span class="s2">.</span><span class="s1">password</span><span class="s2">());</span>
+            <span class="s1">Authentication authentication </span><span class="s2">= </span><span class="s1">authenticationManager</span><span class="s2">.</span><span class="s1">authenticate</span><span class="s2">(</span><span class="s1">usernamePasswordAuthenticationToken</span><span class="s2">);</span>
+
+            <span class="s1">client </span><span class="s2">= (</span><span class="s1">Client</span><span class="s2">) </span><span class="s1">authentication</span><span class="s2">.</span><span class="s1">getPrincipal</span><span class="s2">();</span>
+
+        <span class="s2">}</span><span class="s0">catch</span><span class="s2">(</span><span class="s1">BadCredentialsException e</span><span class="s2">) {</span>
+            <span class="s0">throw new </span><span class="s1">AuthenticationFailedException</span><span class="s2">(</span><span class="s5">&quot;Senha ou CPF Invalidos.&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+        <span class="s0">catch</span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s0">throw new </span><span class="s1">AuthenticationFailedException</span><span class="s2">(</span><span class="s5">&quot;Autenticação falhou.&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s6">// verifica se a conta foi encontrada</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">client </span><span class="s2">== </span><span class="s0">null</span><span class="s2">)</span>
+            <span class="s0">throw new </span><span class="s1">AccountNotFoundException</span><span class="s2">(</span><span class="s5">&quot;Não foi possivel encontrar a conta buscada.&quot;</span><span class="s2">);</span>
+
+        <span class="s1">String token </span><span class="s2">= </span><span class="s1">tokenConfig</span><span class="s2">.</span><span class="s1">generateToken</span><span class="s2">(</span><span class="s1">client</span><span class="s2">);</span>
+
+        <span class="s0">return new </span><span class="s1">LoginResponse</span><span class="s2">(</span><span class="s1">token</span><span class="s2">);</span>
+    <span class="s2">}</span>
+    
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

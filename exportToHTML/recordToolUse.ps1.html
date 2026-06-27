@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>recordToolUse.ps1</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bcbec4;}
+.s1 { color: #7a7e85;}
+.s2 { color: #bcbec4;}
+.s3 { color: #cf8e6d;}
+.s4 { color: #6aab73;}
+.s5 { color: #2aacb8; font-style: italic;}
+.s6 { color: #cf8e6d; font-style: italic;}
+.s7 { color: #bcbec4; font-style: italic;}
+.s8 { color: #c77dbb; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+recordToolUse.ps1</font>
+</center></td></tr></table>
+<pre><span class="s0"># </span><span class="s1">Records run_in_terminal and appmod-* tool calls as JSONL for the extension to process. 
+</span>
+<span class="s0">$raw = [</span><span class="s3">Console</span><span class="s0">]</span><span class="s2">::</span><span class="s3">In</span><span class="s2">.ReadToEnd</span><span class="s0">()</span>
+
+<span class="s3">if </span><span class="s0">($raw -notmatch '</span><span class="s4">&quot;tool_name&quot;\s*:\s*&quot;([^&quot;]+)&quot;</span><span class="s0">') { </span><span class="s3">exit </span><span class="s5">0 </span><span class="s0">}</span>
+<span class="s0">$toolName = $</span><span class="s2">Matches</span><span class="s0">[</span><span class="s5">1</span><span class="s0">]</span>
+
+<span class="s3">if </span><span class="s0">($toolName -ne '</span><span class="s4">run_in_terminal</span><span class="s0">' -and $toolName -notlike '</span><span class="s4">appmod-*</span><span class="s0">') { </span><span class="s3">exit </span><span class="s5">0 </span><span class="s0">}</span>
+
+<span class="s3">if </span><span class="s0">($raw -notmatch '</span><span class="s4">&quot;session_id&quot;\s*:\s*&quot;([^&quot;]+)&quot;</span><span class="s0">') { </span><span class="s3">exit </span><span class="s5">0 </span><span class="s0">}</span>
+<span class="s0">$sessionId = $</span><span class="s2">Matches</span><span class="s0">[</span><span class="s5">1</span><span class="s0">]</span>
+
+<span class="s0">$hooksDir = '</span><span class="s4">.github\java-upgrade\hooks</span><span class="s0">'</span>
+<span class="s3">if </span><span class="s0">(-not (Test-Path $hooksDir)) { New-Item -</span><span class="s2">ItemType Directory </span><span class="s0">-</span><span class="s2">Path </span><span class="s0">$hooksDir -</span><span class="s2">Force </span><span class="s0">| Out-Null }</span>
+
+<span class="s0">$line = ($raw -replace '</span><span class="s4">[\r\n]+</span><span class="s0">', ' ')</span><span class="s2">.Trim</span><span class="s0">() + &quot;</span><span class="s6">`n</span><span class="s0">&quot;</span>
+<span class="s0">[</span><span class="s3">System.IO.File</span><span class="s0">]</span><span class="s2">::AppendAllText</span><span class="s0">(&quot;$hooksDir</span><span class="s4">\</span><span class="s0">$sessionId</span><span class="s4">.json</span><span class="s0">&quot;, $line, [</span><span class="s3">System.Text.UTF8Encoding</span><span class="s0">]</span><span class="s2">::new</span><span class="s0">(</span><span class="s7">$</span><span class="s8">false</span><span class="s0">))</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>Generator.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #67a37c; font-style: italic;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Generator.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">utility</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Component</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Random</span><span class="s2">;</span>
+
+<span class="s3">/**</span>
+ <span class="s3">* Gerador de números, strings(numéricas, alfanuméricas, ou alfabéticas) aleatório.</span>
+ <span class="s3">* </span><span class="s4">@author </span><span class="s3">ALexssandro</span>
+ <span class="s3">* </span><span class="s4">@since </span><span class="s3">release 2</span>
+ <span class="s3">* </span><span class="s4">@version </span><span class="s3">1.0</span>
+ <span class="s3">*/</span>
+<span class="s1">@Component</span>
+<span class="s0">public class </span><span class="s1">Generator </span><span class="s2">{</span>
+
+    <span class="s3">/**</span>
+     <span class="s3">* Cria uma string com caracteres numéricos.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">tam tamanho da string.</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">String com 'tam' caracteres numéricos.</span>
+     <span class="s3">*/</span>
+    <span class="s0">public static </span><span class="s1">String generateNumericString</span><span class="s2">(</span><span class="s0">int </span><span class="s1">tam</span><span class="s2">) {</span>
+
+        <span class="s1">StringBuilder element </span><span class="s2">= </span><span class="s0">new </span><span class="s1">StringBuilder</span><span class="s2">();</span>
+        <span class="s1">Random r </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Random</span><span class="s2">();</span>
+
+        <span class="s0">for</span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s1">tam</span><span class="s2">; </span><span class="s1">i</span><span class="s2">++) {</span>
+            <span class="s1">element</span><span class="s2">.</span><span class="s1">append</span><span class="s2">(</span><span class="s1">r</span><span class="s2">.</span><span class="s1">nextInt</span><span class="s2">(</span><span class="s5">0</span><span class="s2">, </span><span class="s5">10</span><span class="s2">));</span>
+        <span class="s2">}</span>
+
+        <span class="s0">return </span><span class="s1">String</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">element</span><span class="s2">);</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>LoginRequest.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+LoginRequest.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">DTOs</span><span class="s2">.</span><span class="s1">Request</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">validation</span><span class="s2">.</span><span class="s1">constraints</span><span class="s2">.</span><span class="s1">NotEmpty</span><span class="s2">;</span>
+
+<span class="s0">public </span><span class="s1">record LoginRequest</span><span class="s2">(</span><span class="s1">@NotEmpty</span><span class="s2">(</span><span class="s1">message </span><span class="s2">=  </span><span class="s3">&quot;CPF é obrigatorio.&quot;</span><span class="s2">) </span><span class="s1">String cpf</span><span class="s2">, </span>
+<span class="s1">@NotEmpty</span><span class="s2">(</span><span class="s1">message </span><span class="s2">= </span><span class="s3">&quot;Senha é obrigatorio&quot;</span><span class="s2">) </span><span class="s1">String password</span><span class="s2">) {</span>
+    
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

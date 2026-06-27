@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>RegisterNewClient.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #67a37c; font-style: italic;}
+.s5 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#191a1c">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+RegisterNewClient.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">service</span><span class="s2">.</span><span class="s1">caseUses</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalDate</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">crypto</span><span class="s2">.</span><span class="s1">password</span><span class="s2">.</span><span class="s1">PasswordEncoder</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Service</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">transaction</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Transactional</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">DTOs</span><span class="s2">.</span><span class="s1">Request</span><span class="s2">.</span><span class="s1">RegisterRequest</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">DTOs</span><span class="s2">.</span><span class="s1">Response</span><span class="s2">.</span><span class="s1">RegisterUserResponse</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">Account</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">entity</span><span class="s2">.</span><span class="s1">Client</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Cpf</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">DateBirth</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Gender</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Name</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Password</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">valueObjects</span><span class="s2">.</span><span class="s1">Phone</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">ClientRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">project</span><span class="s2">.</span><span class="s1">simple_banking_system</span><span class="s2">.</span><span class="s1">utility</span><span class="s2">.</span><span class="s1">ValidateData</span><span class="s2">;</span>
+
+
+<span class="s3">/**</span>
+ <span class="s3">* Classe de serviço que cria uma nova entidade Cliente e Conta.</span>
+ <span class="s3">* </span><span class="s4">@author </span><span class="s3">Alexssandro</span>
+ <span class="s3">* </span><span class="s4">@since </span><span class="s3">release 3</span>
+ <span class="s3">* </span><span class="s4">@version </span><span class="s3">2.0</span>
+ <span class="s3">*/</span>
+<span class="s1">@Service</span>
+<span class="s0">public class </span><span class="s1">RegisterNewClient </span><span class="s2">{</span>
+
+
+    <span class="s3">/// Inicializa automaticamente o repositorio. </span>
+    <span class="s1">@Autowired</span>
+    <span class="s1">ClientRepository clientRepository</span><span class="s2">;</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s1">PasswordEncoder passwordEncoder</span><span class="s2">;</span>
+
+
+    <span class="s3">/**</span>
+     <span class="s3">* Registra um novo cliente no banco de dados.</span>
+     <span class="s3">* </span><span class="s4">@param </span><span class="s3">registerRequest Requisição de registro contêndo os dados do cliente.</span>
+     <span class="s3">* </span><span class="s4">@return </span><span class="s3">Retorna o Username e o Password do usuario encapsulados pelo DTO RegisterUserResponse. </span>
+     <span class="s3">*/</span>
+    <span class="s1">@Transactional</span>
+    <span class="s0">public </span><span class="s1">RegisterUserResponse execute</span><span class="s2">(</span><span class="s1">RegisterRequest registerRequest</span><span class="s2">) {</span>
+
+        <span class="s5">// valida os dados passados</span>
+        <span class="s1">ValidateData</span><span class="s2">.</span><span class="s1">execute</span><span class="s2">(</span><span class="s1">registerRequest</span><span class="s2">);</span>
+
+        <span class="s5">// inicializa uma nova entidade cliente</span>
+        <span class="s1">Client client </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Client</span><span class="s2">();</span>
+
+        <span class="s5">// Define os dados do cliente</span>
+        <span class="s1">client</span><span class="s2">.</span><span class="s1">setName</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Name</span><span class="s2">(</span><span class="s1">registerRequest</span><span class="s2">.</span><span class="s1">name</span><span class="s2">().</span><span class="s1">toUpperCase</span><span class="s2">()));</span>
+        <span class="s1">client</span><span class="s2">.</span><span class="s1">setCpf</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Cpf</span><span class="s2">(</span><span class="s1">registerRequest</span><span class="s2">.</span><span class="s1">cpf</span><span class="s2">()));</span>
+        <span class="s1">client</span><span class="s2">.</span><span class="s1">setGender</span><span class="s2">(</span><span class="s1">Gender</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">registerRequest</span><span class="s2">.</span><span class="s1">gender</span><span class="s2">().</span><span class="s1">toUpperCase</span><span class="s2">()));</span>
+        <span class="s1">client</span><span class="s2">.</span><span class="s1">setPhone</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Phone</span><span class="s2">(</span><span class="s1">registerRequest</span><span class="s2">.</span><span class="s1">phone</span><span class="s2">()));</span>
+        <span class="s1">client</span><span class="s2">.</span><span class="s1">setDateBirth</span><span class="s2">(</span><span class="s0">new </span><span class="s1">DateBirth</span><span class="s2">(</span><span class="s1">LocalDate</span><span class="s2">.</span><span class="s1">parse</span><span class="s2">(</span><span class="s1">registerRequest</span><span class="s2">.</span><span class="s1">dateBirth</span><span class="s2">())));</span>
+        <span class="s1">client</span><span class="s2">.</span><span class="s1">setPassword</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Password</span><span class="s2">(</span><span class="s1">passwordEncoder</span><span class="s2">.</span><span class="s1">encode</span><span class="s2">(</span><span class="s1">registerRequest</span><span class="s2">.</span><span class="s1">password</span><span class="s2">())));</span>
+        <span class="s1">client</span><span class="s2">.</span><span class="s1">setAccount</span><span class="s2">(</span><span class="s0">new </span><span class="s1">Account</span><span class="s2">());</span>
+
+        <span class="s5">// salva as entidades no banco de dados</span>
+        <span class="s1">clientRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">client</span><span class="s2">);</span>
+
+        <span class="s0">return new </span><span class="s1">RegisterUserResponse</span><span class="s2">(</span><span class="s1">client</span><span class="s2">.</span><span class="s1">getUsername</span><span class="s2">(), </span><span class="s1">client</span><span class="s2">.</span><span class="s1">getPassword</span><span class="s2">());</span>
+    <span class="s2">}</span>
+
+
+    
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
