@@ -87,11 +87,11 @@ public class PerformTransfer {
 
         // verificação básica
         if(sender.getBalance() == null || sender.getBalance().getValue() == null)
-            throw  new NullElementException("Saldo do remetente é invalido.");
+            throw  new NullElementException("Saldo do remetente não pode ser nulo.");
         else if(receiver.getBalance() == null || receiver.getBalance().getValue() == null)
             throw new NullElementException("Não foi possível localizar o saldo da conta destinatária.");
         else if(transaction.getValue() == null || transaction.getValue().getValue() == null)
-            throw new NullElementException("Valor da transação é invalido.");
+            throw new NullElementException("Valor da transação é não pode ser nulo.");
 
         // regras de negócio
         if(transaction.getValue().getValue().compareTo(BigDecimal.ZERO) < 0)

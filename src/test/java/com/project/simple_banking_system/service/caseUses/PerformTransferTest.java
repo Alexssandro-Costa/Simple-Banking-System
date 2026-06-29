@@ -1,13 +1,13 @@
 package com.project.simple_banking_system.service.caseUses;
 
 import com.project.simple_banking_system.exceptions.InvalidTransactionException;
+import com.project.simple_banking_system.exceptions.NullElementException;
 import com.project.simple_banking_system.model.DTOs.Response.TransactionResponse;
 import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.entity.Transaction;
 import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.model.valueObjects.TransactionType;
 import com.project.simple_banking_system.repository.AccountRepository;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 
@@ -51,8 +50,8 @@ class PerformTransferTest {
 
         transaction = new Transaction(new Cash(0),
                 TransactionType.TRANSFERENCIA,
-                null,
-                null);
+                sender.getAccountNumber().toString(),
+                receiver.getAccountNumber().toString());
     }
 
 
@@ -62,19 +61,10 @@ class PerformTransferTest {
     void performTransfer_ShouldFail_When_ValueIsNegative() {
 
         // Given
-        Account sender = new Account();
         sender.setBalance(new Cash(95D));
-
-        Account receiver = new Account();
         receiver.setBalance(new Cash(0));
 
-        Transaction transaction = new Transaction (
-                new Cash(BigDecimal.valueOf(-10)),
-                TransactionType.SAQUE,
-                sender.getAccountNumber().toString(),
-                receiver.getAccountNumber().toString()
-        );
-
+        transaction.setValue(new Cash(-10));
 
         // When
         InvalidTransactionException exception = Assertions.assertThrows(InvalidTransactionException.class,
@@ -91,18 +81,10 @@ class PerformTransferTest {
     void performTransfer_ShouldFail_When_ValueIsGreaterThanTheBalance() {
 
         // Given
-        Account sender = new Account();
         sender.setBalance(new Cash(95D));
-
-        Account receiver = new Account();
         receiver.setBalance(new Cash(0));
 
-        Transaction transaction = new Transaction (
-                new Cash(BigDecimal.valueOf(96)),
-                TransactionType.SAQUE,
-                sender.getAccountNumber().toString(),
-                receiver.getAccountNumber().toString()
-        );
+        transaction.setValue(new Cash(96));
 
         // When
         InvalidTransactionException exception = Assertions.assertThrows(InvalidTransactionException.class,
@@ -114,24 +96,66 @@ class PerformTransferTest {
 
 
     @Test
+    @DisplayName("Transferência deve falhar quando o saldo da conta remetente for nulo")
+    void performTransfer_ShouldFail_When_SenderBalanceIsNull() {
+
+        // given
+        sender.setBalance(null);
+
+        // when
+        NullElementException exception = assertThrows(NullElementException.class,
+                () -> performTransfer.execute(sender, receiver, transaction));
+
+        // then
+        assertEquals("Saldo do remetente não pode ser nulo.", exception.getMessage());
+    }
+
+
+    @Test
+    @DisplayName("Transferência deve falhar quando o saldo da conta Destinataria for nulo")
+    void performTransfer_ShouldFail_When_ReceiverBalanceIsNull() {
+
+        // given
+        receiver.setBalance(null);
+
+        // when
+        NullElementException exception = assertThrows(NullElementException.class,
+                () -> performTransfer.execute(sender, receiver, transaction));
+
+        // then
+        assertEquals("Não foi possível localizar o saldo da conta destinatária.", exception.getMessage());
+    }
+
+
+    @Test
+    @DisplayName("Transferência deve falhar quando o valor da transação for nulo")
+    void performTransfer_ShouldFail_When_TransactionValueIsNyll() {
+
+        // given
+        transaction.setValue(null);
+
+        // when
+        NullElementException exception = assertThrows(NullElementException.class,
+                () -> performTransfer.execute(sender, receiver, transaction));
+
+        // then
+        assertEquals("Valor da transação é não pode ser nulo.", exception.getMessage());
+    }
+
+
+
+    @Test
     @DisplayName("Deve transferir 20 e retornar um extrato com o novo saldo sendo 100")
     void performTransfer_When_TwentyIsTransferred_ItShouldReturn_ItShouldReturn_AStatementWithTheNewBalanceBeingOneHundred() {
 
         // Given
-        Account sender = new Account();
         sender.setBalance(new Cash(120D));
         sender.setTransactions(new ArrayList<Transaction>());
 
-        Account receiver = new Account();
         receiver.setBalance(new Cash(0D));
         receiver.setTransactions(new ArrayList<Transaction>());
 
-        Transaction transaction = new Transaction (
-                new Cash(BigDecimal.valueOf(20D)),
-                TransactionType.TRANSFERENCIA,
-                sender.getAccountNumber().toString(),
-                receiver.getAccountNumber().toString()
-        );
+        transaction.setValue(new Cash(20D));
         transaction.setDate(Instant.now());
 
         // when

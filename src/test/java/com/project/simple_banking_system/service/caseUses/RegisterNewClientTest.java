@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ExtendWith(MockitoExtension.class)
 class RegisterNewClientTest {
 
+
     @Mock
     PasswordEncoder passwordEncoder;
 
@@ -26,10 +27,11 @@ class RegisterNewClientTest {
     @InjectMocks
     RegisterNewClient registerNewClient;
 
-
     private void setup() {
         MockitoAnnotations.openMocks(this);
     }
+
+
 
     @Test
     void registerNewClient_ShouldReturn_ARegisterUserResponseWithEqualCpf() {
