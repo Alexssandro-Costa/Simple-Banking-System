@@ -32,7 +32,6 @@ class RegisterNewClientTest {
     }
 
 
-
     @Test
     void registerNewClient_ShouldReturn_ARegisterUserResponseWithEqualCpf() {
 
@@ -53,5 +52,6 @@ class RegisterNewClientTest {
 
         // Then
         Assertions.assertEquals(expected.cpf(), result.cpf(), "CPF esperado, não é compatível com o resultado");
+        System.out.println(expected + ";" + result);
     }
 }

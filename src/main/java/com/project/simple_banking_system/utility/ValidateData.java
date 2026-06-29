@@ -27,20 +27,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidateData {
 
-    /**
-     * Executa a operação de validação.
-     * @param registerRequestDTO Requisição de registro.
-     */
-    public static void execute(RegisterRequest registerRequestDTO) {
-
-        validateName(new Name(registerRequestDTO.name()));
-        validateCpf(new Cpf(registerRequestDTO.cpf()));
-        validateDateBirth(new DateBirth( LocalDate.parse(registerRequestDTO.dateBirth())));
-        validateGender(registerRequestDTO.gender());
-        validatePhone(new Phone(registerRequestDTO.phone()));
-        validatePassword(new Password(registerRequestDTO.password()));
-    }
-
 
     /**
      * Verifica se o nome passado é valido.
@@ -48,7 +34,7 @@ public class ValidateData {
      * @exception NullElementException Lançada se o elemento for nulo.
      * @exception InvalidFormatException Lançada se o elemento não estiver no formato padrão.
      */
-    public static void validateName(Name name) {
+    public void validateName(Name name) {
 
         // elementos são nulos
         if(name == null || name.getValue() == null)
@@ -67,7 +53,7 @@ public class ValidateData {
      * @exception NullElementException Lançada se o elemento for nulo.
      * @exception InvalidFormatException Lançada se o elemento não estiver no formato padrão.
      */
-    public static void validateCpf(Cpf cpf) {
+    public void validateCpf(Cpf cpf) {
 
         // elementos são nulos
         if(cpf == null || cpf.getValue() == null)
@@ -85,7 +71,7 @@ public class ValidateData {
      * @exception NullElementException Lançada se o elemento for nulo.
      * @exception InvalidDateException Lançada se o data for invalida.
      */
-    public static void validateDateBirth(DateBirth dateBirth) {
+    public void validateDateBirth(DateBirth dateBirth) {
 
         if(dateBirth == null || dateBirth.getValue() == null) 
             throw new NullElementException("A data de nascimento passada é invalida.");
@@ -105,7 +91,7 @@ public class ValidateData {
      * @exception NullElementException Lançada se o elemento for nulo.
      * @exception InvalidEnumValueException Lançada quando um valor não está presente no enum testado.
      */
-    public static void validateGender(String gender) {
+    public void validateGender(String gender) {
 
         if(gender == null)
             throw new NullElementException("Genêro passado não é valido.");
@@ -126,7 +112,7 @@ public class ValidateData {
      * @exception NullElementException Lançada se o elemento for nulo.
      * @exception InvalidFormatException Lançada se o elemento não estiver no formato padrão.
      */
-    public static void validatePhone(Phone phone) {
+    public void validatePhone(Phone phone) {
 
         if(phone == null || phone.getValue() == null)
             throw new NullElementException("O numero de telefone passado é invalido.");
@@ -141,7 +127,7 @@ public class ValidateData {
      * @exception NullElementException Lançada se o elemento for nulo.
      * @exception InvalidFormatException Lançada se o elemento não estiver no formato padrão.
      */
-    public static void validatePassword(Password password) {
+    public void validatePassword(Password password) {
 
         if(password == null || password.getValue() == null) 
             throw new NullElementException("O a senha passada é invalida");

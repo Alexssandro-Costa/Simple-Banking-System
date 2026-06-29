@@ -2,6 +2,7 @@ package com.project.simple_banking_system.service.caseUses;
 
 import java.time.LocalDate;
 
+import com.project.simple_banking_system.exceptions.NullElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,9 @@ public class RegisterNewClient {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    ValidateData validateData;
+
 
     /**
      * Registra um novo cliente no banco de dados.
@@ -48,7 +52,7 @@ public class RegisterNewClient {
     public RegisterUserResponse execute(RegisterRequest registerRequest) {
 
         // valida os dados passados
-        ValidateData.execute(registerRequest);
+        validate(registerRequest);
 
         // inicializa uma nova entidade cliente
         Client client = new Client();
@@ -66,6 +70,26 @@ public class RegisterNewClient {
         clientRepository.save(client);
 
         return new RegisterUserResponse(client.getUsername(), client.getPassword());
+    }
+
+
+    /**
+     * Valida os dados da requisição de registro.
+     * @param registerRequest Requisição de registro.
+     * @exception NullElementException Lançada quando a requisição de registro é nula.
+     */
+    private void validate(RegisterRequest registerRequest) {
+
+        if(registerRequest == null)
+            throw new NullElementException("Requisição de registro não pode ser nulo.");
+
+        validateData.validateName(new Name(registerRequest.name()));
+        validateData.validateCpf(new Cpf(registerRequest.cpf()));
+        validateData.validateDateBirth(new DateBirth( LocalDate.parse(registerRequest.dateBirth())));
+        validateData.validateGender(registerRequest.gender());
+        validateData.validatePhone(new Phone(registerRequest.phone()));
+        validateData.validatePassword(new Password(registerRequest.password()));
+
     }
 
 
