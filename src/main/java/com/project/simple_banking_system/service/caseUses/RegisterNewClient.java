@@ -83,12 +83,12 @@ public class RegisterNewClient {
         if(registerRequest == null)
             throw new NullElementException("Requisição de registro não pode ser nulo.");
 
-        validateData.validateName(new Name(registerRequest.name()));
-        validateData.validateCpf(new Cpf(registerRequest.cpf()));
-        validateData.validateDateBirth(new DateBirth( LocalDate.parse(registerRequest.dateBirth())));
+        validateData.validateName(registerRequest.name());
+        validateData.validateCpf(registerRequest.cpf());
+        validateData.validateDateBirth(registerRequest.dateBirth());
         validateData.validateGender(registerRequest.gender());
-        validateData.validatePhone(new Phone(registerRequest.phone()));
-        validateData.validatePassword(new Password(registerRequest.password()));
+        validateData.validatePhone(registerRequest.phone());
+        validateData.validatePassword(registerRequest.password());
 
     }
 
