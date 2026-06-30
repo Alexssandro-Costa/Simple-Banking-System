@@ -83,7 +83,7 @@ public class PerformTransfer {
      * @exception NullElementException Lançada quando um elemento é nulo.
      * @exception InvalidTransactionException Lançada quando uma operação não é possível.
      */
-    private void validate(@NonNull Account sender, @NonNull Account receiver, @NonNull Transaction transaction) {
+    private void validate( Account sender, Account receiver, Transaction transaction) {
 
         // verificação básica
         if(sender.getBalance() == null || sender.getBalance().getValue() == null)

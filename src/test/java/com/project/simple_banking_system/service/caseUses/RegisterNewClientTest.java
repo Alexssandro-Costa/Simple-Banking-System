@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -292,9 +291,101 @@ class RegisterNewClientTest {
         Assertions.assertEquals("Genêro informado não é uma opção valida.", exception.getMessage());
     }
 
-    //////////////////////////////////////// Gender Test ///////////////////////////////////////
+    //////////////////////////////////////// Phone Test ///////////////////////////////////////
+
+
+    @Test
+    @DisplayName("Registro deve falhar quando o Telefone for nulo.")
+    void registerNewClient_ShouldFail_When_PhoneIsNull() {
+
+        // given
+        RegisterRequest registerRequest = new RegisterRequest(
+                "Alexssandro",
+                "123.456.789-10",
+                "masculino",
+                null,
+                "2000-06-01",
+                "Alex1234"
+        );
+
+
+        // when
+        NullElementException exception = Assertions.assertThrows(NullElementException.class,
+                () -> registerNewClient.execute(registerRequest));
+
+        // then
+        Assertions.assertEquals("O numero de telefone passado não pode ser nulo.", exception.getMessage());
+    }
 
 
 
+    @Test
+    @DisplayName("Registro deve falhar quando o Telefone estiver fora do padrão ")
+    void registerNewClient_ShouldFail_When_PhoneIsNonStandarlized() {
 
+        // given
+        RegisterRequest registerRequest = new RegisterRequest(
+                "Alexssandro",
+                "123.456.789-10",
+                "masculino",
+                "12",
+                "2000-06-01",
+                "Alex1234"
+        );
+
+
+        // when
+        InvalidFormatException exception = Assertions.assertThrows(InvalidFormatException.class,
+                () -> registerNewClient.execute(registerRequest));
+
+        // then
+        Assertions.assertEquals("Numero de telefone passado está em um formato não valido.", exception.getMessage());
+    }
+
+    //////////////////////////////////////// Password Test ///////////////////////////////////////
+
+    @Test
+    @DisplayName("Registro deve falhar quando a senha for nula")
+    void registerNewClient_ShouldFail_When_PasswordIsNull() {
+        // given
+        RegisterRequest registerRequest = new RegisterRequest(
+                "Alexssandro",
+                "123.456.789-10",
+                "masculino",
+                "22992164321",
+                "2000-06-01",
+                null
+        );
+
+        // then
+        NullElementException exception = Assertions.assertThrows(NullElementException.class,
+                () -> registerNewClient.execute(registerRequest));
+
+        // when
+        Assertions.assertEquals("A senha informada não pode ser nula.", exception.getMessage());
+
+    }
+
+
+    @Test
+    @DisplayName("Registro deve falhar quando a senhar estiver fora de um padrão aceito")
+    void registerNewClient_ShouldFail_When_PasswordIsNonStandarlized() {
+        // given
+        RegisterRequest registerRequest = new RegisterRequest(
+                "Alexssandro",
+                "123.456.789-10",
+                "masculino",
+                "22992164321",
+                "2000-06-01",
+                "não padronizado"
+        );
+
+        // when
+        InvalidFormatException exception = Assertions.assertThrows(InvalidFormatException.class,
+                () -> registerNewClient.execute(registerRequest));
+
+        // then
+
+        Assertions.assertEquals("A senha passada está em um formato não valido.", exception.getMessage());
+    }
 }

@@ -118,7 +118,7 @@ public class ValidateData {
     public void validatePhone(String value) {
 
         if(value == null)
-            throw new NullElementException("O numero de telefone passado é invalido.");
+            throw new NullElementException("O numero de telefone passado não pode ser nulo.");
         Phone phone = new Phone(value);
 
         if(!phone.isStandardized())
@@ -135,11 +135,11 @@ public class ValidateData {
     public void validatePassword(String value) {
 
         if(value == null)
-            throw new NullElementException("O a senha passada é invalida");
+            throw new NullElementException("A senha informada não pode ser nula.");
         Password password = new Password(value);
 
         if(!password.isStandardized())
-            throw new InvalidFormatException("A senha passado está em um formato não valido");
+            throw new InvalidFormatException("A senha passada está em um formato não valido.");
 
     }
     
