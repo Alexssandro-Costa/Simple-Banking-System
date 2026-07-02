@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.*;
 import org.jspecify.annotations.Nullable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,20 +14,6 @@ import com.project.simple_banking_system.model.valueObjects.AccountNumber;
 import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.model.valueObjects.Password;
 import com.project.simple_banking_system.model.valueObjects.Status;
-
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 
 
 /**
@@ -35,6 +23,7 @@ import jakarta.persistence.Table;
  * @version 3
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "conta")
 public class Account{
 
@@ -69,7 +58,7 @@ public class Account{
 
     public Account() {
         this.accountNumber = new AccountNumber();
-        balance = new Cash();
+        balance = new Cash(0);
         status = Status.HABILITADA;
 
     }

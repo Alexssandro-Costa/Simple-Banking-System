@@ -6,6 +6,7 @@ import com.project.simple_banking_system.model.DTOs.Response.TransactionResponse
 import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.entity.Transaction;
 import com.project.simple_banking_system.repository.AccountRepository;
+import com.project.simple_banking_system.repository.TransactionRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,10 @@ public class PerformTransfer {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
+
 
     /**
      * Executa a operação de transferência.
@@ -56,9 +61,9 @@ public class PerformTransfer {
         receiverTransaction.setAccount(receiver);
 
         // salva a operaçãp no banco de dados
-        accountRepository.save(sender);
-        accountRepository.save(receiver);
 
+        transactionRepository.save(transaction);
+        transactionRepository.save(receiverTransaction);
 
         // retorna um dto de resposta
         return new TransactionResponse(

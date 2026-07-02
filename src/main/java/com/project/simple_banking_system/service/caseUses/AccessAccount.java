@@ -41,8 +41,14 @@ public class AccessAccount {
      */
     public AccessAccountResponse execute() {
 
-        // recupera os dados do cliente no banco de dados
-        Client client = getEntityFromRepository.getClientById(decodeToken.execute(), clientRepository);
+        Client client = null;
+        try {
+            // recupera os dados do cliente no banco de dados
+            client = getEntityFromRepository.getClientById(decodeToken.execute(), clientRepository);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // verifica se a conta está ativa
         if( client.getAccount().getStatus() == Status.DESABILITADA)

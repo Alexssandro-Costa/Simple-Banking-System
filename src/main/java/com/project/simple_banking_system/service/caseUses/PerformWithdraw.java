@@ -9,6 +9,7 @@ import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.entity.Transaction;
 import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.repository.AccountRepository;
+import com.project.simple_banking_system.repository.TransactionRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class PerformWithdraw {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private TransactionRepository transactionRepository;
+
     /**
      * Executa a operação de saque.
      * @param account Conta bancaria relacionada.
@@ -46,7 +50,10 @@ public class PerformWithdraw {
         account.getTransactions().add(transaction);
         transaction.setAccount(account);
 
-        accountRepository.save(account);
+        // salva a operação no banco
+        transactionRepository.save(transaction);
+
+
 
         // retorna um dto de resposta
         return new TransactionResponse(

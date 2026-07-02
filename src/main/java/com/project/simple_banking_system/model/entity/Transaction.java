@@ -33,6 +33,7 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "transacao")
+@EntityListeners(AuditingEntityListener.class)
 public class Transaction {
 
     @Id
@@ -45,7 +46,7 @@ public class Transaction {
     private Cash value;
 
     
-    @Column(name = "data-emissao", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
+    @Column(name = "data-emissao", nullable = false, updatable = false)
     @CreatedDate
     private Instant date;
 

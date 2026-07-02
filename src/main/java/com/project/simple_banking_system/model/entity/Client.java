@@ -100,7 +100,7 @@ public class Client extends Person implements UserDetails{
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.emptyList();
     }
 
 

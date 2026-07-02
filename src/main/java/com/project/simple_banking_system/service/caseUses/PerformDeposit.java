@@ -9,6 +9,7 @@ import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.entity.Transaction;
 import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.repository.AccountRepository;
+import com.project.simple_banking_system.repository.TransactionRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,36 +30,42 @@ public class PerformDeposit {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private TransactionRepository transactionRepository;
+
     /**
      * Execute a operação de deposito.
      * @param account Conta bancaria relacionada.
      * @param transaction Transcação que deve ser realizada.
      */
+    @Transactional
     protected TransactionResponse execute(@NonNull Account account, @NonNull Transaction transaction) {
 
-        // valida os dados passados
-        validate(account, transaction.getValue());
+            // valida os dados passados
+            validate(account, transaction.getValue());
 
-        // realiza a operação
-        Cash balance = account.getBalance();
-        balance.add(transaction.getValue());
-        account.setBalance(balance);
+            // realiza a operação
+            Cash balance = account.getBalance();
+            balance.add(transaction.getValue());
+            account.setBalance(balance);
 
-        // registra a transação no histórico da conta
-        account.getTransactions().add(transaction);
-        transaction.setAccount(account);
+            // registra a transação no histórico da conta
+            account.getTransactions().add(transaction);
+            transaction.setAccount(account);
 
-        accountRepository.save(account);
+            // salva a operação no banco
+            transactionRepository.save(transaction);
 
-        // retorna um dto de resposta
-        return new TransactionResponse(
-                String.valueOf(transaction.getId()),
-                transaction.getTransactionType().name(),
-                transaction.getValue().toString(),
-                transaction.getAccount().getBalance().toString(),
-                transaction.getReceiver(),
-                transaction.getDate().toString()
-        );
+            // retorna um dto de resposta
+            return new TransactionResponse(
+                    String.valueOf(transaction.getId()),
+                    transaction.getTransactionType().name(),
+                    transaction.getValue().toString(),
+                    transaction.getAccount().getBalance().toString(),
+                    transaction.getReceiver(),
+                    transaction.getDate().toString()
+            );
+
 
     }
 
