@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.simple_banking_system.model.DTOs.Request.LoginRequest;
 import com.project.simple_banking_system.model.DTOs.Request.RegisterRequest;
-import com.project.simple_banking_system.service.caseUses.AuthenticateClient;
-import com.project.simple_banking_system.service.caseUses.RegisterNewClient;
+import com.project.simple_banking_system.service.Auth.AuthenticateClient;
+import com.project.simple_banking_system.service.UseCases.RegisterNewClient;
 
 import io.swagger.v3.oas.annotations.Operation;
 

@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.simple_banking_system.model.DTOs.Request.ChangeStatusRequest;
 import com.project.simple_banking_system.model.DTOs.Request.TransactionRequest;
 // classes de serviço
-import com.project.simple_banking_system.service.caseUses.AccessAccount;
-import com.project.simple_banking_system.service.caseUses.ChangeAccountStatus;
-import com.project.simple_banking_system.service.caseUses.CheckStatement;
-import com.project.simple_banking_system.service.caseUses.PerformTransaction;
+import com.project.simple_banking_system.service.UseCases.AccessAccount;
+import com.project.simple_banking_system.service.UseCases.ChangeAccountStatus;
+import com.project.simple_banking_system.service.UseCases.CheckStatement;
+import com.project.simple_banking_system.service.UseCases.PerformTransaction;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
