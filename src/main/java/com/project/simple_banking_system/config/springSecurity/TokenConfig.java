@@ -2,14 +2,13 @@ package com.project.simple_banking_system.config.springSecurity;
 
 import java.time.Instant;
 import java.util.Optional;
-import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.project.simple_banking_system.exceptions.AuthenticationFailedException;
 import com.project.simple_banking_system.model.entity.Client;
 
 
@@ -33,7 +32,8 @@ public class TokenConfig {
      * em variáveis de ambiente ou propriedades externas seguras, e não exposta diretamente no código.
      * </p>
      */
-    private String secret = "secret";
+    @Value("${api.security.token.secret}")
+    private String secret;
 
     /**
      * Gera um token JWT para um cliente recém-autenticado.
