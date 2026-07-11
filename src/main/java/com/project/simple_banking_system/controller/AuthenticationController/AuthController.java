@@ -1,4 +1,4 @@
-package com.project.simple_banking_system.controller;
+package com.project.simple_banking_system.controller.AuthenticationController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
