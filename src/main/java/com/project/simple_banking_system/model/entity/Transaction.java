@@ -45,7 +45,6 @@ public class Transaction {
     @Embedded
     private Cash value;
 
-    
     @Column(name = "data-emissao", nullable = false, updatable = false)
     @CreatedDate
     private Instant date;

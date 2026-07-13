@@ -3,9 +3,6 @@ package com.project.simple_banking_system.model.valueObjects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import com.project.simple_banking_system.exceptions.NullElementException;
 
 import jakarta.persistence.Embeddable;
 
@@ -28,7 +25,6 @@ public class Password {
     }
 
     public Password() {
-        this(null);
     }
     
     public String getValue() {
@@ -39,45 +35,6 @@ public class Password {
         this.value = value;
     }
 
-    /**
-     * Criptografa o conteúdo de uma senha.
-     * @param rawPassword Senha não criptografada.
-     * @exception NullElementException Lançada caso o elemento passado for nulo.
-     * @return encryptedPassword Senha criptografa.
-     */
-    public static Password encrypt(Password rawPassword) {
-
-        if(rawPassword == null || rawPassword.getValue() == null)
-            throw new NullElementException("Elemento nulo informado"); 
-
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-
-        Password encryptedPassword = new Password(bcrypt.encode(rawPassword.getValue()));
-        return encryptedPassword;
-
-   }
-
-
-    /**
-     * Compara uma senha criptografada com uma senha pura. 
-     * @param rawPassword Senha não criptografada.
-     * @param encodedPassword Senha criptografada.
-     * @exception NullElementException Lançada caso um elemento passado for nulo.
-     * @return boolean - Verdadeiro se os elementos forem iguais, falso caso contrario.
-     */
-    public static boolean compare(Password rawPassword, Password encodedPassword) {
-
-        if( ( rawPassword == null || rawPassword.getValue() == null ) || 
-        (encodedPassword == null || encodedPassword.getValue() == null) )
-            throw new NullElementException("Elemento nulo informado");
-
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-
-        return bcrypt.matches(rawPassword.getValue(), encodedPassword.getValue());
-    }
-
-
-    
     /**
      * Verifica se o valor do objeto está no formato padrão.
      * @return verdadeiro se estiver, falso caso contrario.

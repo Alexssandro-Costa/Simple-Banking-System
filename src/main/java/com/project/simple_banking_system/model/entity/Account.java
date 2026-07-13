@@ -35,12 +35,11 @@ public class Account{
 
     @AttributeOverride(name = "value", column = @Column(name = "numero-conta", nullable = false, unique=true))
     @Embedded
-    private AccountNumber accountNumber;
+    private final AccountNumber accountNumber;
 
     @AttributeOverride(name = "value", column = @Column(name = "balanco", nullable = false))
     @Embedded
     private Cash balance;
-
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -83,7 +82,6 @@ public class Account{
     public void setBalance(Cash balance) {
         this.balance = balance;
     }
-
 
     public Status getStatus() {
         return status;

@@ -27,15 +27,6 @@ public class Cpf {
         value = null;
     }
 
-    public String getValue() {
-        return value;
-    }
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-   
-    
     /**
      * Verifica se o valor do objeto está no formato padrão.
      * @return verdadeiro se estiver, falso caso contrario.
@@ -45,6 +36,16 @@ public class Cpf {
         Matcher matcher = CPF_PATTERN.matcher(value);
         return matcher.matches();
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+
     
     
 }

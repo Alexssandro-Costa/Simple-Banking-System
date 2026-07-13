@@ -58,10 +58,8 @@ public class Client extends Person implements UserDetails{
         this.password = password;
         account = new Account();
     }
-    
 
     public Client() {}
-
 
     public UUID getId() {
         return id;
@@ -80,7 +78,6 @@ public class Client extends Person implements UserDetails{
         account.setClient(this);
     }
 
-
     @Override
     public @Nullable String getPassword() {
         return password.getValue();
@@ -94,15 +91,11 @@ public class Client extends Person implements UserDetails{
     public String getUsername() {
         return getCpf().getValue();
     }
-    
 
-
-    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();
     }
-
 
     @Override
     public boolean isAccountNonExpired() { return true; }

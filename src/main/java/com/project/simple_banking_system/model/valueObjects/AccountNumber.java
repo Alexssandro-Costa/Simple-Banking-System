@@ -39,7 +39,6 @@ public class AccountNumber {
         return value;
     }
 
-    
     /**
      * Verifica se o valor do objeto está no formato padrão.
      * @return verdadeiro se estiver, falso caso contrario.
