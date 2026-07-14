@@ -1,8 +1,8 @@
-package com.project.simple_banking_system.service.UseCases;
+package com.project.simple_banking_system.service.use_cases;
 
 import java.util.NoSuchElementException;
 
-import com.project.simple_banking_system.service.Auth.DecodeToken;
+import com.project.simple_banking_system.service.auth.DecodeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

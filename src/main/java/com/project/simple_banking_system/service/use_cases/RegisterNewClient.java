@@ -1,4 +1,4 @@
-package com.project.simple_banking_system.service.UseCases;
+package com.project.simple_banking_system.service.use_cases;
 
 import java.time.LocalDate;
 

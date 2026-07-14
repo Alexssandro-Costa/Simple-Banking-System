@@ -1,6 +1,7 @@
 package com.project.simple_banking_system.controller.BankingOperationsController;
 
 
+import com.project.simple_banking_system.service.use_cases.GetAccountData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.simple_banking_system.model.DTOs.Request.ChangeStatusRequest;
 import com.project.simple_banking_system.model.DTOs.Request.TransactionRequest;
+
 // classes de serviço
-import com.project.simple_banking_system.service.UseCases.AccessAccount;
-import com.project.simple_banking_system.service.UseCases.ChangeAccountStatus;
-import com.project.simple_banking_system.service.UseCases.CheckStatement;
-import com.project.simple_banking_system.service.UseCases.PerformTransaction;
+import com.project.simple_banking_system.service.use_cases.ChangeAccountStatus;
+import com.project.simple_banking_system.service.use_cases.CheckStatement;
+import com.project.simple_banking_system.service.use_cases.PerformTransaction;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,10 +32,10 @@ import jakarta.validation.Valid;
 @Tag(name = "Banking System", description = "Operações bancárias principais")
 @RequestMapping("/api/bank")
 @RestController
-public class BankingSystemController {
+public class OperationsController {
 
     @Autowired
-    private AccessAccount accessAccount;
+    private GetAccountData getAccountData;
 
     @Autowired
     private PerformTransaction performTransaction;
@@ -48,8 +49,8 @@ public class BankingSystemController {
 
     @Operation(description = "Recupera os dados de conta associada ao token de acesso.")
     @PostMapping("/account/access")
-    public ResponseEntity<?> accessAccount() {
-        var result = accessAccount.execute();
+    public ResponseEntity<?> getAccountData() {
+        var result = getAccountData.execute();
         return ResponseEntity.ok(result);
 
     }

@@ -1,4 +1,4 @@
-package com.project.simple_banking_system.service.Auth;
+package com.project.simple_banking_system.service.auth;
 
 
 import com.project.simple_banking_system.config.springSecurity.JWTUserData;

@@ -1,4 +1,4 @@
-package com.project.simple_banking_system.service.Auth;
+package com.project.simple_banking_system.service.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
