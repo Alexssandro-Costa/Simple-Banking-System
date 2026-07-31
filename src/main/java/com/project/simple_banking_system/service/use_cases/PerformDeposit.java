@@ -26,10 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PerformDeposit {
 
-
-    @Autowired
-    private AccountRepository accountRepository;
-
     @Autowired
     private TransactionRepository transactionRepository;
 

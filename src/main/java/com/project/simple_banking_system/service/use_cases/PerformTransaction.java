@@ -34,21 +34,20 @@ public class PerformTransaction {
 
 
     @Autowired
-    ClientRepository clientRepository;
-    @Autowired
-    TransactionRepository transactionRepository;
-    @Autowired
-    AccountRepository accountRepository;
+    private ClientRepository clientRepository;
 
     @Autowired
-    PerformDeposit performDeposit;
-    @Autowired
-    PerformWithdraw performWithdraw;
-    @Autowired
-    PerformTransfer performTransfer;
+    private AccountRepository accountRepository;
 
     @Autowired
-    DecodeToken decodeToken;
+    private PerformDeposit performDeposit;
+    @Autowired
+    private PerformWithdraw performWithdraw;
+    @Autowired
+    private PerformTransfer performTransfer;
+
+    @Autowired
+    private DecodeToken decodeToken;
 
 
     /**

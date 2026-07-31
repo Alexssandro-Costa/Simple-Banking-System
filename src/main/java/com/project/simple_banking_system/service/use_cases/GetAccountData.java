@@ -25,19 +25,19 @@ public class GetAccountData {
 
     // inicializa automaticamente o repositorio. 
     @Autowired
-    ClientRepository clientRepository;
+    private ClientRepository clientRepository;
 
     @Autowired
-    DecodeToken decodeToken;
+    private DecodeToken decodeToken;
     @Autowired
-    GetEntityFromRepository getEntityFromRepository;
+    private GetEntityFromRepository getEntityFromRepository;
 
     /**
      * Acessa uma conta bancaria existente.
      * @return Retorna os dados da conta bancaria encapsulados pelo DTO AccessAccountResponse.
      * @exception DisabledAccountException Lançada quando uma conta desabilitada tenta ser acessada.
      */
-    public AccessAccountResponse execute() {
+    public AccountDataResponse execute() {
 
             // recupera os dados do cliente no banco de dados
         Client client = getEntityFromRepository.getClientById(decodeToken.execute(), clientRepository);

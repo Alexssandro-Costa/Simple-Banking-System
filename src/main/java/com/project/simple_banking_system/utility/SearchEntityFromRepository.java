@@ -23,7 +23,7 @@ import java.util.UUID;
  * @since release 3
  */
 @Component
-public class GetEntityFromRepository {
+public class SearchEntityFromRepository {
 
 
     /**
@@ -67,7 +67,6 @@ public class GetEntityFromRepository {
      * @exception ClientNotFoundException Lançada quando não é possível encontrar um cliente com Id correspondente.
      */
     public Client getClientById(@NonNull UUID id, @NonNull ClientRepository repository) {
-
 
         try {
             return repository.findById(id).orElseThrow();

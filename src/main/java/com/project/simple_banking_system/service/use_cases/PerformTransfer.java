@@ -26,9 +26,6 @@ import java.math.BigDecimal;
 public class PerformTransfer {
 
     @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
     private TransactionRepository transactionRepository;
 
 

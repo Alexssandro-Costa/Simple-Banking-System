@@ -28,10 +28,10 @@ public class ChangeAccountStatus {
 
     // incializa o repositorio automaticamente
     @Autowired
-    ClientRepository clientRepository;
+    private ClientRepository clientRepository;
 
     @Autowired
-    DecodeToken decodeToken;
+    private DecodeToken decodeToken;
 
     /**
      * Muda o status atual de uma conta bancaria.

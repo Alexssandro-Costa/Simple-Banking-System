@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.simple_banking_system.model.DTOs.Request.RegisterRequest;
-import com.project.simple_banking_system.model.DTOs.Response.RegisterUserResponse;
+import com.project.simple_banking_system.model.DTOs.Response.RegisterResponse;
 import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.entity.Client;
 import com.project.simple_banking_system.model.valueObjects.Cpf;
@@ -34,13 +34,13 @@ public class RegisterNewClient {
 
     /// Inicializa automaticamente o repositorio. 
     @Autowired
-    ClientRepository clientRepository;
+    private ClientRepository clientRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    ValidateData validateData;
+    private ValidateData validateData;
 
 
     /**
@@ -49,7 +49,7 @@ public class RegisterNewClient {
      * @return Retorna o Username e o Password do usuario encapsulados pelo DTO RegisterUserResponse. 
      */
     @Transactional
-    public RegisterUserResponse execute(RegisterRequest registerRequest) {
+    public RegisterResponse register(RegisterRequest registerRequest) {
 
         // valida os dados passados
         validate(registerRequest);

@@ -8,7 +8,6 @@ import com.project.simple_banking_system.exceptions.InvalidDateException;
 import com.project.simple_banking_system.exceptions.InvalidEnumValueException;
 import com.project.simple_banking_system.exceptions.InvalidFormatException;
 import com.project.simple_banking_system.exceptions.NullElementException;
-import com.project.simple_banking_system.model.DTOs.Request.RegisterRequest;
 import com.project.simple_banking_system.model.valueObjects.Cpf;
 import com.project.simple_banking_system.model.valueObjects.DateBirth;
 import com.project.simple_banking_system.model.valueObjects.Gender;

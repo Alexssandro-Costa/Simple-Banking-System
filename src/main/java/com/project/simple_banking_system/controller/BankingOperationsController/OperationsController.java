@@ -55,7 +55,7 @@ public class OperationsController {
 
     }
 
-    @Operation(description = "Realiza transações de retirada, deposito e transferências bancarias.")
+    @Operation(summary = "Realiza transações bancarias ")
     @PostMapping("/account/transaction")
     public ResponseEntity<?> performTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
         var result = performTransaction.execute(transactionRequest);

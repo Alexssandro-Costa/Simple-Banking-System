@@ -33,13 +33,13 @@ public class AuthenticateClient {
      * Gerenciador de autenticação nativo do Spring Security configurado para validar as credenciais.
      */
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     /**
      * Componente de configuração responsável por gerar e gerenciar o ciclo de vida dos tokens JWT.
      */
     @Autowired
-    TokenConfig tokenConfig;
+    private TokenConfig tokenConfig;
 
 
     /**

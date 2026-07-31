@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  */
 @Service
-public class DecodeToken {
+public class GetTokenData {
 
 
     /**
@@ -35,7 +35,7 @@ public class DecodeToken {
      * @throws TokenDecodificationFailedException Lançada quando o contexto de segurança está vazio,
      * inválido ou o principal não corresponde ao tipo esperado.
      */
-    public UUID execute() {
+    public UUID getId() {
 
         try {
             // Obtém o objeto de maior privilégio (Principal) armazenado no contexto de segurança da requisição atual

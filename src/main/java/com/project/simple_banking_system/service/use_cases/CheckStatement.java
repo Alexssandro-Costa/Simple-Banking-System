@@ -26,10 +26,10 @@ public class CheckStatement {
 
     // inicializa automaticamente
     @Autowired
-    ClientRepository clientRepository;
+    private ClientRepository clientRepository;
 
     @Autowired
-    DecodeToken decodeToken;
+    private DecodeToken decodeToken;
   
     /**
     * Executa a busca do extratos bancario de uma conta.
