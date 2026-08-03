@@ -8,7 +8,6 @@ import com.project.simple_banking_system.service.auth.DecodeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.simple_banking_system.exceptions.AccountNotFoundException;
 import com.project.simple_banking_system.exceptions.NullElementException;
 import com.project.simple_banking_system.model.DTOs.Response.CheckStatementResponse;
 import com.project.simple_banking_system.model.entity.Client;

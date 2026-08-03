@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.project.simple_banking_system.exceptions.AccountNotFoundException;
 import com.project.simple_banking_system.exceptions.InvalidEnumValueException;
 import com.project.simple_banking_system.exceptions.InvalidTransactionException;
 import com.project.simple_banking_system.exceptions.NullElementException;
@@ -21,7 +20,6 @@ import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.model.valueObjects.TransactionType;
 import com.project.simple_banking_system.repository.AccountRepository;
 import com.project.simple_banking_system.repository.ClientRepository;
-import com.project.simple_banking_system.repository.TransactionRepository;
 
 /**
  * Classe de serviço que realiza uma transação bancaria.

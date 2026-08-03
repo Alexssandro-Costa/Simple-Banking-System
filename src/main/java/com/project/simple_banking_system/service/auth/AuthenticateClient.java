@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 
 import com.project.simple_banking_system.config.springSecurity.TokenConfig;
-import com.project.simple_banking_system.exceptions.AccountNotFoundException;
 import com.project.simple_banking_system.exceptions.AuthenticationFailedException;
 import com.project.simple_banking_system.model.DTOs.Request.LoginRequest;
 import com.project.simple_banking_system.model.DTOs.Response.LoginResponse;

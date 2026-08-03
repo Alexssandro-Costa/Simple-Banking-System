@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import com.project.simple_banking_system.exceptions.AccountNotFoundException;
 import com.project.simple_banking_system.model.valueObjects.Cpf;
 import com.project.simple_banking_system.repository.ClientRepository;
 

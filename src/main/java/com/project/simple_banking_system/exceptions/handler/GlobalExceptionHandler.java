@@ -1,7 +1,7 @@
-package com.project.simple_banking_system.exceptions;
+package com.project.simple_banking_system.exceptions.handler;
 
+import com.project.simple_banking_system.exceptions.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,24 +12,14 @@ import com.project.simple_banking_system.model.DTOs.Response.ErrorMessageDTO;
 public class GlobalExceptionHandler {
 
     /**
-     * Exceção lançada quando uma conta não pode ser encontrada no banco de dados.
+     * Exceção lançada quando uma entidade não podê ser encontrada em um repositório existente.
      * @param e Exceção que deve ser lançada
      * @return ErrorMessageDTO uma mensagem de erro personalizada.
      */
-    @ExceptionHandler(AccountNotFoundException.class)
-    public ResponseEntity<ErrorMessageDTO> handleAccountNotFoundError(AccountNotFoundException e ) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorMessageDTO> handleAccountNotFoundError(EntityNotFoundException e ) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessageDTO(e.getMessage()));
 
-    }
-
-    /**
-     * Exceção lançada quando um cliente não podê ser encontrado no banco de dados.
-     * @param e Exceção que deve ser lançada
-     * @return ErrorMessageDTO uma mensagem de erro personalizada.
-     */
-    @ExceptionHandler(ClientNotFoundException.class)
-    public ResponseEntity<ErrorMessageDTO> handleClientNotFoundError(ClientNotFoundException e) {
-        return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessageDTO(e.getMessage()));
     }
     
     /**
