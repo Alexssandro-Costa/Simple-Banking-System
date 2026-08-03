@@ -1,8 +1,7 @@
 package com.project.simple_banking_system.service.use_cases;
 
-import java.util.NoSuchElementException;
-
-import com.project.simple_banking_system.service.auth.DecodeToken;
+import com.project.simple_banking_system.service.auth.GetTokenData;
+import com.project.simple_banking_system.utility.SearchEntityFromRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,7 @@ import com.project.simple_banking_system.repository.ClientRepository;
  * Classe de serviço que troca o status atual de uma conta bancaria.
  * @author Alexssandro
  * @since release 3
- * @version 2.0
+ * @version 2.1
  */
 @Service
 @Transactional
@@ -30,32 +29,28 @@ public class ChangeAccountStatus {
     private ClientRepository clientRepository;
 
     @Autowired
-    private DecodeToken decodeToken;
+    private SearchEntityFromRepository searchEntityFromRepository;
+
+    @Autowired
+    private GetTokenData getTokenData;
 
     /**
      * Muda o status atual de uma conta bancaria.
      * @param changeStatusRequest Requisição de mudança de status.
-     * @exception AccountNotFoundException Lançada quando não é possivel encontrar a conta associada.
      */
     public void execute(ChangeStatusRequest changeStatusRequest) {
 
-        // valida os inputs passados
+        // valida as entradas passados
         validate(changeStatusRequest);
 
-        try{
-            // procura a conta associada
-            Client client = clientRepository.findById(decodeToken.execute()).orElseThrow();
+        // procura a conta do cliente
+        Client client = searchEntityFromRepository.getEntityById(getTokenData.getId(), clientRepository);
 
-            // Insere o novo status da conta
-            client.getAccount().setStatus(Status.valueOf(changeStatusRequest.newStatus().toUpperCase()));
+        // realiza a mudança de status na conta
+        client.getAccount().setStatus(Status.valueOf(changeStatusRequest.newStatus().toUpperCase()));
 
-            // salva o mudança
-            clientRepository.save(client);
-
-        }catch(NoSuchElementException e) {
-            throw new AccountNotFoundException("Não foi possivel encontrar a conta associada.");
-        }
-
+        // salva a mudança
+        clientRepository.save(client);
 
     }
 

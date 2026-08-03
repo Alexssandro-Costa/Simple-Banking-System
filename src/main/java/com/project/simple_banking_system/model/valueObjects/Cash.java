@@ -15,13 +15,13 @@ import org.jspecify.annotations.NonNull;
 @Embeddable
 public class Cash {
 
-   private BigDecimal value;
+    private BigDecimal value;
 
-   public Cash(BigDecimal value) {
+    public Cash(BigDecimal value) {
         this.value = value;
    }
 
-   public Cash(Double value) { this.value = BigDecimal.valueOf(value); }
+    public Cash(Double value) { this.value = BigDecimal.valueOf(value); }
 
     public Cash(double value) { this.value = BigDecimal.valueOf(value); }
 
@@ -29,27 +29,28 @@ public class Cash {
 
     public Cash(Integer value) { this.value = BigDecimal.valueOf(value);  }
 
+    public Cash(String value) { this.value = BigDecimal.valueOf(Double.parseDouble(value)); }
+
     public Cash() { }
 
-
-   public BigDecimal getValue() {
+    public BigDecimal getValue() {
         return value;
    }
 
-   public void setValue(BigDecimal value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
    }
 
-   public void add(@NonNull Cash cash) {
+    public void add(@NonNull Cash cash) {
        value = value.add(cash.getValue());
    }
 
-   public void subtract(@NonNull Cash cash) {
+    public void subtract(@NonNull Cash cash) {
        value = value.subtract(cash.getValue());
    }
 
-   @Override
-   public String toString() {
+    @Override
+    public String toString() {
         return value.toEngineeringString();
     }
 

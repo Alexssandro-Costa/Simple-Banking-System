@@ -1,8 +1,10 @@
 package com.project.simple_banking_system.model.entity;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.project.simple_banking_system.model.DTOs.Request.TransactionRequest;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -29,7 +31,7 @@ import jakarta.persistence.Table;
  * Entidade que armazena as transações realizadas.
  * @author Alexssandro
  * @since release 1
- * @version 1
+ * @version 1.1
  */
 @Entity
 @Table(name = "transacao")
@@ -69,6 +71,14 @@ public class Transaction {
         this.transactionType = transactionType;
         this.receiver = receiver;
         this.sender = sender;
+    }
+
+    public Transaction(TransactionRequest transactionRequest) {
+        value = new Cash(transactionRequest.value());
+        transactionType = TransactionType.valueOf(transactionRequest.transactionType().toUpperCase());
+        receiver = transactionRequest.receiver().toUpperCase();
+        sender = transactionRequest.sender().toUpperCase();
+
     }
 
     public Transaction() {

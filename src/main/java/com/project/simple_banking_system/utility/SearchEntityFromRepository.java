@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 /**
  * Pesquisa uma entidade no seu respectivo repositório, e a retorna.
  * @author Alexssandro
- * @version 1.0
+ * @version 2.0
  * @since release 3
  */
 @Component

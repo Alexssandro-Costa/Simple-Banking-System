@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.project.simple_banking_system.model.entity.Account;
+import com.project.simple_banking_system.repository.TransactionRepository;
 import com.project.simple_banking_system.service.auth.DecodeToken;
+import com.project.simple_banking_system.service.auth.GetTokenData;
+import com.project.simple_banking_system.utility.SearchEntityFromRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,49 +27,39 @@ import com.project.simple_banking_system.repository.ClientRepository;
 @Service
 public class CheckStatement {
 
-    // inicializa automaticamente
     @Autowired
     private ClientRepository clientRepository;
 
     @Autowired
-    private DecodeToken decodeToken;
+    private TransactionRepository transactionRepository;
+
+    @Autowired
+    private SearchEntityFromRepository searchEntityFromRepository;
+
+    @Autowired
+    private GetTokenData getTokenData;
   
     /**
     * Executa a busca do extratos bancario de uma conta.
     * @return TransactionsDTO - Uma lista das transações realizadas pela conta.
-    * @exception AccountNotFoundException Lançada quando uma conta não pode ser encontrada.
-    * @exception NullElementException Lançada quando um elemento é nulo.
     */
   public List<CheckStatementResponse> execute() {
 
-    try {
+      // recupera a conta do usuário atual
+      Account userAccount = searchEntityFromRepository.
+              getEntityById(getTokenData.getId(), clientRepository).getAccount();
 
-      // autentica e recupera o cliente 
-      Client client = clientRepository.findById(decodeToken.execute()).orElseThrow();
+      List<Transaction> transactions = userAccount.getTransactions();
 
-      // recupera todas as transações realizadas pela conta
-      List<Transaction> transactions = client.getAccount().getTransactions();
-      List<CheckStatementResponse> checkStatementResponseList = new ArrayList<CheckStatementResponse>();
-
-
-      // transforma as transações em DTOs
-      for(int index = 0; index < transactions.size(); index ++) {
-
-        checkStatementResponseList.add( new CheckStatementResponse(
-          transactions.get(index).getId().toString(), 
-          transactions.get(index).getTransactionType().name(),
-          transactions.get(index).getValue().getValue().toEngineeringString(),
-          String.valueOf(transactions.get(index).getReceiver()),
-          transactions.get(index).getDate().toString()
-        ));
-      }
-
-
-      return checkStatementResponseList;
-        
-      } catch (NoSuchElementException e) {
-        throw new AccountNotFoundException("Não foi possivel encontrar a conta associada");
-      }
-
-    }
+      // retorna um dto das transações associadas a conta
+      return transactions
+              .stream()
+              .map(transaction -> new CheckStatementResponse(
+                      transaction.getId(),
+                      transaction.getTransactionType(),
+                      transaction.getValue(),
+                      transaction.getReceiver(),
+                      transaction.getDate()
+              )).toList();
+  }
 }

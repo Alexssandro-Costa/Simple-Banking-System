@@ -1,9 +1,8 @@
 package com.project.simple_banking_system.service.use_cases;
 
-import java.math.BigDecimal;
-import java.util.NoSuchElementException;
 
-import com.project.simple_banking_system.service.auth.DecodeToken;
+import com.project.simple_banking_system.service.auth.GetTokenData;
+import com.project.simple_banking_system.utility.SearchEntityFromRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +14,6 @@ import com.project.simple_banking_system.model.DTOs.Request.TransactionRequest;
 import com.project.simple_banking_system.model.DTOs.Response.TransactionResponse;
 import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.entity.Transaction;
-import com.project.simple_banking_system.model.valueObjects.AccountNumber;
-import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.model.valueObjects.TransactionType;
 import com.project.simple_banking_system.repository.AccountRepository;
 import com.project.simple_banking_system.repository.ClientRepository;
@@ -25,7 +22,7 @@ import com.project.simple_banking_system.repository.ClientRepository;
  * Classe de serviço que realiza uma transação bancaria.
  * @author Alexssandro
  * @since release 3
- * @version 2.1
+ * @version 2.3
  */
 @Service
 public class PerformTransaction {
@@ -45,13 +42,15 @@ public class PerformTransaction {
     private PerformTransfer performTransfer;
 
     @Autowired
-    private DecodeToken decodeToken;
+    private GetTokenData getTokenData;
+
+    @Autowired
+    private SearchEntityFromRepository searchEntityFromRepository;
 
 
     /**
      * Executa a operação de transação.
      * @param transactionRequest Requisição de transação.
-     * @exception AccountNotFoundException Lançada quando uma conta bancaria não pode ser achada.
      * @exception InvalidTransactionException Lançada quando uma transação falha
      * 
      */
@@ -60,33 +59,23 @@ public class PerformTransaction {
 
         // valida as informações inseridas;
         validate(transactionRequest);
-        Account userAccount;
 
-        try {
-            // busca a conta do client loggado
-            userAccount = clientRepository.findById(decodeToken.execute()).orElseThrow().getAccount();
-        } catch (NoSuchElementException e) {
-            throw new AccountNotFoundException("Não foi possivel encontrar a conta associada");
-        }
+        // Busca a conta do usuario atual
+        Account userAccount = searchEntityFromRepository
+                .getEntityById(getTokenData.getId(), clientRepository).getAccount();
     
-        // cria uma nova entidade transaction
-        Transaction transaction = new Transaction(
-            new Cash(new BigDecimal(transactionRequest.value())), 
-            TransactionType.valueOf(transactionRequest.transactionType().toUpperCase()), 
-            transactionRequest.sender().toUpperCase(),
-            transactionRequest.receiver().toUpperCase());
-       
+        // cria uma transação
+        Transaction transaction = new Transaction(transactionRequest);
+
+        // realiza a transação baseada no tipo
+        // TO DO: Substituir por um factory method
         if(transaction.getTransactionType() == TransactionType.TRANSFERENCIA) {
 
-            Account accountReceiver;
-            try {
-                // recupera a conta de destino da transferência
-                accountReceiver = accountRepository.findByAccountNumber(new AccountNumber(transaction.getReceiver())).orElseThrow();
-            } catch (NoSuchElementException e) {
-                throw new AccountNotFoundException("Não foi possivel encontrar a conta destinataria.");
-            }
-            return performTransfer.execute(userAccount, accountReceiver, transaction);
+            // recupera a conta de destino da transferência
+            Account accountReceiver = searchEntityFromRepository
+                    .getAccountByAccountNumber(transaction.getReceiver(), accountRepository);
 
+            return performTransfer.execute(userAccount, accountReceiver, transaction);
         }
         else if(transaction.getTransactionType() == TransactionType.DEPOSITO) {
             return performDeposit.execute(userAccount, transaction);
@@ -123,7 +112,7 @@ public class PerformTransaction {
             throw  new NullElementException("Remetente não pode ser nulo.");
 
         try {
-            // tenta converter a string para um enum.
+            // verifica se a string passada representa um enum valido
             TransactionType.valueOf(transactionRequest.transactionType().toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new InvalidEnumValueException("O tipo de transação passado é invalido");
