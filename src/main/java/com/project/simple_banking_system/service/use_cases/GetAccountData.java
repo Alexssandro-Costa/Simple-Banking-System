@@ -2,7 +2,7 @@ package com.project.simple_banking_system.service.use_cases;
 
 
 import com.project.simple_banking_system.service.auth.GetTokenData;
-import com.project.simple_banking_system.utility.SearchEntityFromRepository;
+import com.project.simple_banking_system.service.util.SearchEntityFromRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

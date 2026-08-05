@@ -12,7 +12,7 @@ import com.project.simple_banking_system.model.DTOs.Response.RegisterResponse;
 import com.project.simple_banking_system.model.entity.Client;
 import com.project.simple_banking_system.repository.ClientRepository;
 import com.project.simple_banking_system.service.auth.AuthenticateClient;
-import com.project.simple_banking_system.utility.ValidateData;
+import com.project.simple_banking_system.service.util.ValidateData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.project.simple_banking_system.utility;
+package com.project.simple_banking_system.service.util;
 
 
 import java.time.LocalDate;

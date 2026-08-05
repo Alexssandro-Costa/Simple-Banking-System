@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import com.project.simple_banking_system.exceptions.NullElementException;
 import com.project.simple_banking_system.model.DTOs.Request.AuthenticationRequest;
-import com.project.simple_banking_system.model.DTOs.Response.AuthenticationResponse;
 import com.project.simple_banking_system.service.auth.AuthenticateClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,14 +21,14 @@ import com.project.simple_banking_system.model.valueObjects.Name;
 import com.project.simple_banking_system.model.valueObjects.Password;
 import com.project.simple_banking_system.model.valueObjects.Phone;
 import com.project.simple_banking_system.repository.ClientRepository;
-import com.project.simple_banking_system.utility.ValidateData;
+import com.project.simple_banking_system.service.util.ValidateData;
 
 
 /**
  * Classe de serviço que cria uma entidade Cliente.
  * @author Alexssandro
  * @since release 3
- * @version 2.1
+ * @version 2.2
  */
 @Service
 public class RegisterNewClient {

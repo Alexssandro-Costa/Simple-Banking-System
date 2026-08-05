@@ -5,13 +5,11 @@ import java.util.List;
 import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.repository.TransactionRepository;
 import com.project.simple_banking_system.service.auth.GetTokenData;
-import com.project.simple_banking_system.utility.SearchEntityFromRepository;
+import com.project.simple_banking_system.service.util.SearchEntityFromRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.simple_banking_system.exceptions.NullElementException;
 import com.project.simple_banking_system.model.DTOs.Response.CheckStatementResponse;
-import com.project.simple_banking_system.model.entity.Client;
 import com.project.simple_banking_system.model.entity.Transaction;
 import com.project.simple_banking_system.repository.ClientRepository;
 
