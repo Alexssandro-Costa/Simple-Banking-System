@@ -6,6 +6,21 @@ Ao longo do desenvolvimento, o projeto passou por diversas refatorações arquit
 
 ---
 
+## Índice
+* [Funcionalidades](#Funcionalidades)
+* [Evolução do Projeto](#Evolução-do-Projeto)
+* [Arquitetura](#Arquitetura)
+* [Modelagem de Domínio](#Modelagem-de-Domínio)
+* [Segurança](#Segurança)
+* [Testes Automatizados](#Testes-Automatizados)
+* [Tecnologias Utilizadas](#Tecnologias-Utilizadas)
+* [Próximos Passos](#Próximos-Passos)
+* [Como Executar](#Como-Executar)
+* [Objetivo Educacional](#Objetivo-Educacional)
+* [Documentação](#Documentação)
+
+---
+
 ## Funcionalidades
 
 * Criação de contas bancárias
@@ -258,3 +273,12 @@ Este projeto foi desenvolvido com foco em aprendizado prático e evolução cont
 * Segurança de Aplicações
 * Testes Automatizados
 * Desenvolvimento Backend com Spring Boot
+
+---
+
+## Documentação
+
+Documentação complementar do projeto:
+
+- [Arquitetura da Aplicação](ARCHITECTURE.md)
+- Documentação da API (Em desenvolvimento)
