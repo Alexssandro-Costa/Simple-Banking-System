@@ -1,8 +1,9 @@
 # (EM CONSTRUÇÃO)
 
+
 # DIAGRAMAS
 
-## CASOS DE USO
+## Casos de uso
 ![Diagrama de casos de uso_02-07-2026](https://github.com/Alexssandro-Costa/Simple-Banking-System/blob/main/docs/images/UseCase.jpg)
 
 
@@ -25,5 +26,22 @@ Alterar Status da Conta
 
 ## Classes
 
+### Controle
+![Diagrama de Classes_Controle - 05-08-2026](https://github.com/Alexssandro-Costa/Simple-Banking-System/blob/main/docs/images/Classes_Controllers.jpg)
+
+### Serviço
+![Diagrama de Classes_Servico - 05-08-2026](https://github.com/Alexssandro-Costa/Simple-Banking-System/blob/main/docs/images/Classes_Services.jpg)
+
+### Modelos de Domínio
+![Diagrama de Classes_Dominio - 05-08-2026](https://github.com/Alexssandro-Costa/Simple-Banking-System/blob/main/docs/images/Classes_Model.jpg)
+
+### Utilitários
+![Diagrama de Classes_Util - 05-08-2026](https://github.com/Alexssandro-Costa/Simple-Banking-System/blob/main/docs/images/Classes_util.jpg)
 
 ## Entidade-Relacionamento
+
+### Conceitual
+![DER_Conceitual - 05-08-2026](https://github.com/Alexssandro-Costa/Simple-Banking-System/blob/main/docs/images/DER_Conceitual.JPG)
+
+### Lógico
+![DER_Logico - 05-08-2026](https://github.com/Alexssandro-Costa/Simple-Banking-System/blob/main/docs/images/DER_logico.JPG)
