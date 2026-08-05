@@ -6,10 +6,10 @@ Os diagramas descrevem o comportamento da aplicação, a estrutura das classes e
 
 ## Índice
 
-- Diagrama de Casos de Uso
-- Diagramas de Classes
-- Modelo de Dados
-- Fluxo da Aplicação
+- [Diagrama de Casos de Uso](#Diagrama-de-Casos-de-Uso)
+- [Diagramas de Classes](#Diagramas-de-Classes)
+- [Modelo de Dados](#Modelo-de-Dados)
+- [Fluxo da Aplicação](#Fluxo-da-Aplicação---Diagrama-de-sequencia(Em-construção))
 
 ---
 
