@@ -59,6 +59,7 @@ public class Client extends Person implements UserDetails{
         account = new Account();
     }
 
+
     public Client() {}
 
     public UUID getId() {

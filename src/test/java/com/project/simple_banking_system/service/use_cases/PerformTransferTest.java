@@ -8,6 +8,7 @@ import com.project.simple_banking_system.model.entity.Transaction;
 import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.model.valueObjects.TransactionType;
 import com.project.simple_banking_system.repository.AccountRepository;
+import com.project.simple_banking_system.repository.TransactionRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,6 +31,9 @@ class PerformTransferTest {
 
     @Mock
     AccountRepository accountRepository;
+
+    @Mock
+    TransactionRepository transactionRepository;
 
     @InjectMocks
     PerformTransfer performTransfer;

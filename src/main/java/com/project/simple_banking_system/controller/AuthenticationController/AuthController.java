@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.simple_banking_system.model.DTOs.Request.LoginRequest;
+import com.project.simple_banking_system.model.DTOs.Request.AuthenticationRequest;
 import com.project.simple_banking_system.model.DTOs.Request.RegisterRequest;
 import com.project.simple_banking_system.service.auth.AuthenticateClient;
 import com.project.simple_banking_system.service.use_cases.RegisterNewClient;
@@ -36,15 +36,15 @@ public class AuthController {
 
     @Operation(summary = "autentica uma tentativa de login")
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
-        var result = authenticateClient.execute(loginRequest); 
+    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
+        var result = authenticateClient.execute(authenticationRequest);
         return ResponseEntity.ok(result);
     }
 
     @Operation(summary = "Registra um novo cliente", description = "Cria uma conta e um cliente no banco")
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        var result = registerNewClient.execute(registerRequest);
+        var result = registerNewClient.register(registerRequest);
         return ResponseEntity.ok(result);
     }
 

@@ -1,5 +1,7 @@
 package com.project.simple_banking_system.service.auth;
 
+import com.project.simple_banking_system.exceptions.EntityNotFoundException;
+import com.project.simple_banking_system.model.DTOs.Response.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -9,8 +11,7 @@ import org.springframework.security.core.Authentication;
 
 import com.project.simple_banking_system.config.springSecurity.TokenConfig;
 import com.project.simple_banking_system.exceptions.AuthenticationFailedException;
-import com.project.simple_banking_system.model.DTOs.Request.LoginRequest;
-import com.project.simple_banking_system.model.DTOs.Response.LoginResponse;
+import com.project.simple_banking_system.model.DTOs.Request.AuthenticationRequest;
 import com.project.simple_banking_system.model.entity.Client;
 
 
@@ -48,18 +49,18 @@ public class AuthenticateClient {
      * {@link AuthenticationManager}, recupera a entidade do cliente logado e gera o token de acesso.
      * </p>
      *
-     * @param loginRequest Objeto DTO contendo as credenciais de login (CPF e senha) enviadas pelo cliente.
-     * @return Um {@link LoginResponse} contendo o token JWT gerado com sucesso.
+     * @param authenticationRequest Objeto DTO contendo as credenciais de login (CPF e senha) enviadas pelo cliente.
+     * @return Um {@link AuthenticationResponse} contendo o token JWT gerado com sucesso.
      * @throws AuthenticationFailedException Caso a senha/CPF estejam incorretos ou ocorra um erro no processo.
-     * @throws AccountNotFoundException      Caso o principal retornado não corresponda a uma conta ativa ou existente.
+     * @throws EntityNotFoundException  Caso o principal retornado não corresponda a uma conta ativa ou existente.
      */
-    public LoginResponse execute(LoginRequest loginRequest) {
+    public AuthenticationResponse execute(AuthenticationRequest authenticationRequest) {
         Client client;
 
         try {
             // Cria um objeto de autenticação não verificado contendo as credenciais fornecidas (CPF e Senha)
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                    new UsernamePasswordAuthenticationToken(loginRequest.cpf(), loginRequest.password());
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.cpf(), authenticationRequest.password());
 
             // Delega ao gerenciador do Spring Security a validação do hash da senha e busca do usuário
             Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -77,13 +78,13 @@ public class AuthenticateClient {
 
         // Verifica defensivamente se o objeto client foi devidamente preenchido pelo fluxo anterior
         if (client == null) {
-            throw new AccountNotFoundException("Não foi possível encontrar a conta buscada.");
+            throw new EntityNotFoundException("Não foi possível encontrar a conta buscada.");
         }
 
         // Gera o token de acesso JWT de curta duração com base nos dados consolidados do cliente
         String token = tokenConfig.generateToken(client);
 
         // Retorna o DTO de resposta encapsulando a String do token para o Controller
-        return new LoginResponse(token);
+        return new AuthenticationResponse(token);
     }
 }

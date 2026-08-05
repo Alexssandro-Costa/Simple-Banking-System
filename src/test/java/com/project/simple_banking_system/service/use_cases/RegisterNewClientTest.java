@@ -1,12 +1,17 @@
 package com.project.simple_banking_system.service.use_cases;
 
+
 import com.project.simple_banking_system.exceptions.InvalidDateException;
 import com.project.simple_banking_system.exceptions.InvalidEnumValueException;
 import com.project.simple_banking_system.exceptions.InvalidFormatException;
 import com.project.simple_banking_system.exceptions.NullElementException;
+import com.project.simple_banking_system.model.DTOs.Request.AuthenticationRequest;
 import com.project.simple_banking_system.model.DTOs.Request.RegisterRequest;
-import com.project.simple_banking_system.model.DTOs.Response.RegisterUserResponse;
+import com.project.simple_banking_system.model.DTOs.Response.AuthenticationResponse;
+import com.project.simple_banking_system.model.DTOs.Response.RegisterResponse;
+import com.project.simple_banking_system.model.entity.Client;
 import com.project.simple_banking_system.repository.ClientRepository;
+import com.project.simple_banking_system.service.auth.AuthenticateClient;
 import com.project.simple_banking_system.utility.ValidateData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -16,8 +21,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class RegisterNewClientTest {
@@ -32,32 +43,52 @@ class RegisterNewClientTest {
     @Spy
     ValidateData validateData;
 
+    @Mock
+    AuthenticateClient authenticateClient;
+
     @Autowired
     @InjectMocks
     RegisterNewClient registerNewClient;
 
 
+
     @Test
-    @DisplayName("Registro devo retornar um RegisterUserResponse contendo cpf equivalente")
-    void registerNewClient_ShouldReturn_ARegisterUserResponseWithEqualCpf() {
+    @DisplayName("Registro devo retornar um RegisterResponse contendo um dto de autênticação")
+    void registerNewClient_ShouldReturn_ARegisterResponseWithAAuthenticationResponse() {
 
         // Given
+
         RegisterRequest registerRequest = new RegisterRequest(
                 "Alexssandro",
-                "123.456.789-10",
+                "987.076.654-31",
                 "MASCULINO",
                 "22992684298",
                 "2000-05-22",
                 "Alex1234"
         );
-        RegisterUserResponse expected = new RegisterUserResponse(registerRequest.cpf(),
-                passwordEncoder.encode(registerRequest.password()));
-
         // When
-        RegisterUserResponse result = registerNewClient.execute(registerRequest);
+
+        // configura a resposta do objeto mockado
+        AuthenticationResponse response =
+                new AuthenticationResponse("jwt-token");
+
+        when(authenticateClient.execute(any(AuthenticationRequest.class)))
+                .thenReturn(response);
+
+        RegisterResponse actual = registerNewClient.register(registerRequest);
 
         // Then
-        Assertions.assertEquals(expected.cpf(), result.cpf(), "CPF esperado, não é compatível com o resultado");
+
+        // verificação se as variaveis estão com os valores corretos
+        Assertions.assertNotNull(actual);
+        Assertions.assertNotNull(actual.authenticationResponse());
+        Assertions.assertEquals("jwt-token",
+                actual.authenticationResponse().token());
+
+        // verifica se as dependencias foram chamadas
+        verify(passwordEncoder).encode(registerRequest.password());
+        verify(clientRepository).save(any(Client.class));
+        verify(authenticateClient).execute(any(AuthenticationRequest.class));
     }
 
     @Test
@@ -69,7 +100,7 @@ class RegisterNewClientTest {
 
         // when
         NullElementException exception = Assertions.assertThrows(NullElementException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("Requisição de registro não pode ser nulo.", exception.getMessage());
@@ -94,7 +125,7 @@ class RegisterNewClientTest {
 
         // when
         NullElementException exception = Assertions.assertThrows(NullElementException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("O Nome informado não pode ser nulo.", exception.getMessage());
@@ -117,7 +148,7 @@ class RegisterNewClientTest {
 
         // when
         InvalidFormatException exception = Assertions.assertThrows(InvalidFormatException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("O nome informado está em um formato não valido.", exception.getMessage());
@@ -142,7 +173,7 @@ class RegisterNewClientTest {
 
         // when
         NullElementException exception = Assertions.assertThrows(NullElementException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("O CPF informado não pode ser nulo.", exception.getMessage());
@@ -166,7 +197,7 @@ class RegisterNewClientTest {
 
         // when
         InvalidFormatException exception = Assertions.assertThrows(InvalidFormatException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("O CPF informado está em um formato não valido.", exception.getMessage());
@@ -190,7 +221,7 @@ class RegisterNewClientTest {
 
         // when
         NullElementException exception = Assertions.assertThrows(NullElementException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("A data de nascimento não pode ser nula.", exception.getMessage());
@@ -213,7 +244,7 @@ class RegisterNewClientTest {
 
         // when
         InvalidDateException exception = Assertions.assertThrows(InvalidDateException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("Data de nascimento não pode estar no futuro.", exception.getMessage());
@@ -236,7 +267,7 @@ class RegisterNewClientTest {
 
         // when
         InvalidDateException exception = Assertions.assertThrows(InvalidDateException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("Usuario deve ter mais que 18 anos.", exception.getMessage());
@@ -261,7 +292,7 @@ class RegisterNewClientTest {
 
         // when
         NullElementException exception = Assertions.assertThrows(NullElementException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("Genêro não pode ser nulo.", exception.getMessage());
@@ -285,7 +316,7 @@ class RegisterNewClientTest {
 
         // when
         InvalidEnumValueException exception = Assertions.assertThrows(InvalidEnumValueException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("Genêro informado não é uma opção valida.", exception.getMessage());
@@ -311,7 +342,7 @@ class RegisterNewClientTest {
 
         // when
         NullElementException exception = Assertions.assertThrows(NullElementException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("O numero de telefone passado não pode ser nulo.", exception.getMessage());
@@ -336,7 +367,7 @@ class RegisterNewClientTest {
 
         // when
         InvalidFormatException exception = Assertions.assertThrows(InvalidFormatException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
         Assertions.assertEquals("Numero de telefone passado está em um formato não valido.", exception.getMessage());
@@ -359,7 +390,7 @@ class RegisterNewClientTest {
 
         // then
         NullElementException exception = Assertions.assertThrows(NullElementException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // when
         Assertions.assertEquals("A senha informada não pode ser nula.", exception.getMessage());
@@ -382,7 +413,7 @@ class RegisterNewClientTest {
 
         // when
         InvalidFormatException exception = Assertions.assertThrows(InvalidFormatException.class,
-                () -> registerNewClient.execute(registerRequest));
+                () -> registerNewClient.register(registerRequest));
 
         // then
 

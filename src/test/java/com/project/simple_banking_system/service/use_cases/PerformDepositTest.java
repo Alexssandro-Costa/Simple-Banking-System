@@ -8,6 +8,7 @@ import com.project.simple_banking_system.model.entity.Transaction;
 import com.project.simple_banking_system.model.valueObjects.Cash;
 import com.project.simple_banking_system.model.valueObjects.TransactionType;
 import com.project.simple_banking_system.repository.AccountRepository;
+import com.project.simple_banking_system.repository.TransactionRepository;
 import org.junit.jupiter.api.Assertions;
 
 
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,6 +36,9 @@ class PerformDepositTest {
 
     @Mock
     private AccountRepository accountRepository;
+
+    @Mock
+    TransactionRepository transactionRepository;
 
     @Autowired
     @InjectMocks
@@ -120,6 +125,7 @@ class PerformDepositTest {
 
         // given
         Account account = new Account();
+        account.setBalance(null);
         account.setTransactions(new ArrayList<Transaction>());
         Transaction transaction = new Transaction(
                 new Cash(BigDecimal.valueOf(100)),

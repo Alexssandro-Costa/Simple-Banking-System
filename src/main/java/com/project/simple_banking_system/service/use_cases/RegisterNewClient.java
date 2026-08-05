@@ -3,6 +3,9 @@ package com.project.simple_banking_system.service.use_cases;
 import java.time.LocalDate;
 
 import com.project.simple_banking_system.exceptions.NullElementException;
+import com.project.simple_banking_system.model.DTOs.Request.AuthenticationRequest;
+import com.project.simple_banking_system.model.DTOs.Response.AuthenticationResponse;
+import com.project.simple_banking_system.service.auth.AuthenticateClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,16 +26,14 @@ import com.project.simple_banking_system.utility.ValidateData;
 
 
 /**
- * Classe de serviço que cria uma nova entidade Cliente e Conta.
+ * Classe de serviço que cria uma entidade Cliente.
  * @author Alexssandro
  * @since release 3
- * @version 2.0
+ * @version 2.1
  */
 @Service
 public class RegisterNewClient {
 
-
-    /// Inicializa automaticamente o repositorio. 
     @Autowired
     private ClientRepository clientRepository;
 
@@ -41,6 +42,9 @@ public class RegisterNewClient {
 
     @Autowired
     private ValidateData validateData;
+
+    @Autowired
+    private AuthenticateClient authenticateClient;
 
 
     /**
@@ -58,18 +62,37 @@ public class RegisterNewClient {
         Client client = new Client();
 
         // Define os dados do cliente
-        client.setName(new Name(registerRequest.name().toUpperCase()));
+        client.setName(new Name(registerRequest.name()
+                .toUpperCase())
+        );
+
         client.setCpf(new Cpf(registerRequest.cpf()));
-        client.setGender(Gender.valueOf(registerRequest.gender().toUpperCase()));
+
+        client.setGender(Gender.valueOf(registerRequest
+                .gender()
+                .toUpperCase())
+        );
+
         client.setPhone(new Phone(registerRequest.phone()));
+
         client.setDateBirth(new DateBirth(LocalDate.parse(registerRequest.dateBirth())));
+
         client.setPassword(new Password(passwordEncoder.encode(registerRequest.password())));
+
         client.setAccount(new Account());
 
         // salva as entidades no banco de dados
         clientRepository.save(client);
 
-        return new RegisterUserResponse(client.getUsername(), client.getPassword());
+        // Realiza a autenticação do usuário e retorna um dto
+        return new RegisterResponse(
+                authenticateClient.execute(
+                        new AuthenticationRequest(
+                                registerRequest.cpf(),
+                                registerRequest.password()
+                        )
+                )
+        );
     }
 
 
