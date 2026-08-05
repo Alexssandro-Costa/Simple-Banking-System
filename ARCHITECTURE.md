@@ -9,7 +9,7 @@ Os diagramas descrevem o comportamento da aplicação, a estrutura das classes e
 - [Diagrama de Casos de Uso](#Diagrama-de-Casos-de-Uso)
 - [Diagramas de Classes](#Diagramas-de-Classes)
 - [Modelo de Dados](#Modelo-de-Dados)
-- [Fluxo da Aplicação](#Fluxo-da-Aplicação---Diagrama-de-sequencia(Em-construção))
+- [Fluxo da Aplicação](#Fluxo-da-Aplicação-(Em-construção))
 
 ---
 
@@ -81,4 +81,4 @@ Representa como o modelo conceitual foi adaptado para implementação em banco d
 ![DER_Logico - 05-08-2026](https://github.com/Alexssandro-Costa/Simple-Banking-System/blob/main/docs/images/DER_logico.JPG)
 
 
-# Fluxo da Aplicação - Diagrama de sequencia(Em construção)
+# Fluxo da Aplicação (Em construção)
