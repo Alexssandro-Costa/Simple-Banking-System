@@ -41,7 +41,6 @@ public class AuthenticateClient {
     @Autowired
     private TokenConfig tokenConfig;
 
-
     /**
      * Executa o processo de autenticação do cliente com base nas credenciais fornecidas.
      * <p>
@@ -59,11 +58,14 @@ public class AuthenticateClient {
 
         try {
             // Cria um objeto de autenticação não verificado contendo as credenciais fornecidas (CPF e Senha)
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.cpf(), authenticationRequest.password());
+             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                     new UsernamePasswordAuthenticationToken(
+                             authenticationRequest.cpf(), authenticationRequest.password()
+                     );
 
             // Delega ao gerenciador do Spring Security a validação do hash da senha e busca do usuário
-            Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+            Authentication authentication = authenticationManager
+                    .authenticate(usernamePasswordAuthenticationToken);
 
             // Recupera o objeto do usuário autenticado (Principal) e realiza o cast para a entidade Client do domínio
             client = (Client) authentication.getPrincipal();

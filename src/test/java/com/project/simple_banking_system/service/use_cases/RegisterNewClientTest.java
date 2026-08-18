@@ -54,7 +54,7 @@ class RegisterNewClientTest {
 
     @Test
     @DisplayName("Registro devo retornar um RegisterResponse contendo um dto de autênticação")
-    void registerNewClient_ShouldReturn_ARegisterResponseWithAAuthenticationResponse() {
+    void registerNewClient_ShouldReturn_ARegisterResponseWithAAuthenticationDto() {
 
         // Given
 
