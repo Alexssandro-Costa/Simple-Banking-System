@@ -43,9 +43,14 @@ application-local.properties
 application-dev.properties
 .env
 .env.local
+.properties
+
 
 # Maven
 .mvn/wrapper/maven-wrapper.jar
+
+# docker
+.dockerignore
 
 # OS
 .DS_Store
