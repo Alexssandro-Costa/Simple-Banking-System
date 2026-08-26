@@ -1,6 +1,9 @@
 package com.project.simple_banking_system.controller.BankingOperationsController;
 
 
+import com.project.simple_banking_system.model.DTOs.Response.AccountDataResponse;
+import com.project.simple_banking_system.model.DTOs.Response.CheckStatementResponse;
+import com.project.simple_banking_system.model.DTOs.Response.TransactionResponse;
 import com.project.simple_banking_system.service.use_cases.GetAccountData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,32 +49,62 @@ public class OperationsController {
     @Autowired
     private CheckStatement checkStatement;
 
-
-    @Operation(description = "Recupera os dados de conta associada ao token de acesso.")
-    @PostMapping("/account/access")
+    /**
+     * Recupera os dados da conta associada ao cliente autenticado.
+     *
+     * @return {@link AccountDataResponse} contendo os dados da conta vinculada ao token de acesso utilizado na requisição
+     */
+    @Operation(
+            summary = "Consulta os dados da conta",
+            description = "Recupera os dados da conta bancária associada ao cliente autenticado por meio do token de acesso."
+    )@PostMapping("/account/data")
     public ResponseEntity<?> getAccountData() {
         var result = getAccountData.execute();
         return ResponseEntity.ok(result);
 
     }
 
-    @Operation(summary = "Realiza transações bancarias ")
-    @PostMapping("/account/transaction")
+    /**
+     * Realiza uma transação bancária na conta do cliente autenticado.
+     *
+     * @param transactionRequest dados necessários para realizar a transação
+     * @return {@link TransactionResponse} contêndo os dados resultantes da transação realizada
+     */
+    @Operation(
+            summary = "Realiza uma transação bancária",
+            description = "Executa uma transação bancária utilizando os dados informados na requisição."
+    )@PostMapping("/account/transaction")
     public ResponseEntity<?> performTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
         var result = performTransaction.execute(transactionRequest);
         return ResponseEntity.ok(result);   
     }
 
-    @Operation(description = "Muda o Status de uma conta para DESABILITADA.")
-    @PatchMapping("/account/disable-account")
+    /**
+     * Desabilita a conta bancária associada ao cliente.
+     *
+     * @param changeStatusRequest dados necessários para identificar a conta que terá seu status alterado
+     * @return resposta sem conteúdo indicando que a operação foi realizada com sucesso
+     */
+    @Operation(
+            summary = "Desabilita uma conta",
+            description = "Altera o status da conta bancária para DESABILITADA."
+    )@PatchMapping("/account/disable-account")
     public ResponseEntity<Void> disableAccount(@Valid @RequestBody ChangeStatusRequest changeStatusRequest) {
         changeAccountStatus.execute(changeStatusRequest);
         return ResponseEntity.noContent().build(); // Retorna 204
 
     }
 
-    @Operation(description = "Muda o Status de uma conta para HABILITADA.")
-    @PatchMapping("/account/enable-account")
+    /**
+     * Habilita a conta bancária associada ao cliente.
+     *
+     * @param changeStatusRequest dados necessários para identificar a conta que terá seu status alterado
+     * @return resposta sem conteúdo indicando que a operação foi realizada com sucesso
+     */
+    @Operation(
+            summary = "Habilita uma conta",
+            description = "Altera o status da conta bancária para HABILITADA."
+    )@PatchMapping("/account/enable-account")
     public ResponseEntity<Void> enableAccount(@Valid @RequestBody ChangeStatusRequest changeStatusRequest) {
         changeAccountStatus.execute(changeStatusRequest);
         return ResponseEntity.noContent().build(); // Retorna 204
@@ -79,8 +112,15 @@ public class OperationsController {
     }
 
 
-    @Operation(description = "Busca e retorna todo o extrato bancario de uma conta associada.")
-    @PostMapping("/account/statement")
+    /**
+     * Consulta o extrato bancário da conta associada ao cliente autenticado.
+     *
+     * @return {@link CheckStatementResponse } - extrato contendo as transações realizadas pela conta
+     */
+    @Operation(
+            summary = "Consulta o extrato bancário",
+            description = "Recupera todas as transações registradas no extrato da conta bancária associada ao cliente autenticado."
+    )@PostMapping("/account/statement")
     public ResponseEntity<?> checkStatement() {
         var result = checkStatement.execute();
         return ResponseEntity.ok(result);

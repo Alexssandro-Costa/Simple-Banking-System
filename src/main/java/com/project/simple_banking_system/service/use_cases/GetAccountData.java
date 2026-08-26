@@ -48,9 +48,9 @@ public class GetAccountData {
 
         // retorna o dto de resposta
         return new AccountDataResponse(
-                client.getName().getValue(),
-                client.getAccount().getAccountNumber().getValue(),
-                client.getAccount().getBalance().getValue().toEngineeringString()
+                client.getName(),
+                client.getAccount().getAccountNumber(),
+                client.getAccount().getBalance()
         );
     }
 

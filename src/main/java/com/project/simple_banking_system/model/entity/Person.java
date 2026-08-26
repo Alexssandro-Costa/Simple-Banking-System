@@ -6,6 +6,7 @@ import com.project.simple_banking_system.model.valueObjects.Gender;
 import com.project.simple_banking_system.model.valueObjects.Name;
 import com.project.simple_banking_system.model.valueObjects.Phone;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -23,26 +24,27 @@ import jakarta.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class Person {
 
+    @Schema(description = "Nome de um individuo", example = "ALEX DA COSTA")
     @AttributeOverride(name = "value", column = @Column(name = "nome", nullable = false, length = 120))
     @Embedded
     private Name name;
 
-
+    @Schema(description = "cpf de um individuo", example = "111.222.333-44")
     @AttributeOverride(name = "value", column = @Column(name = "cpf", nullable = false, unique=true))
     @Embedded
     private Cpf cpf;
 
-
+    @Schema(description = "Género do individuo", examples = {"MASCULINO", "FEMININO", "OUTRO"})
     @Column(name = "genero", nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-
+    @Schema(description = "Telefone do individuo", example = "22992345678")
     @AttributeOverride(name = "value", column = @Column(name = "telefone", nullable = false, length = 30))
     @Embedded
     private Phone phone;
 
-    
+    @Schema(description = "Data de nascimento do individuo, segue o padrão YYYY/MM/DD", example = "2000-01-01")
     @AttributeOverride(name = "value", column = @Column(name = "data-nascimento", nullable = false, length = 15))
     @Embedded
     private DateBirth dateBirth;

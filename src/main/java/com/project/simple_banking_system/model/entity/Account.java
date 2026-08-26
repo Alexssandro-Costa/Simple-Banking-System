@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -27,30 +28,33 @@ import com.project.simple_banking_system.model.valueObjects.Status;
 @Table(name = "conta")
 public class Account{
 
+    @Schema(description = "ID da entidade conta")
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-
+    @Schema(description = "Número da conta", example = "012345678")
     @AttributeOverride(name = "value", column = @Column(name = "numero-conta", nullable = false, unique=true))
     @Embedded
     private final AccountNumber accountNumber;
 
+    @Schema(description = "Saldo da conta", example = "1000.00")
     @AttributeOverride(name = "value", column = @Column(name = "balanco", nullable = false))
     @Embedded
     private Cash balance;
 
+    @Schema(description = "Status da conta", examples = {"HABILITADA", "DESABILITADA"})
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    // designa a relação de chave estrangeira com cliente
+    @Schema(description = "designa a relação de chave estrangeira com a entidade client")
     @OneToOne
     @JoinColumn(name = "cliente-id")
     private Client client;
 
-    // designa a relação com transactions
+    @Schema(description = "designa a relação de chave estrangeira com a entidade transactions")
     @OneToMany(mappedBy = "account")
     private List<Transaction> transactions;
 

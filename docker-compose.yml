@@ -1,33 +1,34 @@
 services:
   API:
-    image: simplebanking-api:1.0 # define o nome e versão da imagem
-    build: . # cria a imagem a partir do dockerfile do diretorio
-    ports: # mapeia as portas do host e do conatiner
+    image: alexssandrocosta/spring-boot-simple-banking-api:1.0 # define o nome e versão da imagem
+    build: . # cria a imagem a partir do dockerfile do diretório
+    ports: # mapeia as portas do host e do container
       - "8080:8080"
     depends_on: # serviços que devem ser inicializados antes da web
       - DB
     networks:
       - public_network
       - private_network
-    environment: # define as variaveis de ambiente do banco de dados
+    environment: # define as variáveis de ambiente do banco de dados
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET:  ${JWT_SECRET}
 
   DB:
-    image: postgres:17-alpine # CRIA UM CONTAINER A PARTIR DE UMA IMAGEM
+    image: postgres:17-alpine # Cria um container a partir de uma imagem
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Persiste os dados do postgres em um volume nomeado
+      - postgres_data:/var/lib/postgresql/data  # Persiste os dados do postgres num volume nomeado
     networks:
       - private_network
-    environment: # define as variaveis de ambiente
+    environment: # define as variáveis de ambiente
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
 
 volumes:
-  postgres_data: {} # volume para persistencia de dados do portgres
+  postgres_data: {} # volume para persistência de dados do postgres
 
 # define as redes que serão utilizadas
 networks:

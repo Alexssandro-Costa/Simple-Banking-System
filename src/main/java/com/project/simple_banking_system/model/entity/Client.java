@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,16 +40,18 @@ import jakarta.persistence.Table;
 @Table(name = "cliente")
 public class Client extends Person implements UserDetails{
 
+    @Schema(description = "ID da entidade cliente")
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Schema(description = "Senha do usuário")
     @AttributeOverride(name = "value", column = @Column(name = "senha", nullable = false))
     @Embedded
     private Password password;
-    
-    // designa a uma relação bilateral com account
+
+    @Schema(description = "Designa uma relação bilateral com a entidade account")
     @OneToOne(mappedBy = "client", cascade=CascadeType.ALL)
     private Account account;
 

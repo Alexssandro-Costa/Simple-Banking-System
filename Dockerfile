@@ -12,7 +12,7 @@ copy .. .
 ## --batch-mode: executa o maven em modo não interativo.
 run mvn clean package -DskipTests --batch-mode
 
-## importa uma imagem mais leve do jdk para rodar a aplicação
+# importa uma imagem mais leve contendo a JRE para executar a aplicação
 from eclipse-temurin:21-jre
 
 # muda pro diretorio da aplicação

@@ -41,6 +41,11 @@ public class AuthenticateClient {
     @Autowired
     private TokenConfig tokenConfig;
 
+    private UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken;
+    private Authentication authentication;
+
+    private Client client;
+
     /**
      * Executa o processo de autenticação do cliente com base nas credenciais fornecidas.
      * <p>
@@ -54,17 +59,16 @@ public class AuthenticateClient {
      * @throws EntityNotFoundException  Caso o principal retornado não corresponda a uma conta ativa ou existente.
      */
     public AuthenticationResponse execute(AuthenticationRequest authenticationRequest) {
-        Client client;
 
         try {
             // Cria um objeto de autenticação não verificado contendo as credenciais fornecidas (CPF e Senha)
-             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+              usernamePasswordAuthenticationToken =
                      new UsernamePasswordAuthenticationToken(
                              authenticationRequest.cpf(), authenticationRequest.password()
                      );
 
             // Delega ao gerenciador do Spring Security a validação do hash da senha e busca do usuário
-            Authentication authentication = authenticationManager
+             authentication = authenticationManager
                     .authenticate(usernamePasswordAuthenticationToken);
 
             // Recupera o objeto do usuário autenticado (Principal) e realiza o cast para a entidade Client do domínio

@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 import com.project.simple_banking_system.model.DTOs.Request.TransactionRequest;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -38,30 +39,37 @@ import jakarta.persistence.Table;
 @EntityListeners(AuditingEntityListener.class)
 public class Transaction {
 
+    @Schema(description = "ID da transação")
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Schema(description = "valor da transação", example = "100.0")
     @AttributeOverride(name = "value", column = @Column(name = "valor", nullable = false))
     @Embedded
     private Cash value;
 
+    @Schema(description = "Data de emissão da transação")
     @Column(name = "data-emissao", nullable = false, updatable = false)
     @CreatedDate
     private Instant date;
 
+    @Schema(description = "Tipo de transação",examples = {"DEPOSITO", "TRANSFERENCIA", "SAQUE"})
     @Column(name = "tipo", nullable = false, length = 60)
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
+    @Schema(description = "Destinatário da transação", examples = {"EXTERNO", "111222333"})
     @Column(name = "destinatario", nullable = true)
     private String receiver;
 
+    @Schema(description = "Remetente da transação", examples = {"EXTERNO", "111222333"})
     @Column(name = "remetente", nullable = true)
     private String sender;
 
     /// DEFINE A CHAVE ESTRANGEIRA DE UMA TRANSAÇÃO
+    @Schema(description = "Define uma relação de chave estrangeira com a entidade account")
     @ManyToOne
     @JoinColumn(name = "conta-id", nullable = false)
     private Account account;
