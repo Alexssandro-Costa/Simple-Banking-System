@@ -49,8 +49,6 @@ application-dev.properties
 # Maven
 .mvn/wrapper/maven-wrapper.jar
 
-# docker
-.dockerignore
 
 # OS
 .DS_Store

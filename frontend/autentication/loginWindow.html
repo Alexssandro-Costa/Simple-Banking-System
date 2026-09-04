@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tela de login pro sistema bancario</title>
+    </head>
+
+    <body>
+        
+        
+        <!--Nome do banco-->
+        <h1><b>SYMBANK</b></h1>
+
+        <form action="" method="post" name="login" id="login">
+            <fieldset name="user_data" form="login">
+                <legend>Login</legend>
+                
+                <label for="cpf" >CPF:</label>
+                <input type="text" required
+                name="cpf" id="cpf"
+                minlength="14" maxlength="14"
+                placeholder="000.000.000-00"
+                title="Digite um CPF no formato 000.000.000-00"
+                pattern="^\d{3}\.\d{3}\.\d{3}-\d{2}$"
+                autofocus
+                >
+
+                <br>
+                <label for="password">Senha:</label>
+                <input type="password" required
+                name="password" id="password"
+                placeholder="Alex1234">
+
+            </fieldset>
+
+            <fieldset name="login_opt" form="login">
+                <button type="submit" value="autentication">Enviar login</button>
+                <button type="reset">Limpar login</button>
+                <br>
+                <a href="registerWindow.html"> <i>Ainda não tem uma conta? Registre-se agora!</i> </a>
+            </fieldset>
+
+
+        </form>
+    </body>
+
+
+
+</html>

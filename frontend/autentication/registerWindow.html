@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html lang="pt-br"> 
+    <head>
+        <meta charset="utf-8" >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tela de registro pro sistema bancario</title>
+    </head>
+    <body>
+
+        <!--Nome do banco-->
+        <h1><b>SYMBANK</b></h1>
+
+
+        <!--Formulario de resgistro do usuario-->
+        <form action="" method="post" id="register" name="register">
+
+            <fieldset name="user_data" form="register">
+                <legend>Registro</legend>
+                
+                <label for="name">Nome:</label>
+                <input type="text" minlength="5" required
+                id="name" name="name" 
+                placeholder="Alexssandro de Oliveira" 
+                autofocus>
+
+                <br>
+
+                <label for="cpf">CPF:</label>
+                <input type="text" required 
+                id="cpf" name="cpf" 
+                placeholder="000.000.000-00" 
+                title="Digite um CPF no formato 000.000.000-00"
+                pattern="^\d{3}\.\d{3}\.\d{3}-\d{2}$">
+
+                <br>
+
+                <label for="gender">Sexo:</label>
+                <select name="sexo" id="sexo">
+                    <option value="outro" >Outro</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="feminino">Feminino</option>
+                </select>
+
+                <br>
+
+                <label for="phone">Telefone:</label>
+                <input type="text" required
+                id="phone" name="phone"
+                placeholder="22998765432"
+                pattern="^([1-9]{2})(?:9[0-9]|[2-8])[0-9]{3}[0-9]{4}$">
+
+                <br>
+
+                <!--TO DO: Verificar se a idade não está no futuro, se o usuario tem mais que 18 anos e menos que 120 anos -->
+                <label for="datebirth">Data de Nascimento:</label>
+                <input type="date" required
+                id="date" name="date">
+
+                <br>
+
+                <label for="password">Senha:</label>
+                <input type="password" required
+                id="password" name="password"
+                placeholder="Alex1234"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+                title="A senha deve conter ao menos 8 caracteres, devo conter ao menos um digito, Uma letra maiuscula e uma minuscula"
+                >
+            </fieldset>
+
+            <fieldset name="register_opt" form="register">
+                <button type="submit" value="registration">Enviar Registro</button>
+                <button type="reset">Limpar Registro</button>
+                <br>
+                <a href="loginWindow.html" > <i>já tem uma conta? Faça Login.</i></a>
+            </fieldset>
+
+
+        </form>
+        
+    </body>
+
+
+
+</html>
