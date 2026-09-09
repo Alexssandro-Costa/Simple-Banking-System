@@ -22,7 +22,7 @@
                 <label for="name">Nome:</label>
                 <input type="text" minlength="5" required
                 id="name" name="name" 
-                placeholder="Alexssandro de Oliveira" 
+                placeholder="Digite seu Nome" 
                 autofocus>
 
                 <br>
@@ -31,11 +31,11 @@
                 <input type="text" required 
                 id="cpf" name="cpf" 
                 minlength="11" maxlength="14"
-                placeholder="000.000.000-00" 
-                title="Digite um CPF no formato 000.000.000-00"
+                placeholder="Digite seu CPF" 
                 pattern="^\d{3}\.\d{3}\.\d{3}-\d{2}$"
-                oninput="formatCpf()">
-
+                oninput="formatCpf()"
+                oninvalid="this.setCustomValidity('Digite um CPF no formato 000.000.000-00')"
+                >
                 <br>
 
                 <label for="gender">Sexo:</label>
@@ -50,12 +50,11 @@
                 <label for="phone">Telefone:</label>
                 <input type="text" required
                 id="phone" name="phone"
-                placeholder="22998765432"
+                placeholder="Digite seu telefone"
                 pattern="^([1-9]{2})(?:9[0-9]|[2-8])[0-9]{3}[0-9]{4}$">
 
                 <br>
 
-                <!--TO DO: Verificar se a idade não está no futuro, se o usuario tem mais que 18 anos e menos que 120 anos -->
                 <label for="datebirth">Data de Nascimento:</label>
                 <input type="date" required
                 id="datebirth" name="datebirth"
@@ -66,9 +65,9 @@
                 <label for="password">Senha:</label>
                 <input type="password" required
                 id="password" name="password"
-                placeholder="Alex1234"
+                placeholder="Digite sua Senha"
                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
-                title="A senha deve conter ao menos 8 caracteres, devo conter ao menos um digito, Uma letra maiuscula e uma minuscula"
+                oninvalid="this.setCustomValidity('A senha deve ter pelo menos 8 caracteres, uma letra maiúscula e um número.')"
                 >
             </fieldset>
 
@@ -76,7 +75,7 @@
                 <button type="submit" value="registration">Enviar Registro</button>
                 <button type="reset">Limpar Registro</button>
                 <br>
-                <a href="loginWindow.html" > <i>já tem uma conta? Faça Login.</i></a>
+                <a href="loginWindow.html" > <i>já tem uma conta? Faça Login!</i></a>
             </fieldset>
 
 
@@ -87,15 +86,44 @@
     </body>
         <script type="text/javascript">
 
+        /**
+        * Verifica se uma data de nascimento passada é valida para registro.
+        */
         function dateBirthValidation() {
 
-            let element = document.getElementById("datebirth")
+            try {
+                    
+                let element = document.getElementById("datebirth");
+                
+                let dateBirth = new Date(element.value);
 
-            let dateBirth = new Date(element.value)
+                let actualDate = new Date(Date.now());
 
-            let actualDate = Date.now
+                // quantidade de mss percorridos entre uma data de nascimento
+                // e a data atual 
+                let dateMss = (actualDate.valueOf() - dateBirth.valueOf())
 
-           alert(dateBirth.getDate)
+                if(dateMss < 0) {
+                    throw new Error("Não são aceitas datas do futuro. Por favor, utilize uma data de nascimento valida.");
+                }
+                else {
+
+                    // converte os milesegundos em anos
+                    let dateYears = Math.floor((actualDate.valueOf() - dateBirth.valueOf()) / 31557600000);
+
+                    // individuo é menor de idade
+                    if(dateYears < 18) {
+                        throw new Error("Não aceitamos usuarios menores de idade.");
+                    }
+                    // individuo tem uma idade improvavel
+                    if(dateYears > 130){
+                        throw new Error("Data de nascimento invalida");
+                    }
+
+                }       
+            } catch (error) {
+                alert(error.message);
+            }
             
         }
 

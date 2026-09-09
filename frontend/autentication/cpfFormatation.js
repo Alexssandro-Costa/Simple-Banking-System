@@ -7,18 +7,27 @@ function formatCpf() {
 
     */
 
+    try{
+        
+        let element = document.getElementById("cpf");
 
-    let element = document.getElementById("cpf");
+        //escuta o evento keydown no campo
+        element.addEventListener('keydown', function(event){
 
-    let tam = element.value.length;
+             let tam = element.value.length;
 
-    if(element.value.charAt(tam - 1) != "." && element.value.charAt(tam -1) != "-") {
+            // verifica se o evento está apagando ou inserindo caracteres
+            if(event.key !== 'Backspace') {
 
-        if(tam == 3 || tam == 7){
-            element.value += "."
-        }
-        else if(tam == 11) {
-            element.value += "-"
-        }
+                if((tam == 3 || tam == 7)){
+                    element.value += ".";
+                }
+                else if(tam == 11) {
+                    element.value += "-";
+                }
+            }
+        })
+    }catch(error) {
+        console.error(error)
     }
 }
