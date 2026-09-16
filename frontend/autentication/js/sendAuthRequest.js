@@ -3,7 +3,7 @@ import {convertFormToJson} from "../../convertFormToJson.js"
 /**
 * Captura o evento de submit do formulario e modifica seu evento para chamar sendAuthRequest; 
 */
-const form = document.getElementById("registerForm");
+const form = document.getElementById("authForm");
 form.addEventListener("submit", function(event) {
     event.preventDefault(); // cancela o comportamento padrão do submit
     
