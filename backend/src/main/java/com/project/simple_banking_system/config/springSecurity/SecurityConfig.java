@@ -71,7 +71,7 @@ public class SecurityConfig {
 
                 // Liberação TOTAL para as rotas de documentação do Swagger/OpenAPI
                         .requestMatchers(
-                                "/v3/api-docs/**",
+                            "/v3/api-docs/**",
                             "/v3/api-docs.yaml",
                             "/swagger-ui/**",
                             "/swagger-ui.html",
@@ -80,11 +80,11 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // Endpoints públicos de autenticação e registro de usuários
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
 
                         // Endpoint temporário para testes de conectividade
-                        .requestMatchers(HttpMethod.GET, "/auth/test").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/auth/test").permitAll()
 
                         // Qualquer outra requisição não listada acima exige autenticação prévia
                         .anyRequest().authenticated())

@@ -1,7 +1,7 @@
 services:
   API:
     image: alexssandrocosta/spring-boot-simple-banking-api:1.0 # define o nome e versão da imagem
-    build: . # cria a imagem a partir do dockerfile do diretório
+    build: ./backend # cria a imagem a partir do dockerfile do diretório
     ports: # mapeia as portas do host e do container
       - "8080:8080"
     depends_on: # serviços que devem ser inicializados antes da web

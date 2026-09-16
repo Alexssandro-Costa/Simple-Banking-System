@@ -33,7 +33,7 @@ import jakarta.validation.Valid;
  * @version 1
  */
 @Tag(name = "Banking System", description = "Operações bancárias principais")
-@RequestMapping("/api/bank")
+@RequestMapping("/api/operations")
 @RestController
 public class OperationsController {
 

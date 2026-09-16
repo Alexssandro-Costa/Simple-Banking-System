@@ -4,8 +4,8 @@ from maven:3.9-eclipse-temurin-21 as build
 ## passa pra pasta onde será movido os arquivos do projeto
 workdir /builder
 
-## copia todos os arquivos do projeto
-copy .. .
+## copia os arquivos do contexto de build para a imagem
+copy . .
 
 ## gera o arquivo compilado da api
 ## -DskipTests: pula a execução dos testes.
