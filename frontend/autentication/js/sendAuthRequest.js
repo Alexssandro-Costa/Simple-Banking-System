@@ -1,4 +1,5 @@
-import {convertFormToJson} from "../../convertFormToJson.js"
+import {convertFormToJson} from "../../util/convertFormToJson.js"
+import { SessionToken } from "../../util/sessionToken.js";
 
 /**
 * Captura o evento de submit do formulario e modifica seu evento para chamar sendAuthRequest; 
@@ -29,16 +30,26 @@ function sendAuthRequest(authRequestForm) {
         body: json
     })
     .then(function(response) {
-        console.log("Status:", response.status);
-        console.log("OK:", response.ok);
 
-        return response.text();
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
     })
-    .then(function(body) {
-        console.log("Resposta da API:", body);
+    .then(function(data) {
+         
+        // Login confirmado pelo backend
+        console.log("Login realizado:", data);
+        
+        // persiste o token de acesso
+        const session = new SessionToken();
+        session.saveToken(data["token"]);
+
+        //window.location.href = ".../operations/js/accountPage.html";
+
     })
     .catch(function(err) {
-        console.error("Erro na requisição:", err);
+        console.error("Erro ao tentar entrar na conta: ", err);
     });
     
 }
