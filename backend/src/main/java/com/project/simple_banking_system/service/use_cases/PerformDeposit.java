@@ -55,11 +55,11 @@ public class PerformDeposit {
             // retorna um dto de resposta
             return new TransactionResponse(
                     transaction.getId(),
-                    transaction.getTransactionType(),
-                    transaction.getValue(),
-                    transaction.getAccount().getBalance(),
+                    transaction.getTransactionType().toString(),
+                    transaction.getValue().toString(),
+                    transaction.getAccount().getBalance().toString(),
                     transaction.getReceiver(),
-                    transaction.getDate()
+                    transaction.getDate().toString()
             );
 
 

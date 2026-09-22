@@ -45,7 +45,8 @@ function sendAuthRequest(authRequestForm) {
         const session = new SessionToken();
         session.saveToken(data["token"]);
 
-        //window.location.href = ".../operations/js/accountPage.html";
+        // muda para a pagina inicial
+        window.location.href = "../../operations/pages/accountPage.html";
 
     })
     .catch(function(err) {

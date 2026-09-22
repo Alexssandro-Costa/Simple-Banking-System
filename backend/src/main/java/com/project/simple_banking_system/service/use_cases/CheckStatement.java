@@ -51,10 +51,10 @@ public class CheckStatement {
               .stream()
               .map(transaction -> new CheckStatementResponse(
                       transaction.getId(),
-                      transaction.getTransactionType(),
-                      transaction.getValue(),
+                      transaction.getTransactionType().toString(),
+                      transaction.getValue().toString(),
                       transaction.getReceiver(),
-                      transaction.getDate()
+                      transaction.getDate().toString()
               )).toList();
   }
 }

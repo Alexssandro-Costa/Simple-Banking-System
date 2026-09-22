@@ -1,6 +1,6 @@
-const elem = document.getElementById("registerForm");
-elem.addEventListener("input", function (event) {
-    autoComplete(elem, event);
+const elem = document.getElementById("authForm");
+elem.addEventListener("input", function () {
+    autoComplete(elem);
 });
 
 
@@ -8,15 +8,15 @@ elem.addEventListener("input", function (event) {
  * Metodo temporario utilizado para autocompleção dos campos do formulario de registro 
  * @param {HTMLFormElement} form formulario para autocompleção
  */
-function autoComplete(form, event) {
+function autoComplete(form) {
 
 
-    form.elements["name"].value = "Primeiro Teste";
+    form.elements["name"].value = "Teste dois";
 
-    form.elements["cpf"].value = "111.111.111-11";
+    form.elements["cpf"].value = "222.222.222-22";
 
     form.elements["phone"].value = "22992763231";
 
-    form.elements["password"].value = "Teste11111";
+    form.elements["password"].value = "Teste222";
 
 }

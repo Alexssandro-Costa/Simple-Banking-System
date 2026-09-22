@@ -64,12 +64,12 @@ public class PerformTransfer {
 
         // retorna um dto de resposta
         return new TransactionResponse(
-                transaction.getId(),
-                transaction.getTransactionType(),
-                transaction.getValue(),
-                transaction.getAccount().getBalance(),
-                transaction.getReceiver(),
-                transaction.getDate()
+            transaction.getId(),
+            transaction.getTransactionType().toString(),
+            transaction.getValue().toString(),
+            transaction.getAccount().getBalance().toString(),
+            transaction.getReceiver(),
+            transaction.getDate().toString()
         );
 
 
