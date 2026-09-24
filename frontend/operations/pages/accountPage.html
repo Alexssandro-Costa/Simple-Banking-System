@@ -7,34 +7,40 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="../js/GetAccountData.js"></script>
+    <script type="module" src="../js/transaction.js"></script>
 </head>
 
 <body>
 
     <!--TO DO:  Fazer o Nome do usuario e o numero da conta ficarem na mesma linha-->
-    <section id="accountData" >
-        <p id="accountNumber">Número da Conta: </p>
-        <p id="userName">Nome: </p>
-        <p id="accountBalance">Saldo: </p>
-    </section>
+    <header>
+        <p>Número da Conta: </p>
+        <p id="accountNumber"></p>
+
+        <p>Nome: </p>
+        <p id="userName"></p>
+
+        <p>Saldo: </p>
+        <p id="accountBalance"></p>
+    </header>
     <hr>
 
     <!--TO DO: Transformar em barra horizontal-->
     <nav id="optionsBar">
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="#">Operação</a></li>
-            <li><a href="#">Ver Extrato</a></li>
-            <li><a href="#">Modificar status da conta</a></li>
-        </ul>
+        <button id="homeButton">Inicio</button>
+        <button id="operationsButton">Operação Bancaria</button>
+        <button id="statementButton">Visualizar Extrato</button>
+        <button id="statusButton">Modificar status da conta</button>
     </nav>
     <hr>
 
-    <!-- TO DO: Abaixo das opções deve ficar um grafico mostrando quando saiu e quanto entrou na conta.
-    esse grafico deve ficar na pagina inicial e ser modificado nas outras opções
-    -->
+    <section id="content">
+        <p>Conteudo que o usuario está visualizando</p>
 
-
+        <!-- TO DO: Abaixo das opções deve ficar um grafico mostrando quando saiu e quanto entrou na conta.
+            esse grafico deve ficar na pagina inicial e ser modificado nas outras opções
+        -->
+    </section>
 
 </body>
 

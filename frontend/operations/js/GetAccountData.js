@@ -2,6 +2,7 @@ import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js
 import { SessionToken } from "../../util/sessionToken.js";
 
 
+// Chama a função GetAccountData durante o carregamento da pagina
 document.addEventListener("DOMContentLoaded", function () {
     GetAccountData();
 });
@@ -10,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // TO DO: Separa as funcionalidades
 /**
- * recupera os dados da conta bancaria através de uma requisição http e modifica os elementos da pagina
+ * recupera os dados da conta bancaria através de uma requisição http e Insere os dados da conta no header da pagina
  */
 async function GetAccountData() {
 
@@ -24,9 +25,6 @@ async function GetAccountData() {
 
         // dados recuperados da requisição
         const json = await sendAuthenticatedRequest(url, "POST", token, null);
-
-        console.log(json);
-        console.log(json["name"]);
 
         // modifica o valor dos elementos da pagina
         document.getElementById("accountNumber").textContent = json["accountNumber"];

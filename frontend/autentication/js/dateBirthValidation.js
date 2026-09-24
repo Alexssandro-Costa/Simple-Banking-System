@@ -48,9 +48,9 @@ function dateBirthValidation(date) {
         }
     } catch (error) {
         alert(error.message);
+        
         // reseta o valor da data
-        let timestamp = new Date(Date.now());
-        date.value = "01/01/2001";
+        date.value = "";
     }
 
 }
