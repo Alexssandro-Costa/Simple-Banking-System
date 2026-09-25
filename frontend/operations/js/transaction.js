@@ -1,10 +1,9 @@
 
 
-
 const opButton = document.getElementById("operationsButton");
 opButton.addEventListener("click", function () {
 
-    // // chama a função após o botão de operações ser chamado
+    // chama a função após o botão de operações ser chamado
     defineTransactionForm();
 
     // adiciona um listener no tipo da transação
@@ -12,7 +11,50 @@ opButton.addEventListener("click", function () {
         defineTransactionTypesFeatures(event.target);
     });
 
+    // adiciona um listener no envio da transação
+    document.addEventListener("submit", function (event) {
+        event.preventDefault(); // cancela o comportamento padrão do submit
+        sendTransaction(event.target);
+    })
+
 });
+
+
+
+import { SessionToken } from "../../util/sessionToken.js";
+import { convertFormToJson } from "../../util/convertFormToJson.js";
+import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
+/**
+ * Realiza a requisição de transação bancaria
+ * @param {HTMLFormElement} transactionForm - formulario html 
+ */
+async function sendTransaction(transactionForm) {
+
+    try {
+        // busca o token de acesso da sessão
+        let token = new SessionToken().getToken();
+
+        // recupera a url da requisição no formulario
+        let url = transactionForm.attributes["action"].value;
+
+        // converte o elemento html em um json
+        let jsonForm = convertFormToJson(transactionForm);
+
+        if (token === null || url === null || jsonForm === null) {
+            console.error("Não foi possivel recuperar os elementos");
+            return;
+        }
+
+        // espera a promise da função e mostra os dados na tela
+        let responseJson = await sendAuthenticatedRequest(url, "POST", token, jsonForm);
+        showTransactionData(responseJson);
+
+    } catch (error) {
+        console.error("Erro ao enviar transação: " + error);
+    }
+
+}
+
 
 /**
  * Adiciona um formulario html no lugar do elemento de conteudo
@@ -25,7 +67,7 @@ async function defineTransactionForm() {
 
         // adiciona um fomulario html na seção do documento
         section.innerHTML = `
-    <form>
+    <form id="form" name="form" action="http://localhost:8080/api/operations/account/transaction">
         <fieldset>
             <legend>Transação</legend>
             
@@ -78,6 +120,41 @@ async function defineTransactionForm() {
 
 }
 
+/**
+ * Modifica um section para mostrar os dados de uma transação na tela
+ * @param {*} json json de resposta com os dados da transação
+ */
+async function showTransactionData(json) {
+
+    try {
+        // recupera a seção do documento que será modificada
+        let section = document.getElementById("content");
+
+        if (section === null) {
+            throw new Error("Não foi possivel encontrar a seção");
+        }
+
+        // modifica a seção com os dados recebidos
+        section.innerHTML = `
+
+            <h2>Transação realizada</h2>
+
+            <p>Tipo: ${json["type"]}</p>
+            <p>ID: ${json["transactionId"]}</p>
+            <p>Valor: ${json["amount"]}</p>
+            <p>Novo Saldo: ${json["newBalance"]}</p>
+            <p>Destino: ${json["destination"]}</p>
+            <p>Data de Emissão: ${new Date(json["emissionDate"]).toLocaleString("pt-br")}</p>         
+        `;
+
+
+    } catch (error) {
+        console.log("ERRO! Não foi possivel mostrar a requisição: " + error);
+    }
+
+
+}
+
 
 /**
  * Define as caracteristicas que cada tipo de transação deve ter.
@@ -90,7 +167,7 @@ async function defineTransactionTypesFeatures(transactionType) {
 
         let sender = document.getElementById("sender");
         let receiver = document.getElementById("receiver");
-        const accountNum = document.getElementById("accountNumber").innerText; 
+        const accountNum = document.getElementById("accountNumber").innerText;
 
         if (sender === null || receiver === null || accountNum === null) {
             console.error("Campos não encontrados.");
@@ -132,3 +209,4 @@ async function defineTransactionTypesFeatures(transactionType) {
         console.error("Error ao setar as caracteristicas do tipo de transação: " + error);
     }
 }
+
