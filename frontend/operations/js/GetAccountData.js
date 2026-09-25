@@ -7,13 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
     GetAccountData();
 });
 
-
-
-// TO DO: Separa as funcionalidades
+// TO DO: Separar as funcionalidades
 /**
  * recupera os dados da conta bancaria através de uma requisição http e Insere os dados da conta no header da pagina
  */
-async function GetAccountData() {
+export async function GetAccountData() {
 
     try {
         // url da APi
@@ -27,9 +25,9 @@ async function GetAccountData() {
         const json = await sendAuthenticatedRequest(url, "POST", token, null);
 
         // modifica o valor dos elementos da pagina
-        document.getElementById("accountNumber").textContent = "NÚMERO DA CONTA: " + json["accountNumber"];
-        document.getElementById("userName").textContent = "NOME: " + json["name"]; 
-        document.getElementById("accountBalance").textContent = "SALDO: " + json["balance"];
+        document.getElementById("accountNumber").textContent = json["accountNumber"];
+        document.getElementById("userName").textContent = json["name"]; 
+        document.getElementById("accountBalance").textContent = json["balance"];
 
     }
     catch (error) {

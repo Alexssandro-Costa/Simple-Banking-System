@@ -1,3 +1,7 @@
+import { SessionToken } from "../../util/sessionToken.js";
+import { convertFormToJson } from "../../util/convertFormToJson.js";
+import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
+import { GetAccountData } from "./GetAccountData.js";
 
 
 const opButton = document.getElementById("operationsButton");
@@ -21,9 +25,7 @@ opButton.addEventListener("click", function () {
 
 
 
-import { SessionToken } from "../../util/sessionToken.js";
-import { convertFormToJson } from "../../util/convertFormToJson.js";
-import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
+
 /**
  * Realiza a requisição de transação bancaria
  * @param {HTMLFormElement} transactionForm - formulario html 
@@ -48,6 +50,9 @@ async function sendTransaction(transactionForm) {
         // espera a promise da função e mostra os dados na tela
         let responseJson = await sendAuthenticatedRequest(url, "POST", token, jsonForm);
         showTransactionData(responseJson);
+        
+        // atualiza o saldo mostrado
+        await GetAccountData();
 
     } catch (error) {
         console.error("Erro ao enviar transação: " + error);
@@ -179,7 +184,8 @@ async function defineTransactionTypesFeatures(transactionType) {
             // apaga o valor anterior dos campos e os habilita para inserção de dados
 
             sender.readOnly = false;
-            sender.value = "";
+            sender.value = accountNum;
+            sender.readOnly = true;
 
             receiver.readOnly = false;
             receiver.value = "";
