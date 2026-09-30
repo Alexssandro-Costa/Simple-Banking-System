@@ -1,12 +1,6 @@
 import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
 import { SessionToken } from "../../util/sessionToken.js";
 
-
-// Chama a função GetAccountData durante o carregamento da pagina
-document.addEventListener("DOMContentLoaded", function () {
-    GetAccountData();
-});
-
 // TO DO: Separar as funcionalidades
 /**
  * recupera os dados da conta bancaria através de uma requisição http e Insere os dados da conta no header da pagina

@@ -8,7 +8,7 @@ document.getElementById("homeButton").addEventListener("click", function () {
 /**
  * Modifica o contéudo da section passada 
  */
-async function setHomeContent() {
+export async function setHomeContent() {
 
     try {
 
