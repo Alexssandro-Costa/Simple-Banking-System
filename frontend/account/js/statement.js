@@ -7,16 +7,16 @@ document.getElementById("statementButton").addEventListener("click", function ()
 
 
 /**
- * Modifica a seção content da pagina principal para mostrar os dados requisição de extratos
+ * Modifica a seção content da pagina principal para mostrar os dados da requisição de extratos
  */
 async function showStatement() {
 
     // recupera os extratos
     let responseJson = await getStatement();
 
-    try {
+    try { 
 
-        // modifica o 
+        // modifica a seção de conteudo
         let content = document.getElementById("content");
         content.innerHTML = "";
 
@@ -41,9 +41,9 @@ async function showStatement() {
 
 /**
  *  Busca os extratos bancarios da conta logada
- * @returns String contendo os dados da requisição em formato JSON.
+ * @returns Array de Strings contendo os dados da requisição em formato JSON.
  */
-async function getStatement() {
+export async function getStatement() {
 
     const url = "http://localhost:8080/api/operations/account/statement";
 
@@ -63,3 +63,4 @@ async function getStatement() {
     }
 
 }
+
