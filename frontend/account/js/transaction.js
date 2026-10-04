@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/apiUrl.js";
 import { SessionToken } from "../../util/sessionToken.js";
 import { convertFormToJson } from "../../util/convertFormToJson.js";
 import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
@@ -14,14 +15,15 @@ opButton.addEventListener("click", function () {
     document.getElementById("transactionType").addEventListener("input", function (event) {
         defineTransactionTypesFeatures(event.target);
     });
-
-    // adiciona um listener no envio da transação
-    document.addEventListener("submit", function (event) {
-        event.preventDefault(); // cancela o comportamento padrão do submit
-        sendTransaction(event.target);
-    })
-
 });
+
+
+// adiciona um listener no envio da transação
+document.addEventListener("submit", function (event) {
+    alert(1);
+    event.preventDefault(); // cancela o comportamento padrão do submit
+    sendTransaction(event.target);
+})
 
 
 
@@ -31,13 +33,15 @@ opButton.addEventListener("click", function () {
  * @param {HTMLFormElement} transactionForm - formulario html 
  */
 async function sendTransaction(transactionForm) {
+    alert("Transação disparada");
 
     try {
         // busca o token de acesso da sessão
         let token = new SessionToken().getToken();
 
         // recupera a url da requisição no formulario
-        let url = transactionForm.attributes["action"].value;
+        const endpoint = "/api/operations/account/transaction";
+        const url = API_URL + endpoint;
 
         // converte o elemento html em um json
         let jsonForm = convertFormToJson(transactionForm);
@@ -49,8 +53,8 @@ async function sendTransaction(transactionForm) {
 
         // espera a promise da função e mostra os dados na tela
         let responseJson = await sendAuthenticatedRequest(url, "POST", token, jsonForm);
-        showTransactionData(responseJson);
-        
+        await showTransactionData(responseJson);
+
         // atualiza o saldo mostrado
         await GetAccountData();
 
@@ -72,7 +76,7 @@ async function defineTransactionForm() {
 
         // adiciona um fomulario html na seção do documento
         section.innerHTML = `
-    <form id="form" name="form" action="http://localhost:8080/api/operations/account/transaction">
+    <form id="form" name="form">
         <fieldset>
             <legend>Transação</legend>
             

@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/config.js";
 import { SessionToken } from "../../util/sessionToken.js";
 import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
 
@@ -45,8 +46,9 @@ async function showStatement() {
  */
 export async function getStatement() {
 
-    const url = "http://localhost:8080/api/operations/account/statement";
-
+    const endpoint = "/api/operations/account/statement";
+    const url =  API_URL + endpoint;
+    
     // recupera o token da sessão
     const token = new SessionToken().getToken();
 

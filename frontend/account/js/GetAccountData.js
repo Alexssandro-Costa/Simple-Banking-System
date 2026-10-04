@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/apiUrl.js";
 import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
 import { SessionToken } from "../../util/sessionToken.js";
 
@@ -8,8 +9,10 @@ import { SessionToken } from "../../util/sessionToken.js";
 export async function GetAccountData() {
 
     try {
+        
         // url da APi
-        const url = "http://localhost:8080/api/operations/account/data";
+        const endpoint = "/api/operations/account/data";
+        const url = API_URL + endpoint;
 
         // busca o token de acesso
         const session = new SessionToken();

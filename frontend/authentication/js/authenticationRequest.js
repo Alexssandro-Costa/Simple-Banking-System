@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/apiUrl.js";
 import {convertFormToJson} from "../../util/convertFormToJson.js"
 import { SessionToken } from "../../util/sessionToken.js";
 
@@ -20,8 +21,11 @@ function sendAuthRequest(authRequestForm) {
     // converte um formulario html em um json
     const json = convertFormToJson(authRequestForm);
 
-    // recupera a url do atributo action do formulario
-    const url = authRequestForm.attributes["action"].value;
+    // recupera o endpoint do atributo action do formulario
+    const endpoint = authRequestForm.attributes["action"].value;
+
+    // constroi a url 
+    const url = API_URL + endpoint;
 
     // envia a requisição pra API
     fetch(url, {
