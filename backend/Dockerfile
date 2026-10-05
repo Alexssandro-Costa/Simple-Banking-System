@@ -1,5 +1,5 @@
 ## importa uma imagem estável do maven
-FROM maven:3.9-eclipse-temurin-21 as build
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 ## passa pra pasta onde será movido os arquivos do projeto
 WORKDIR /builder
