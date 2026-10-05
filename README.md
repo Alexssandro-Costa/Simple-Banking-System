@@ -1,10 +1,14 @@
-# Sistema Bancário Simplificado
+# SYMBANK
 
-Projeto desenvolvido como parte de um estudo orientado a projetos, com o objetivo de evoluir gradualmente uma aplicação Java desde uma solução simples baseada em arquivos até uma API REST utilizando Spring Boot.
+Sistema bancário desenvolvido como um projeto de estudo orientado a projetos, com o objetivo de evoluir gradualmente uma aplicação Java desde uma solução simples baseada em arquivos até uma aplicação web full-stack.
 
-Ao longo do desenvolvimento, o projeto passou por diversas refatorações arquiteturais, permitindo explorar conceitos de persistência de dados, orientação a objetos, APIs REST, segurança, modelagem de domínio, testes automatizados, containerização e deploy em ambiente cloud.
+Ao longo do desenvolvimento, o projeto passou por diversas refatorações arquiteturais e incrementos tecnológicos, explorando conceitos de **Programação Orientada a Objetos, persistência de dados, APIs REST, segurança, modelagem de domínio, testes automatizados, desenvolvimento web, containerização e deploy em ambiente cloud**.
 
-> **Status:** API REST desenvolvida, containerizada e publicada em ambiente cloud.
+O projeto atualmente é composto por uma **API REST desenvolvida com Spring Boot** e uma **interface web desenvolvida com HTML, CSS e JavaScript**, executadas em containers Docker independentes.
+
+> **Status:** Aplicação web full-stack desenvolvida, containerizada e publicada em ambiente cloud.
+
+**[Acessar o SYMBANK](https://symbank.onrender.com)**
 
 **[Acessar a API](https://sistema-bancario-simplificado.onrender.com)**
 
@@ -18,6 +22,7 @@ Ao longo do desenvolvimento, o projeto passou por diversas refatorações arquit
 * [Evolução do Projeto](#evolução-do-projeto)
 * [Arquitetura](#arquitetura)
 * [Modelagem de Domínio](#modelagem-de-domínio)
+* [Frontend](#frontend)
 * [Segurança](#segurança)
 * [Testes Automatizados](#testes-automatizados)
 * [Containerização](#containerização)
@@ -32,6 +37,16 @@ Ao longo do desenvolvimento, o projeto passou por diversas refatorações arquit
 
 ## Funcionalidades
 
+### Autenticação
+
+* Cadastro de usuários
+* Login
+* Autenticação através de JWT
+* Armazenamento do token durante a sessão
+* Encerramento da sessão
+
+### Operações bancárias
+
 * Criação de contas bancárias
 * Consulta de dados da conta
 * Depósito de valores
@@ -39,8 +54,18 @@ Ao longo do desenvolvimento, o projeto passou por diversas refatorações arquit
 * Transferência entre contas
 * Exclusão de contas
 * Registro e consulta de transações
-* Autenticação de usuários
-* Autorização baseada em JWT
+* Consulta de extrato
+
+### Interface Web
+
+* Tela de login
+* Tela de cadastro
+* Página inicial da conta
+* Dashboard com visualização de dados
+* Interface para operações bancárias
+* Interface para consulta de extrato
+* Formatação e validação de dados de entrada
+* Navegação entre operações sem recarregamento da página
 
 ---
 
@@ -56,7 +81,7 @@ Principais conceitos estudados:
 
 * Manipulação de arquivos com Java NIO.2
 * Serialização manual de dados
-* Programação orientada a objetos
+* Programação Orientada a Objetos
 * Interface via terminal
 
 ### Versão 2 — Banco de Dados Relacional
@@ -91,7 +116,7 @@ Principais melhorias:
 * Spring Boot
 * Spring Data JPA
 * Spring Security
-* JWT Authentication
+* Autenticação JWT
 * Tratamento global de exceções
 * Arquitetura em camadas
 * Value Objects
@@ -127,26 +152,151 @@ Foram adicionados:
 
 A aplicação utiliza uma estratégia de **multi-stage build**, utilizando uma imagem Maven para compilação e uma imagem JRE mais leve para execução.
 
-### Versão 3.3 — Deploy
+### Versão 3.3 — Deploy da API
 
-A aplicação foi publicada em ambiente cloud utilizando uma imagem Docker.
+A API foi publicada em ambiente cloud utilizando uma imagem Docker.
 
 Processo realizado:
 
 1. Criação de uma imagem Docker para a API.
 2. Publicação da imagem no Docker Hub.
 3. Configuração de um Web Service no Render utilizando a imagem Docker.
-4. Criação de um banco PostgreSQL no Render.
+4. Configuração do banco de dados PostgreSQL.
 5. Configuração das variáveis de ambiente da aplicação.
 6. Deploy da API.
 
-A aplicação está disponível online e pode ser acessada através do Swagger UI.
+### Versão 4 — Desenvolvimento da Interface Web
+
+A versão 4 iniciou a transformação do projeto em uma aplicação web completa.
+
+Foi desenvolvida uma interface própria utilizando **HTML, CSS e JavaScript**, responsável por consumir a API REST e disponibilizar as funcionalidades bancárias através do navegador.
+
+#### Autenticação
+
+Foram desenvolvidas as telas de login e cadastro.
+
+O frontend passou a realizar:
+
+* Validação dos dados inseridos
+* Formatação automática do CPF
+* Conversão dos dados dos formulários para JSON
+* Envio de requisições HTTP para a API
+* Redirecionamento após autenticação
+* Armazenamento do token JWT durante a sessão
+
+A comunicação com a API foi organizada em funções reutilizáveis, incluindo uma função responsável por converter formulários HTML em JSON e outra responsável por centralizar as requisições de autenticação.
+
+O código JavaScript também foi separado em módulos e arquivos independentes, buscando separar a estrutura HTML da lógica da aplicação.
+
+#### Página da Conta
+
+Foi criada uma página principal para a conta do usuário, contendo:
+
+* Dados da conta
+* Barra de navegação
+* Área de operações
+* Área de extrato
+* Dashboard
+
+A aplicação utiliza `sessionStorage` para manter o token JWT durante a sessão atual.
+
+Também foram criadas funções assíncronas reutilizáveis para realizar requisições autenticadas à API.
+
+#### Operações Bancárias
+
+As operações de depósito, saque e transferência foram integradas à interface.
+
+A aplicação utiliza uma única página para as operações, modificando dinamicamente o conteúdo da seção principal de acordo com a operação selecionada.
+
+Os formulários de transação também são adaptados dinamicamente conforme o tipo de operação.
+
+Foi criada uma função `sendTransaction` para centralizar os elementos comuns às requisições de transações e uma função `showTransactionData` para apresentar os dados retornados pela API.
+
+#### Extrato
+
+Foi adicionada uma seção para consulta do extrato da conta.
+
+As funções responsáveis pela consulta e apresentação dos dados foram separadas da estrutura da página, permitindo reutilização da lógica de comunicação com a API.
+
+#### Dashboard
+
+A página inicial da conta passou a possuir uma área destinada à visualização gráfica dos dados das transações.
+
+Foi utilizada a biblioteca **Chart.js** para gerar os gráficos.
+
+Os dados do extrato são processados pelo frontend antes de serem utilizados para construir as visualizações.
+
+#### Configuração do Frontend
+
+O frontend foi estruturado para receber a URL da API através de uma variável de ambiente durante a inicialização do container.
+
+Como as variáveis definidas no Docker Compose não ficam diretamente disponíveis no JavaScript executado pelo navegador, foi utilizado um arquivo de configuração baseado em template.
+
+O `envsubst` é utilizado durante a inicialização do container para gerar o arquivo de configuração final a partir do template.
+
+#### Containerização do Frontend
+
+O frontend foi containerizado utilizando **Nginx** como servidor web.
+
+O container utiliza uma imagem `nginx:alpine` e disponibiliza os arquivos HTML, CSS e JavaScript através da porta 80.
+
+#### Integração entre Frontend e API
+
+Como frontend e backend são executados em origens diferentes, foi adicionada uma configuração de **CORS** ao Spring Security.
+
+A API passou a permitir as origens utilizadas pelo ambiente local e pelo frontend publicado.
+
+#### Deploy
+
+A primeira versão estável do frontend foi publicada utilizando uma imagem Docker hospedada no Docker Hub.
+
+O frontend está disponível em:
+
+**https://symbank.onrender.com**
+
+O banco de dados PostgreSQL utilizado pela aplicação foi posteriormente migrado do Render para o **Neon**, buscando uma solução de banco de dados com uma política mais adequada ao uso contínuo do projeto em seu plano gratuito.
+
+#### Rebranding
+
+Durante a versão 4, o projeto passou a utilizar o nome **SYMBANK**, uma combinação de **Simple + Bank**.
 
 ---
 
 ## Arquitetura
 
-A aplicação segue uma arquitetura baseada em camadas:
+Atualmente, o projeto é dividido em três componentes principais:
+
+```text
+                    ┌──────────────────────┐
+                    │       Browser        │
+                    │                      │
+                    │  HTML / CSS / JS     │
+                    └──────────┬───────────┘
+                               │
+                               │ HTTP / JSON
+                               ▼
+                    ┌──────────────────────┐
+                    │         API          │
+                    │    Spring Boot       │
+                    │                      │
+                    │ Controller           │
+                    │      ↓               │
+                    │ Service              │
+                    │      ↓               │
+                    │ Repository           │
+                    └──────────┬───────────┘
+                               │
+                               │ JPA
+                               ▼
+                    ┌──────────────────────┐
+                    │     PostgreSQL       │
+                    │       Neon           │
+                    └──────────────────────┘
+```
+
+### Backend
+
+A API segue uma arquitetura baseada em camadas:
 
 ```text
 Controller
@@ -158,11 +308,9 @@ Repository
 Banco de Dados
 ```
 
-### Camadas
-
 #### Controller
 
-Responsável por receber as requisições HTTP e retornar respostas apropriadas.
+Responsável por receber as requisições HTTP e retornar as respostas da API.
 
 #### Service
 
@@ -175,6 +323,20 @@ Responsável pelo acesso aos dados através do Spring Data JPA.
 #### Domain
 
 Contém as entidades e objetos de valor que representam o domínio bancário.
+
+### Frontend
+
+O frontend é responsável pela interface gráfica e pela comunicação com a API.
+
+Sua estrutura utiliza JavaScript modularizado, separando responsabilidades como:
+
+* Autenticação
+* Gerenciamento de sessão
+* Requisições HTTP
+* Operações bancárias
+* Extrato
+* Dashboard
+* Configuração da aplicação
 
 Para uma visão mais detalhada da arquitetura e dos diagramas do projeto:
 
@@ -208,17 +370,20 @@ Anotações utilizadas:
 
 ## Segurança
 
-A autenticação da aplicação é realizada através de JWT (JSON Web Token).
+A autenticação da aplicação é realizada através de **JWT (JSON Web Token)**.
 
-Fluxo:
+Fluxo de autenticação:
 
-1. Usuário realiza login.
-2. A aplicação gera um token JWT.
-3. O cliente envia o token no header `Authorization`.
-4. O Spring Security valida o token.
-5. O acesso aos endpoints protegidos é liberado.
+1. Usuário realiza login através do frontend.
+2. O frontend envia as credenciais para a API.
+3. A API autentica o usuário.
+4. A aplicação gera um token JWT.
+5. O frontend armazena o token durante a sessão.
+6. O token é enviado no header `Authorization` nas requisições protegidas.
+7. O Spring Security valida o token.
+8. O acesso aos endpoints protegidos é liberado.
 
-Principais tecnologias:
+Principais tecnologias e componentes:
 
 * Spring Security
 * JWT
@@ -226,7 +391,7 @@ Principais tecnologias:
 * `UserDetails`
 * `UserDetailsService`
 
-As principais classes relacionadas à configuração do Spring Security também estão documentadas no código.
+A API também possui configuração de **CORS** para permitir a comunicação com o frontend hospedado em uma origem diferente.
 
 ---
 
@@ -251,68 +416,85 @@ Casos testados incluem:
 
 ## Containerização
 
-A aplicação utiliza Docker para padronizar o ambiente de execução.
+O projeto utiliza Docker para padronizar os ambientes de execução.
 
-A estrutura de containers é composta por:
+A aplicação é composta por containers independentes para os principais componentes:
 
 ```text
 ┌─────────────────────┐
-│       API           │
-│   Spring Boot       │
-│      :8080          │
+│       Frontend      │
+│       Nginx         │
+│        :80          │
 └──────────┬──────────┘
            │
+           │ HTTP
+           ▼
+┌─────────────────────┐
+│         API         │
+│    Spring Boot      │
+│       :8080         │
+└──────────┬──────────┘
            │
-┌──────────▼──────────┐
+           │ PostgreSQL
+           ▼
+┌─────────────────────┐
 │     PostgreSQL      │
-│       :5432         │
+│        Neon         │
 └─────────────────────┘
 ```
 
-O `docker-compose.yml` configura:
+### Frontend
 
-* Container da API
-* Container PostgreSQL
-* Volume para persistência dos dados
-* Redes Docker
-* Variáveis de ambiente
+O frontend utiliza:
 
-### Executar com Docker Compose
+* Nginx
+* `nginx:alpine`
+* `envsubst`
+* Dockerfile próprio
+
+### Backend
+
+A API utiliza:
+
+* Docker
+* Multi-stage build
+* Maven
+* Java 21
+* Spring Boot
+
+### Desenvolvimento local
+
+O `docker-compose.yml` pode ser utilizado para iniciar os serviços da aplicação em ambiente local.
 
 ```bash
 docker compose up --build
-```
-
-Após a inicialização, a API estará disponível em:
-
-```text
-http://localhost:8080
 ```
 
 ---
 
 ## Deploy
 
-A aplicação está publicada utilizando uma imagem Docker.
+O projeto possui frontend e backend publicados separadamente.
 
-### Tecnologias utilizadas no deploy
+### Frontend
 
-* Docker
-* Docker Hub
-* Render
-* PostgreSQL
+O frontend é executado através de uma imagem Docker publicada no Docker Hub e hospedada no Render.
 
-### Acesso
+**[Acessar o SYMBANK](https://symbank.onrender.com)**
 
-**API:**
+### Backend
 
-https://sistema-bancario-simplificado.onrender.com
+A API é executada através de uma imagem Docker publicada no Docker Hub e hospedada no Render.
 
-**Swagger UI:**
+**[Acessar a API](https://sistema-bancario-simplificado.onrender.com)**
 
-https://sistema-bancario-simplificado.onrender.com/swagger-ui/index.html#/
+**[Acessar Swagger UI](https://sistema-bancario-simplificado.onrender.com/swagger-ui/index.html#/)**
 
-> A aplicação atualmente utiliza o Swagger UI como interface para interação com a API. Uma interface web própria está planejada para uma etapa futura.
+### Banco de Dados
+
+O PostgreSQL utilizado pela aplicação está hospedado no **Neon**.
+
+A separação entre frontend, API e banco de dados permite que cada componente seja hospedado e configurado independentemente.
 
 ---
 
@@ -320,28 +502,42 @@ https://sistema-bancario-simplificado.onrender.com/swagger-ui/index.html#/
 
 ### Backend
 
-* Java
+* Java 21
 * Spring Boot
 * Spring Data JPA
 * Spring Security
 * JWT
 * Maven
 
+### Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+* Fetch API
+* Chart.js
+
 ### Banco de Dados
 
 * PostgreSQL
+* Neon
 
 ### Testes
 
 * JUnit 5
 * Mockito
 
-### Containerização e Deploy
+### Containerização
 
 * Docker
 * Docker Compose
+* Nginx
 * Docker Hub
+
+### Deploy
+
 * Render
+* Neon
 
 ### Versionamento
 
@@ -352,11 +548,13 @@ https://sistema-bancario-simplificado.onrender.com/swagger-ui/index.html#/
 
 ## Próximos Passos
 
-* Desenvolvimento da interface web
-* Documentação completa da API com Swagger/OpenAPI
+* Melhorias na interface e experiência do usuário
+* Ampliação do dashboard
 * Ampliação da cobertura de testes
 * Melhorias de observabilidade e logging
 * Evolução da arquitetura conforme novas funcionalidades forem adicionadas
+* Melhorias na estratégia de gerenciamento da sessão e armazenamento do token
+* Evolução da documentação da API com Swagger/OpenAPI
 
 ---
 
@@ -366,7 +564,8 @@ https://sistema-bancario-simplificado.onrender.com/swagger-ui/index.html#/
 
 * Java 21
 * Maven
-* PostgreSQL
+* Docker
+* Docker Compose
 
 ### Clonar o repositório
 
@@ -383,7 +582,9 @@ A forma recomendada de executar o projeto é utilizando Docker Compose:
 docker compose up --build
 ```
 
-### Executar localmente
+Após a inicialização, os serviços estarão disponíveis nas portas configuradas pelo `docker-compose.yml`.
+
+### Executar o backend localmente
 
 Configure as variáveis de ambiente necessárias para conexão com o banco de dados e execute:
 
@@ -391,21 +592,32 @@ Configure as variáveis de ambiente necessárias para conexão com o banco de da
 mvn spring-boot:run
 ```
 
+### Executar o frontend
+
+O frontend pode ser executado através do container Nginx definido no Docker Compose.
+
 ---
 
 ## Objetivo Educacional
 
-Este projeto foi desenvolvido com foco em aprendizado prático e evolução contínua de conhecimentos em:
+O projeto foi desenvolvido com foco em aprendizado prático e evolução contínua de conhecimentos em:
 
 * Programação Orientada a Objetos
 * Persistência de Dados
+* Bancos de Dados Relacionais
 * APIs REST
 * Arquitetura de Software
 * Segurança de Aplicações
+* Autenticação e autorização
+* Desenvolvimento Web
+* JavaScript
+* Comunicação entre frontend e backend
 * Testes Automatizados
 * Containerização
-* Deploy
+* Deploy em ambiente cloud
 * Desenvolvimento Backend com Spring Boot
+
+Além do desenvolvimento das funcionalidades, o projeto foi utilizado para experimentar diferentes abordagens arquiteturais e evoluir gradualmente uma aplicação à medida que novos conhecimentos eram adquiridos.
 
 ---
 
