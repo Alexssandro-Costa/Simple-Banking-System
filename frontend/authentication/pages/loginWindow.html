@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="module" src="../js/authenticationRequest.js"></script>
+        <title>Tela de login pro sistema bancario</title>
+    </head>
+
+    <body>
+        
+        <!--Nome do banco-->
+        <h1><b>SYMBANK</b></h1>
+
+        <form action="/api/auth/login" method="POST" name="authForm" id="authForm">
+            <fieldset name="user_data">
+                <legend>Login</legend>
+                
+                <label for="cpf">CPF:</label>
+                <input type="text" required
+                name="cpf" id="cpf"
+                minlength="11" maxlength="14"
+                placeholder="Digite seu CPF:"
+                pattern="^\d{3}\.\d{3}\.\d{3}-\d{2}$"
+                autofocus
+                >
+
+                <br>
+                <label for="password">Senha:</label>
+                <input type="password" required
+                name="password" id="password"
+                placeholder="Digite sua senha:">
+
+            </fieldset>
+
+            <fieldset name="login_opt">
+                <button type="submit" value="autentication">Enviar login</button>
+                <button type="reset">Limpar login</button>
+                <br>
+                <a href="registerWindow.html"> <i>Ainda não tem uma conta? Registre-se agora!</i> </a>
+            </fieldset>
+
+
+        </form>
+
+        <script src="../js/cpfFormatation.js"></script>
+    </body>
+
+</html>

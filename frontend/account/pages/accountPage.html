@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+    <title>Pagina inicial da conta bancaria</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="../js/transaction.js"></script>
+    <script type="module" src="../js/statement.js"></script>
+    <script type="module" src="../js/home.js"></script>
+    <script type="module" src="../js/initAccount.js"></script>
+    <script type="module" src="../js/status.js"></script>
+    <script type="module" src="../js/exit.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!--TO DO:  Fazer o Nome do usuario e o numero da conta ficarem na mesma linha-->
+    <header>
+        <p>NÚMERO DA CONTA: </p>
+        <p id="accountNumber"></p>
+
+        <p>NOME: </p>
+        <p id="userName"></p>
+
+        <p>SALDO: </p>
+        <p id="accountBalance"></p>
+    </header>
+    <hr>
+
+    <!--TO DO: Transformar em barra horizontal-->
+    <nav id="optionsBar">
+        <button id="homeButton">Inicio</button>
+        <button id="operationsButton">Operação Bancaria</button>
+        <button id="statementButton">Visualizar Extrato</button>
+        <button id="exitButton">Sair da Conta</button>
+        <button id="statusButton">Modificar status da conta</button>
+    </nav>
+    <hr>
+
+    <section id="content">
+
+    </section>
+
+</body>
+
+
+
+</html>

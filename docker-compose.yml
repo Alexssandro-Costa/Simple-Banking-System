@@ -1,31 +1,50 @@
 services:
   API:
-    image: alexssandrocosta/spring-boot-simple-banking-api:1.0 # define o nome e versão da imagem
-    build: . # cria a imagem a partir do dockerfile do diretório
-    ports: # mapeia as portas do host e do container
+    image: alexssandrocosta/spring-boot-simple-banking-api:1.2 # define o nome e versão da imagem
+    build: ./backend # cria a imagem a partir do dockerfile do diretório
+    ports:
+      # mapeia as portas do host e do container
       - "8080:8080"
-    depends_on: # serviços que devem ser inicializados antes da web
+    depends_on:
+      # serviços que devem ser inicializados antes da web
       - DB
     networks:
       - public_network
       - private_network
-    environment: # define as variáveis de ambiente do banco de dados
+    environment:
+      # define as variáveis de ambiente do banco de dados
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
-      JWT_SECRET:  ${JWT_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+
+  GUI:
+    image: alexssandrocosta/spring-boot-simple-banking-front:1 # define o nome e versão da imagem
+    build: ./frontend # cria a imagem a partir do dockerfile do diretório
+    ports:
+      # mapeia as portas do host e do container
+      - "80:80"
+    depends_on:
+      # serviços que devem ser inicializados antes da GUI
+      - API
+    networks:
+      - public_network
+    environment:
+      # variaveis de ambiente do front
+      API_URL: http://localhost:8080
+
 
   DB:
     image: postgres:17-alpine # Cria um container a partir de uma imagem
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Persiste os dados do postgres num volume nomeado
+      - postgres_data:/var/lib/postgresql/data # Persiste os dados do postgres num volume nomeado
     networks:
       - private_network
-    environment: # define as variáveis de ambiente
+    environment:
+      # define as variáveis de ambiente
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-
 
 volumes:
   postgres_data: {} # volume para persistência de dados do postgres
