@@ -10,27 +10,30 @@
  */
 export async function sendAuthenticatedRequest(url, method, token, requestJson) {
 
-    // envia a requisição 
-    const response = await fetch(
-        url, {
-        method: method,
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token // envia o token no cabeçalho 
-        },
-        body: requestJson
-    });
+    try {
+        // envia a requisição 
+        const response = await fetch(
+            url, {
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token // envia o token no cabeçalho 
+            },
+            body: requestJson
+        });
 
-    // testa a requisição http
-    if (!response.ok) {
-        throw new Error("Erro HTTP: " + response.status);
+        // Trata respostas HTTP que indicam erro.
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error("Erro HTTP: " + response.status + " - " + errorText);
+        }
+
+        // retorna o objeto json de resposta
+        return await response.json();
+
+    } catch (err) {
+        console.error("Erro ao enviar requisição autenticada: " + err);
     }
-
-    // converte e retorna o json da resposta
-    const responseJson = await response.json();
-    return responseJson;
-
-
 
 }
 

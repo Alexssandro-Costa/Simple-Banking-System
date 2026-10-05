@@ -1,60 +1,68 @@
 import { API_URL } from "../../config/apiUrl.js";
-import {convertFormToJson} from "../../util/convertFormToJson.js"
+import { convertFormToJson } from "../../util/convertFormToJson.js"
 import { SessionToken } from "../../util/sessionToken.js";
 
 /**
 * Captura o evento de submit do formulario e modifica seu evento para chamar sendAuthRequest; 
 */
 const form = document.getElementById("authForm");
-form.addEventListener("submit", function(event) {
+form.addEventListener("submit", function (event) {
     event.preventDefault(); // cancela o comportamento padrão do submit
-    
+
     sendAuthRequest(form);
 })
-
 /**
- * Envia uma requisição de autenticação pra API.
- * @param {HTMLFormElement} authRequestForm - Formulario contendos os dados da requisição
+ * Envia uma requisição de autenticação para a API.
+ *
+ * @param {HTMLFormElement} authRequestForm - Formulário contendo os dados da requisição.
  */
-function sendAuthRequest(authRequestForm) {
+async function sendAuthRequest(authRequestForm) {
 
-    // converte um formulario html em um json
+    // Converte o formulário HTML em JSON.
     const json = convertFormToJson(authRequestForm);
 
-    // recupera o endpoint do atributo action do formulario
-    const endpoint = authRequestForm.attributes["action"].value;
+    // Recupera o endpoint definido no atributo action do formulário.
+    const endpoint = authRequestForm.getAttribute("action");
 
-    // constroi a url 
+    // Verifica se os dados necessários para a requisição são válidos.
+    if (!endpoint || !json) {
+        throw new Error("Endpoint ou JSON inválidos.");
+    }
+
+    // Constrói a URL completa da API.
     const url = API_URL + endpoint;
 
-    // envia a requisição pra API
-    fetch(url, {
-        method:"POST", 
-        headers: {"Content-Type" : "application/json"},
-        body: json
-    })
-    .then(function(response) {
+    try {
+        // Envia a requisição para a API.
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: json
+        });
 
+        // Trata respostas HTTP que indicam erro.
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(function(data) {
-         
-        // Login confirmado pelo backend
-        console.log("Login realizado:", data);
-        
-        // persiste o token de acesso
-        const session = new SessionToken();
-        session.saveToken(data["token"]);
 
-        // muda para a pagina inicial
+            const errorJson = await response.json();
+
+            console.error("Erro retornado pela API:", errorJson);
+
+            throw new Error("Erro HTTP: " + response.status);
+        }
+
+        // Converte o corpo da resposta para um objeto JavaScript.
+        const responseJson = await response.json();
+
+        // Persiste o token de acesso.
+        const session = new SessionToken();
+        session.saveToken(responseJson["token"]);
+
+        // Redireciona para a página inicial da conta.
         window.location.href = "../../account/pages/accountPage.html";
 
-    })
-    .catch(function(err) {
-        console.error("Erro ao tentar entrar na conta: ", err);
-    });
-    
+    } catch (err) {
+        console.error("Requisição de autenticação falhou:", err);
+    }
 }

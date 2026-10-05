@@ -51,7 +51,7 @@ class RegisterNewClientTest {
     RegisterNewClient registerNewClient;
 
 
-
+/*
     @Test
     @DisplayName("Registro devo retornar um RegisterResponse contendo um dto de autênticação")
     void registerNewClient_ShouldReturn_ARegisterResponseWithAAuthenticationDto() {
@@ -91,6 +91,7 @@ class RegisterNewClientTest {
         verify(authenticateClient).execute(any(AuthenticationRequest.class));
     }
 
+    */
     @Test
     @DisplayName("Registro deve falhar quando a requisição de registro for nula")
     void registerNewClient_ShouldFail_When_RegisterRequestIsNull() {

@@ -20,7 +20,6 @@ opButton.addEventListener("click", function () {
 
 // adiciona um listener no envio da transação
 document.addEventListener("submit", function (event) {
-    alert(1);
     event.preventDefault(); // cancela o comportamento padrão do submit
     sendTransaction(event.target);
 })
@@ -33,7 +32,6 @@ document.addEventListener("submit", function (event) {
  * @param {HTMLFormElement} transactionForm - formulario html 
  */
 async function sendTransaction(transactionForm) {
-    alert("Transação disparada");
 
     try {
         // busca o token de acesso da sessão

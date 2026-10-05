@@ -6,6 +6,11 @@ export class SessionToken {
      * @param {string} token - Token JWT.
      */
     saveToken(token) {
+
+        if(token === null || token === undefined) {
+            throw new Error("token passado é invalido");
+        }
+        
         sessionStorage.setItem("token", token);
     }
 

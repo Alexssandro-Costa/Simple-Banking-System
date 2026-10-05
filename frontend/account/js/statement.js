@@ -1,4 +1,4 @@
-import { API_URL } from "../../config/config.js";
+import { API_URL } from "../../config/apiUrl.js";
 import { SessionToken } from "../../util/sessionToken.js";
 import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
 

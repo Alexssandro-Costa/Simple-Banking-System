@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.simple_banking_system.model.DTOs.Request.RegisterRequest;
+import com.project.simple_banking_system.model.DTOs.Response.AuthenticationResponse;
 import com.project.simple_banking_system.model.DTOs.Response.RegisterResponse;
 import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.entity.Client;
@@ -82,16 +83,14 @@ public class RegisterNewClient {
 
         // salva as entidades no banco de dados
         clientRepository.save(client);
+        
 
-        // Realiza a autenticação do usuário e retorna um dto
-        return new RegisterResponse(
-                authenticateClient.execute(
-                        new AuthenticationRequest(
-                                registerRequest.cpf(),
-                                registerRequest.password()
-                        )
-                )
-        );
+        // Realiza a autenticação do usuário
+        AuthenticationResponse authResponse = authenticateClient.execute(new AuthenticationRequest(registerRequest.cpf(), registerRequest.password()));
+
+        // retorna um record contendo o token jwt
+        return new RegisterResponse(authResponse.token());
+
     }
 
 
