@@ -14,6 +14,8 @@ export class SessionToken {
         sessionStorage.setItem("token", token);
     }
 
+    SessionToken(){}
+
     /**
      * Recupera o token de acesso da sessão atual.
      *
