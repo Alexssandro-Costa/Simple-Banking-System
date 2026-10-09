@@ -123,7 +123,8 @@ public class SecurityConfig {
         // Define as origens autorizadas a realizar requisições à API.
         config.setAllowedOrigins(List.of(
                 "http://localhost",
-                "https://sistema-bancario-simplificado.onrender.com"));
+                "https://sistema-bancario-simplificado.onrender.com",
+            "https://symbank.onrender.com"));
 
         // Define os métodos HTTP permitidos nas requisições.
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
