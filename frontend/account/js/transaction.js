@@ -2,8 +2,7 @@ import { API_URL } from "../../config/apiUrl.js";
 import { SessionToken } from "../../util/sessionToken.js";
 import { convertFormToJson } from "../../util/convertFormToJson.js";
 import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
-import { GetAccountData } from "./GetAccountData.js";
-
+import { updateBalanceHeader } from "./updateHeaderData.js";
 
 const opButton = document.getElementById("operationsButton");
 opButton.addEventListener("click", function () {
@@ -53,8 +52,8 @@ async function sendTransaction(transactionForm) {
         let responseJson = await sendAuthenticatedRequest(url, "POST", token, jsonForm);
         await showTransactionData(responseJson);
 
-        // atualiza o saldo mostrado
-        await GetAccountData();
+        // ATUALIZA O BALANÇO MOSTRADO NO HEADER DA PAGINA
+        await updateBalanceHeader(responseJson["newBalance"]);
 
     } catch (error) {
         console.error("Erro ao enviar transação: " + error);

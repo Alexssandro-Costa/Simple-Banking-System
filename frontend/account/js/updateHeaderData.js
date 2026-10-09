@@ -6,7 +6,7 @@ import { SessionToken } from "../../util/sessionToken.js";
 /**
  * recupera os dados da conta bancaria através de uma requisição http
  */
-export async function GetAccountData() {
+export async function getAccountData() {
 
     try {
 
@@ -22,7 +22,7 @@ export async function GetAccountData() {
 
         // modifica o valor dos elementos da pagina
         updateAccountNumberHeader(json["accountNumber"]);
-        updateUserNameHeader(json["userName"]);
+        updateUserNameHeader(json["name"]);
         updateBalanceHeader(json["balance"]);
 
     }
@@ -37,7 +37,7 @@ export async function GetAccountData() {
  * @param {*} accountNumber Conteudo que será inserido no elemento
  */
 async function updateAccountNumberHeader(accountNumber) {
-    document.getElementById("accountNumber").textContent = "Número da Conta: " + accountNumber;
+    document.getElementById("accountNumber").textContent = accountNumber;
 }
 
 /**
@@ -45,7 +45,7 @@ async function updateAccountNumberHeader(accountNumber) {
  * @param {*} userName  conteudo que será inserido no elemento
  */
 async function updateUserNameHeader(userName) {
-    document.getElementById("userName").textContent = "Nome do Titular: " + userName;
+    document.getElementById("userName").textContent = userName;
 }
 
 
@@ -54,5 +54,5 @@ async function updateUserNameHeader(userName) {
  * @param {*} balance conteudo que será inserido no elemento
  */
 export async function updateBalanceHeader(balance) {
-    document.getElementById("accountBalance").textContent = "Saldo: " + balance;
+    document.getElementById("accountBalance").textContent = balance;
 }
