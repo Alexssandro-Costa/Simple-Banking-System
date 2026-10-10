@@ -3,15 +3,19 @@ package com.project.simple_banking_system.service.use_cases;
 
 import com.project.simple_banking_system.service.auth.GetTokenData;
 import com.project.simple_banking_system.service.util.SearchEntityFromRepository;
+
+import java.util.NoSuchElementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.simple_banking_system.exceptions.DisabledAccountException;
-
+import com.project.simple_banking_system.exceptions.NullElementException;
 import com.project.simple_banking_system.model.DTOs.Response.AccountDataResponse;
 import com.project.simple_banking_system.model.valueObjects.Status;
 import com.project.simple_banking_system.repository.ClientRepository;
 import com.project.simple_banking_system.model.entity.Client;
+import com.project.simple_banking_system.exceptions.AccountDataRequestFailedException;
 
 
 /**
@@ -29,9 +33,6 @@ public class GetAccountData {
     @Autowired
     private GetTokenData getTokenData;
 
-    @Autowired
-    private SearchEntityFromRepository searchEntityFromRepository;
-
     /**
      * Acessa uma conta bancaria existente.
      * @return Retorna os dados da conta bancaria encapsulados pelo DTO AccountDataResponse.
@@ -39,19 +40,21 @@ public class GetAccountData {
      */
     public AccountDataResponse execute() {
 
+        try{
         // recupera os dados do cliente no banco de dados
-        Client client = searchEntityFromRepository.getEntityById(getTokenData.getId(), clientRepository);
+        AccountDataResponse response = clientRepository.getAccountDataById(getTokenData.getId())
+        .orElseThrow();
 
-        // verifica se a conta está ativa
-        if( client.getAccount().getStatus() == Status.DESABILITADA)
-            throw new DisabledAccountException("ERRO. Não é possível acessar uma conta desativada.");
+        if(response.name() == null || response.accountNumber() == null || response.name() == null)
+            throw new NullElementException("Requisição retornou elementos nulos.");
 
-        // retorna o dto de resposta
-        return new AccountDataResponse(
-                client.getName().getValue(),
-                client.getAccount().getAccountNumber().getValue(),
-                client.getAccount().getBalance().toString()
-        );
+        return response;
+
+        }catch(Exception e) {
+            throw new AccountDataRequestFailedException("Erro ao buscar dados da conta: " + e);
+        }
+       
+
     }
 
 

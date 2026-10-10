@@ -41,7 +41,7 @@ public class GetTokenData {
             // Obtém o objeto de maior privilégio (Principal) armazenado no contexto de segurança da requisição atual
             var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            // Verifica de forma segura (Pattern Matching do Java 14+) se o principal é do tipo JWTUserData
+            // Verifica de forma segura se o principal é do tipo JWTUserData
             if (principal instanceof JWTUserData userData) {
                 // Converte a String do ID armazenada no Record para o tipo UUID nativo antes de retornar
                 return UUID.fromString(userData.id());

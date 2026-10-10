@@ -52,7 +52,7 @@ public class TokenConfig {
 
         return JWT.create()
                 // Insere o UUID do cliente convertido em String na claim do token
-                .withClaim("cliente-id", client.getId().toString())
+                .withClaim("cliente_id", client.getId().toString())
                 // Define o username (CPF) como a entidade principal (subject) do token
                 .withSubject(client.getUsername())
                 // Define o tempo de expiração do token (1 dia a partir do momento atual)
@@ -88,7 +88,7 @@ public class TokenConfig {
 
             // Se nenhuma exceção for lançada, extrai as claims e retorna o record encapsulado
             return Optional.of(new JWTUserData(
-                    decode.getClaim("cliente-id").asString(),
+                    decode.getClaim("cliente_id").asString(),
                     decode.getSubject()
             ));
 

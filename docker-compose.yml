@@ -1,6 +1,6 @@
 services:
   API:
-    image: alexssandrocosta/spring-boot-simple-banking-api:1.2 # define o nome e versão da imagem
+    image: alexssandrocosta/spring-boot-simple-banking-api:1.3 # define o nome e versão da imagem
     build: ./backend # cria a imagem a partir do dockerfile do diretório
     ports:
       # mapeia as portas do host e do container
@@ -19,7 +19,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
 
   GUI:
-    image: alexssandrocosta/spring-boot-simple-banking-frontend:1.0 # define o nome e versão da imagem
+    image: alexssandrocosta/spring-boot-simple-banking-frontend:1.1 # define o nome e versão da imagem
     build: ./frontend # cria a imagem a partir do dockerfile do diretório
     ports:
       # mapeia as portas do host e do container

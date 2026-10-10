@@ -1,6 +1,9 @@
 package com.project.simple_banking_system.exceptions.handler;
 
 import com.project.simple_banking_system.exceptions.*;
+
+import java.net.http.HttpClient;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,6 +34,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorMessageDTO> handleBusinessRulesError(InvalidTransactionException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDTO(e.getMessage()));
 
+    }
+
+
+    /**
+     * Exceção lançada quando uma requisição por dados de uma conta falha
+     * @param e Exceção que deve ser lançada
+     * @return ErrorMessageDTO uma mensagem de erro personalizada.
+     */
+    @ExceptionHandler(AccountDataRequestFailedException.class)
+    public ResponseEntity<ErrorMessageDTO> handleDataRequestFailed(AccountDataRequestFailedException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(new ErrorMessageDTO(e.getMessage()));
     }
 
     
@@ -138,7 +153,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessageDTO> handleGeneralError(Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessageDTO("Erro interno no servido"));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessageDTO("Erro interno no servidor: " + e.getMessage()));
 
     }
 

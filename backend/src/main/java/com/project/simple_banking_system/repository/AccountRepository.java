@@ -27,6 +27,5 @@ public interface AccountRepository extends JpaRepository<Account, UUID>{
     public Optional<Account> findByAccountNumber(AccountNumber accountNumber);
 
 
-
     
 }

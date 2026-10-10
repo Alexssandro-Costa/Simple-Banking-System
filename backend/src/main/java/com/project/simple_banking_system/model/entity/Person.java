@@ -45,7 +45,7 @@ public abstract class Person {
     private Phone phone;
 
     @Schema(description = "Data de nascimento do individuo, segue o padrão YYYY/MM/DD", example = "2000-01-01")
-    @AttributeOverride(name = "value", column = @Column(name = "data-nascimento", nullable = false, length = 15))
+    @AttributeOverride(name = "value", column = @Column(name = "data_nascimento", nullable = false, length = 15))
     @Embedded
     private DateBirth dateBirth;
 

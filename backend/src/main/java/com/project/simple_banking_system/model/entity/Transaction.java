@@ -51,7 +51,7 @@ public class Transaction {
     private Cash value;
 
     @Schema(description = "Data de emissão da transação")
-    @Column(name = "data-emissao", nullable = false, updatable = false)
+    @Column(name = "data_emissao", nullable = false, updatable = false)
     @CreatedDate
     private Instant date;
 
@@ -71,7 +71,7 @@ public class Transaction {
     /// DEFINE A CHAVE ESTRANGEIRA DE UMA TRANSAÇÃO
     @Schema(description = "Define uma relação de chave estrangeira com a entidade account")
     @ManyToOne
-    @JoinColumn(name = "conta-id", nullable = false)
+    @JoinColumn(name = "conta_id", nullable = false)
     private Account account;
 
     public Transaction(Cash value, TransactionType transactionType, String sender, String receiver) {

@@ -35,12 +35,12 @@ public class Account{
     private UUID id;
 
     @Schema(description = "Número da conta", example = "012345678")
-    @AttributeOverride(name = "value", column = @Column(name = "numero-conta", nullable = false, unique=true))
+    @AttributeOverride(name = "value", column = @Column(name = "numero_conta", nullable = false, unique=true))
     @Embedded
     private final AccountNumber accountNumber;
 
     @Schema(description = "Saldo da conta", example = "1000.00")
-    @AttributeOverride(name = "value", column = @Column(name = "balanco", nullable = false))
+    @AttributeOverride(name = "value", column = @Column(name = "saldo", nullable = false))
     @Embedded
     private Cash balance;
 
@@ -51,7 +51,7 @@ public class Account{
 
     @Schema(description = "designa a relação de chave estrangeira com a entidade client")
     @OneToOne
-    @JoinColumn(name = "cliente-id")
+    @JoinColumn(name = "cliente_id")
     private Client client;
 
     @Schema(description = "designa a relação de chave estrangeira com a entidade transactions")
