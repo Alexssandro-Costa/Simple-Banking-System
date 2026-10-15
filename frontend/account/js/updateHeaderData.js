@@ -21,9 +21,9 @@ export async function getAccountData() {
         const json = await sendAuthenticatedRequest(url, "POST", token, null);
 
         // modifica o valor dos elementos da pagina
-        updateAccountNumberHeader(json["accountNumber"]);
-        updateUserNameHeader(json["name"]);
-        updateBalanceHeader(json["balance"]);
+        await updateAccountNumberHeader(json["accountNumber"]);
+        await updateUserNameHeader(json["name"]);
+        await updateBalanceHeader(json["balance"]);
 
     }
     catch (error) {

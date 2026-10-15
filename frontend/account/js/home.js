@@ -1,5 +1,5 @@
 
-import { getStatement } from "./statement.js";
+import { getPageableStatement, getStatement } from "./statement.js";
 
 document.getElementById("homeButton").addEventListener("click", function () {
     setHomeContent();
@@ -86,7 +86,7 @@ async function definePieChart(context) {
 async function filterStatementAmount() {
 
     // recupera o extrato bancario
-    const statementData = await getStatement();
+    const statementData = await getPageableStatement(1, 50);
 
     const typeMap = new Map([
         ["DEPOSITO", 0],

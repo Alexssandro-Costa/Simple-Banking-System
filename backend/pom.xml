@@ -107,6 +107,12 @@
 			<version>6.0.3</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!--Monitoramento-->
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

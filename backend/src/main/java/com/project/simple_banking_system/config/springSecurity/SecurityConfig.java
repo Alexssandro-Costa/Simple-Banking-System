@@ -90,6 +90,9 @@ public class SecurityConfig {
                                 "/webjars/**")
                         .permitAll()
 
+                        // endpoint de verificação de disponibilidade
+                        .requestMatchers("/actuator/health").permitAll()
+
                         // Endpoints públicos de autenticação e registro de usuários
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
@@ -124,7 +127,7 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "http://localhost",
                 "https://sistema-bancario-simplificado.onrender.com",
-            "https://symbank.onrender.com"));
+                "https://symbank.onrender.com"));
 
         // Define os métodos HTTP permitidos nas requisições.
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
