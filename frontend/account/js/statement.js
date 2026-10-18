@@ -1,4 +1,4 @@
-import { API_URL } from "../../config/apiUrl.js";
+﻿import { API_URL } from "../../config/apiUrl.js";
 import { SessionToken } from "../../util/sessionToken.js";
 import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
 
@@ -12,42 +12,72 @@ document
  * Inicia a seção de extrato bancario e os listeners utilizados
  */
 async function startStatementSection() {
-  let pageNum = 1;
+
+  // numero da pagina buscada
+  let pageNum = 0;
+  // quantidade de itens buscados
   const quantity = 5;
 
-  showStatement(pageNum, quantity);
+  const content = document.getElementById("content");
 
-  // adiciona um listener nos botões next e previous da seção de statement
-  const next = document.getElementById("nextStatement");
-  const previous = document.getElementById("previousStatement");
+  // apaga qualquer elemento restante da seção de conteudo
+  content.innerHTML = "";
 
-  next.addEventListener("click", function () {
-    pageNum += 1;
-    showStatement(pageNum, quantity);
-  });
+  // inicializa a seção de conteudo
+  content.innerHTML = `
 
-  previous.addEventListener("click", function () {
-    if (pageNum > 1) {
-      pageNum -= 1;
-      showStatement(pageNum, quantity);
-    }
-  });
+    <section id="statement"></section>
+
+    <nav>
+      <button id="previousPage">Anterior</button>
+      <button id="nextPage">Proximo</button>
+    </nav>
+  `;
+
+  // listener para o botão de proxima pagina
+  document
+    .getElementById("nextPage")
+    .addEventListener("click", function (event) {
+      // verifica se o botão não está desabilitado
+      if (!event.target.disabled) {
+        pageNum += 1;
+        showStatement(pageNum, quantity);
+      }
+    });
+
+  // listener para o botão de pagina anterior
+  document
+    .getElementById("previousPage")
+    .addEventListener("click", function (event) {
+      // verifica se o botão não está desabilitado
+      if (!event.target.disabled) {
+        pageNum -= 1;
+        showStatement(pageNum, quantity);
+      }
+    });
+
+    // mostra o extrato na tela
+    await showStatement(pageNum, quantity);
 }
 
 /**
  * Modifica a seção content da pagina principal para mostrar os dados da requisição de extratos
  */
 async function showStatement(pageNum, quantity) {
-  // recupera os extratos paginados da API
+  // recupera os dados da API
   let responseJson = await getPageableStatement(pageNum, quantity);
 
-  try {
-    // modifica a seção de conteudo
-    let content = document.getElementById("content");
-    content.innerHTML = "";
+  // recupera o extrato da resposta
+  let transactions = responseJson["statement"];
 
-    for (const transaction of responseJson) {
-      content.innerHTML += `
+  try {
+
+    const statement = document.getElementById("statement");
+    statement.innerHTML = ""; // apaga as informações que ficaram no elemento.
+
+    // insere as transações na pagina
+    for (const transaction of transactions) {
+      statement.innerHTML += `
             <h3>Transação</h3>
             <p>Tipo: ${transaction.type}</p>
             <p>ID: ${transaction.transactionID} </p>
@@ -58,13 +88,9 @@ async function showStatement(pageNum, quantity) {
             `;
     }
 
-    // adiciona os botões de controle de paginação
-    content.innerHTML += `
-      <nav>
-        <button id="previousStatement">Anterior</button>
-        <button id="nextStatement">Proximo</button>
-      </nav>
-    `
+    // modifica o estado dos botões 
+    updatePaginationControls(responseJson["isFirst"], responseJson["isLast"]);
+
   } catch (err) {
     console.error("Erro ao mostrar extrato: " + err);
   }
@@ -76,13 +102,13 @@ async function showStatement(pageNum, quantity) {
  * @param {*} pageNumber Número da pagina
  * @param {*} itemQuantity Quantidade de itens que devem ser retornados pela API
  */
-export async function getPageableStatement(pageNumber, itemQuantity) {
+async function getPageableStatement(pageNumber, itemQuantity) {
   const endpoint = "/api/operations/account/statement";
   const url = API_URL + endpoint;
 
   const body = JSON.stringify({
     pageNumber: pageNumber,
-    itemQuantity: itemQuantity,
+    quantity: itemQuantity,
   });
 
   // recupera o token da sessão
@@ -98,3 +124,17 @@ export async function getPageableStatement(pageNumber, itemQuantity) {
     console.error("Erro ao buscar extrato: " + err);
   }
 }
+
+/**
+ * Atualiza estado dos botões de paginação com base no estado da pagina retornada na paginação
+ * @param {boolean} isFirst pagina retornada é a primeira na paginação
+ * @param {boolean} isLast pagina retornada é a ultima na paginação
+ */
+async function updatePaginationControls(isFirst, isLast) {
+  document.getElementById("previousPage").disabled = isFirst;
+  document.getElementById("nextPage").disabled = isLast;
+
+}
+
+
+

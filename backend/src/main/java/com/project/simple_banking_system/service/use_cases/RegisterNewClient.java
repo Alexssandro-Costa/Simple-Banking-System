@@ -86,7 +86,9 @@ public class RegisterNewClient {
         
 
         // Realiza a autenticação do usuário
-        AuthenticationResponse authResponse = authenticateClient.execute(new AuthenticationRequest(registerRequest.cpf(), registerRequest.password()));
+        AuthenticationResponse authResponse =
+                authenticateClient.execute(new AuthenticationRequest(registerRequest.cpf(),
+                        registerRequest.password()));
 
         // retorna um record contendo o token jwt
         return new RegisterResponse(authResponse.token());

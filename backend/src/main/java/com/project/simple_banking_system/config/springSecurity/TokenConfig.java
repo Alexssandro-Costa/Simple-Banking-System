@@ -51,12 +51,13 @@ public class TokenConfig {
         Algorithm algorithm = Algorithm.HMAC256(secret);
 
         return JWT.create()
-                // Insere o UUID do cliente convertido em String na claim do token
+                // Insere o UUID do cliente e da conta convertidos em String na claim do token
                 .withClaim("cliente_id", client.getId().toString())
+                .withClaim("conta_id", client.getAccount().getId().toString())
                 // Define o username (CPF) como a entidade principal (subject) do token
                 .withSubject(client.getUsername())
                 // Define o tempo de expiração do token (1 dia a partir do momento atual)
-                .withExpiresAt(Instant.now().plusSeconds(86400))
+                .withExpiresAt(Instant.now().plusSeconds(18000))
                 // Define o momento exato em que o token foi emitido
                 .withIssuedAt(Instant.now())
                 // Assina digitalmente o token com o algoritmo configurado
@@ -89,6 +90,7 @@ public class TokenConfig {
             // Se nenhuma exceção for lançada, extrai as claims e retorna o record encapsulado
             return Optional.of(new JWTUserData(
                     decode.getClaim("cliente_id").asString(),
+                    decode.getClaim("conta_id").asString(),
                     decode.getSubject()
             ));
 

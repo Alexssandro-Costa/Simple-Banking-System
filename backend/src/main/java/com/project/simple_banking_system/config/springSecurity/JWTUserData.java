@@ -7,10 +7,11 @@ package com.project.simple_banking_system.config.springSecurity;
  * transportar de forma leve as informações essenciais do cliente autenticado dentro do contexto de segurança.
  * </p>
  *
- * @param id  O identificador único universal (UUID) do cliente, que atua como a chave primária no banco de dados.
+ * @param clientId  O identificador único universal (UUID) do cliente, que atua como a chave primária no banco de dados.
+ * @param accountId  O identificador único universal (UUID) da conta, que atua como a chave primária no banco de dados.
  * @param cpf O Cadastro de Pessoas Físicas (CPF) do cliente, utilizado como o username no sistema.
  * @author Alexssandro
  * @version 1.0
  */
-public record JWTUserData(String id, String cpf ) {
+public record JWTUserData(String clientId, String accountId, String cpf ) {
 }

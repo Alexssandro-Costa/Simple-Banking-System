@@ -2,11 +2,16 @@ package com.project.simple_banking_system.service.use_cases;
 
 import java.util.List;
 
-import com.project.simple_banking_system.model.entity.Account;
+import com.project.simple_banking_system.model.DTOs.Request.CheckStatementRequest;
+import com.project.simple_banking_system.model.DTOs.Response.TransactionDTO;
 import com.project.simple_banking_system.repository.TransactionRepository;
 import com.project.simple_banking_system.service.auth.GetTokenData;
 import com.project.simple_banking_system.service.util.SearchEntityFromRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.project.simple_banking_system.model.DTOs.Response.CheckStatementResponse;
@@ -38,23 +43,24 @@ public class CheckStatement {
     * Executa a busca do extratos bancario de uma conta.
     * @return TransactionsDTO - Uma lista das transações realizadas pela conta.
     */
-  public List<CheckStatementResponse> execute() {
+  public CheckStatementResponse execute(CheckStatementRequest checkStatementRequest) {
 
-      // recupera a conta do usuário atual
-      Account userAccount = searchEntityFromRepository.
-              getEntityById(getTokenData.getId(), clientRepository).getAccount();
+      // recupera uma paginação das transações
+      Page<Transaction> transactions =
+              transactionRepository.findAllByAccountId(getTokenData.getAccountId(),
+                      PageRequest.of(
+                              checkStatementRequest.pageNumber(),
+                              checkStatementRequest.quantity(),
+                              Sort.by("date").descending()
+                      ));
 
-      List<Transaction> transactions = userAccount.getTransactions();
+      // cria um dto das transações associadas a conta contendo apenas informações essenciais
+      List<TransactionDTO> transactionsDTO = transactions.stream()
+              .map(TransactionDTO::new)
+              .toList();
 
-      // retorna um dto das transações associadas a conta
-      return transactions
-              .stream()
-              .map(transaction -> new CheckStatementResponse(
-                      transaction.getId(),
-                      transaction.getTransactionType().toString(),
-                      transaction.getValue().toString(),
-                      transaction.getReceiver(),
-                      transaction.getDate().toString()
-              )).toList();
+      return new CheckStatementResponse(transactionsDTO, transactions.getTotalPages(),
+              transactions.isFirst(), transactions.isLast());
+
   }
 }

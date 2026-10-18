@@ -12,4 +12,6 @@ public record TransactionResponse(
         @Schema(description = "Destinatário da transação") String destination,
         @Schema(description = "Data de emissão da transação", example = "1970-01-01T00:00:00Z") String emissionDate ) {
 
+
+
 }

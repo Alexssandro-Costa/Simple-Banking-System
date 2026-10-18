@@ -44,7 +44,7 @@ public class ChangeAccountStatus {
         validate(changeStatusRequest);
 
         // procura a conta do cliente
-        Client client = searchEntityFromRepository.getEntityById(getTokenData.getId(), clientRepository);
+        Client client = searchEntityFromRepository.getEntityById(getTokenData.getClientId(), clientRepository);
 
         // realiza a mudança de status na conta
         client.getAccount().setStatus(Status.valueOf(changeStatusRequest.newStatus().toUpperCase()));

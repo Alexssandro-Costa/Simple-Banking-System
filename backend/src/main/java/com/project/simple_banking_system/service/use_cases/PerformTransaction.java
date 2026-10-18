@@ -16,7 +16,6 @@ import com.project.simple_banking_system.model.entity.Account;
 import com.project.simple_banking_system.model.entity.Transaction;
 import com.project.simple_banking_system.model.valueObjects.TransactionType;
 import com.project.simple_banking_system.repository.AccountRepository;
-import com.project.simple_banking_system.repository.ClientRepository;
 
 /**
  * Classe de serviço que realiza uma transação bancaria.
@@ -26,10 +25,6 @@ import com.project.simple_banking_system.repository.ClientRepository;
  */
 @Service
 public class PerformTransaction {
-
-
-    @Autowired
-    private ClientRepository clientRepository;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -60,9 +55,8 @@ public class PerformTransaction {
         // valida as informações inseridas;
         validate(transactionRequest);
 
-        // Busca a conta do usuario atual
-        Account userAccount = searchEntityFromRepository
-                .getEntityById(getTokenData.getId(), clientRepository).getAccount();
+        // Busca a conta do usuário atual
+        Account userAccount = accountRepository.findById(getTokenData.getAccountId()).orElseThrow();
     
         // cria uma transação
         Transaction transaction = new Transaction(transactionRequest);
@@ -85,7 +79,7 @@ public class PerformTransaction {
             return performWithdraw.execute(userAccount, transaction);
         }
         else {
-            throw new InvalidEnumValueException("Tipo de transação invalido.");
+            throw new InvalidEnumValueException("Tipo de transação não disponível");
         }
 
 

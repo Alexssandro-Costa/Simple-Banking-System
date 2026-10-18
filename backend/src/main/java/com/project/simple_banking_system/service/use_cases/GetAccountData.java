@@ -42,10 +42,10 @@ public class GetAccountData {
 
         try{
         // recupera os dados do cliente no banco de dados
-        AccountDataResponse response = clientRepository.getAccountDataById(getTokenData.getId())
+        AccountDataResponse response = clientRepository.getAccountDataById(getTokenData.getClientId())
         .orElseThrow();
 
-        if(response.name() == null || response.accountNumber() == null || response.name() == null)
+        if(response.name() == null || response.accountNumber() == null)
             throw new NullElementException("Requisição retornou elementos nulos.");
 
         return response;
