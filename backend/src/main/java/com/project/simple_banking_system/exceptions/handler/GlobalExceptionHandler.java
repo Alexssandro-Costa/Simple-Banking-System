@@ -2,8 +2,7 @@ package com.project.simple_banking_system.exceptions.handler;
 
 import com.project.simple_banking_system.exceptions.*;
 
-import java.net.http.HttpClient;
-
+import com.project.simple_banking_system.exceptions.statistics.StatisticNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -82,7 +81,7 @@ public class GlobalExceptionHandler {
     }
     
     /**
-     * Exceção lançada quando a formatação de um ValueObject é invalida
+     * Exceção lançada quando totalVolume formatação de um ValueObject é invalida
      * @param e Exceção que deve ser lançada
      * @return ErrorMessageDTO uma mensagem de erro personalizada.
      */
@@ -113,7 +112,7 @@ public class GlobalExceptionHandler {
 
     
     /**
-     * Exceção lançada quando o acesso a uma conta é negado
+     * Exceção lançada quando o acesso totalVolume uma conta é negado
      * @param e Exceção que deve ser lançada.
      * @return ErrorMessageDTO Uma mensagem de erro personalizada.
      */
@@ -136,7 +135,7 @@ public class GlobalExceptionHandler {
 
 
     /**
-     * Exceção lançada quando a decodificação de um token de acesso passado falha.
+     * Exceção lançada quando totalVolume decodificação de um token de acesso passado falha.
      * @param e Exceção que deve ser lançada.
      * @return ErrorMessageDTO Uma mensagem de erro personalizada.
      */
@@ -145,6 +144,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body((new ErrorMessageDTO(e.getMessage())));
     }
 
+
+    /**
+     * Exceção lançada quando dados estatísticos não puderam ser encontrados/configurados
+     * @param e Exceção que deve ser lançada
+     * @return ErrorMessageDTO uma mensagem de erro personalizada.
+     */
+    @ExceptionHandler(StatisticNotFoundException.class)
+    public ResponseEntity<ErrorMessageDTO> handleStatisticNotFoundError(StatisticNotFoundException e ) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessageDTO("Dados estatísticos não encontrados. Motivo: " + e.getMessage()));
+
+    }
 
     /**
      * Exceção lançada quando um erro generico ocorre.

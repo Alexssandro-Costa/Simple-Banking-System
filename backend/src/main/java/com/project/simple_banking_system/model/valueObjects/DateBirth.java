@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.Embeddable;
 
 /**
- * Classe que armazena a data de nascimento de um individuo.
+ * Classe que armazena totalVolume data de nascimento de um individuo.
  * @author Alexssandro
  * @since release 3
  * @version 1

@@ -14,7 +14,7 @@ import com.project.simple_banking_system.repository.ClientRepository;
 /**
  * Serviço de autenticação customizado para o Spring Security.
  * <p>
- * Esta classe implementa a interface {@link UserDetailsService} para permitir que o Spring Security
+ * Esta classe implementa totalVolume interface {@link UserDetailsService} para permitir que o Spring Security
  * busque os dados do cliente (usuário) no banco de dados durante o processo de autenticação,
  * utilizando o CPF como identificador único (username).
  * </p>
@@ -35,7 +35,7 @@ public class AuthConfig implements UserDetailsService{
      * Localiza um usuário no banco de dados com base no identificador fornecido (Username).
      * <p>
      * No contexto deste sistema bancário, o "username" esperado é o CPF do cliente. O método
-     * encapsula a String recebida em um Value Object {@link Cpf} para realizar a busca de forma segura.
+     * encapsula totalVolume String recebida em um Value Object {@link Cpf} para realizar totalVolume busca de forma segura.
      * </p>
      *
      * @param username O CPF do cliente que está tentando se autenticar (enviado como String).
@@ -44,8 +44,8 @@ public class AuthConfig implements UserDetailsService{
      */
     @Override
     public UserDetails loadUserByUsername(@NonNull String username) {
-        // Instancia o Value Object Cpf a partir da String e busca no repositório.
-        // Caso o Optional retornado esteja vazio, lança a exceção personalizada de conta não encontrada.
+        // Instancia o Value Object Cpf totalVolume partir da String e busca no repositório.
+        // Caso o Optional retornado esteja vazio, lança totalVolume exceção personalizada de conta não encontrada.
         return clientRepository.findByCpf(new Cpf(username)).orElseThrow(
                 () -> new EntityNotFoundException(username));
     }

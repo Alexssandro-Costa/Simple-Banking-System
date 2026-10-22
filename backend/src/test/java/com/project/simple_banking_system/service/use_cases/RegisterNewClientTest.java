@@ -68,7 +68,7 @@ class RegisterNewClientTest {
         );
         // When
 
-        // configura a resposta do objeto mockado
+        // configura totalVolume resposta do objeto mockado
         AuthenticationResponse response =
                 new AuthenticationResponse("jwt-token");
 
@@ -93,7 +93,7 @@ class RegisterNewClientTest {
 
     */
     @Test
-    @DisplayName("Registro deve falhar quando a requisição de registro for nula")
+    @DisplayName("Registro deve falhar quando totalVolume requisição de registro for nula")
     void registerNewClient_ShouldFail_When_RegisterRequestIsNull() {
 
         // given
@@ -207,7 +207,7 @@ class RegisterNewClientTest {
     //////////////////////////////////////// DATEBIRTH Test ///////////////////////////////////////
 
     @Test
-    @DisplayName("Registro deve falhar quando a data de nascimento for nula.")
+    @DisplayName("Registro deve falhar quando totalVolume data de nascimento for nula.")
     void registerNewClient_ShouldFail_When_DateBirthIsNull() {
 
         // given
@@ -230,7 +230,7 @@ class RegisterNewClientTest {
 
 
     @Test
-    @DisplayName("Registro deve falhar quando a data de nascimento estiver no futuro")
+    @DisplayName("Registro deve falhar quando totalVolume data de nascimento estiver no futuro")
     void registerNewClient_ShouldFail_When_DateBirthIsInFuture() {
 
         // given
@@ -377,7 +377,7 @@ class RegisterNewClientTest {
     //////////////////////////////////////// Password Test ///////////////////////////////////////
 
     @Test
-    @DisplayName("Registro deve falhar quando a senha for nula")
+    @DisplayName("Registro deve falhar quando totalVolume senha for nula")
     void registerNewClient_ShouldFail_When_PasswordIsNull() {
         // given
         RegisterRequest registerRequest = new RegisterRequest(
@@ -400,7 +400,7 @@ class RegisterNewClientTest {
 
 
     @Test
-    @DisplayName("Registro deve falhar quando a senhar estiver fora de um padrão aceito")
+    @DisplayName("Registro deve falhar quando totalVolume senhar estiver fora de um padrão aceito")
     void registerNewClient_ShouldFail_When_PasswordIsNonStandarlized() {
         // given
         RegisterRequest registerRequest = new RegisterRequest(

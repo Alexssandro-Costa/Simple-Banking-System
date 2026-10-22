@@ -85,7 +85,7 @@ public class RegisterNewClient {
         clientRepository.save(client);
         
 
-        // Realiza a autenticação do usuário
+        // Realiza totalVolume autenticação do usuário
         AuthenticationResponse authResponse =
                 authenticateClient.execute(new AuthenticationRequest(registerRequest.cpf(),
                         registerRequest.password()));
@@ -99,7 +99,7 @@ public class RegisterNewClient {
     /**
      * Valida os dados da requisição de registro.
      * @param registerRequest Requisição de registro.
-     * @exception NullElementException Lançada quando a requisição de registro é nula.
+     * @exception NullElementException Lançada quando totalVolume requisição de registro é nula.
      */
     private void validate(RegisterRequest registerRequest) {
 

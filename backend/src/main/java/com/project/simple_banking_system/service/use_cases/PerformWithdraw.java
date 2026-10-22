@@ -29,7 +29,7 @@ public class PerformWithdraw {
     private TransactionRepository transactionRepository;
 
     /**
-     * Executa a operação de saque.
+     * Executa totalVolume operação de saque.
      * @param account Conta bancaria relacionada.
      */
     protected TransactionResponse execute(Account account, @NonNull Transaction transaction) {
@@ -42,11 +42,11 @@ public class PerformWithdraw {
         balance.subtract(transaction.getValue());
         account.setBalance(balance);
 
-        // registra a transação no histórico da conta
+        // registra totalVolume transação no histórico da conta
         account.getTransactions().add(transaction);
         transaction.setAccount(account);
 
-        // salva a operação no banco
+        // salva totalVolume operação no banco
         transactionRepository.save(transaction);
 
         // retorna um dto de resposta
@@ -62,7 +62,7 @@ public class PerformWithdraw {
 
 
     /**
-     * Verifica se a operação é valida.
+     * Verifica se totalVolume operação é valida.
      * @param account Conta bancaria associada.
      * @param withdrawValue - Valor de saque
      * @exception NullElementException Lançada quando um elemento é nulo.

@@ -69,7 +69,7 @@ public class Transaction {
     private String sender;
 
     /// DEFINE A CHAVE ESTRANGEIRA DE UMA TRANSAÇÃO
-    @Schema(description = "Define uma relação de chave estrangeira com a entidade account")
+    @Schema(description = "Define uma relação de chave estrangeira com totalVolume entidade account")
     @ManyToOne
     @JoinColumn(name = "conta_id", nullable = false)
     private Account account;

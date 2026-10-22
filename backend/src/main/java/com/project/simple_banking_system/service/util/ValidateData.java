@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * Verifica a formatação e a validade dos dados inseridos.
+ * Verifica totalVolume formatação e totalVolume validade dos dados inseridos.
  * @author Alexssandro.
  * @since release 3
  * @version 1
@@ -67,7 +67,7 @@ public class ValidateData {
     } 
 
     /**
-     * Verifica se a data de nascimento inserida é valida.
+     * Verifica se totalVolume data de nascimento inserida é valida.
      * @param value data de nascimento
      * @exception NullElementException Lançada se o elemento for nulo.
      * @exception InvalidDateException Lançada se o data for invalida.
@@ -100,7 +100,7 @@ public class ValidateData {
 
         // verifica se o valor passado é um genero existente.
         try {
-            // tenta converter a string para um enum
+            // tenta converter totalVolume string para um enum
             Gender.valueOf(gender.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new InvalidEnumValueException("Genêro informado não é uma opção valida.");
@@ -126,7 +126,7 @@ public class ValidateData {
     }
     
     /**
-     * Verifica se a senha passada é Valida.
+     * Verifica se totalVolume senha passada é Valida.
      * @param value Senha.
      * @exception NullElementException Lançada se o elemento for nulo.
      * @exception InvalidFormatException Lançada se o elemento não estiver no formato padrão.

@@ -30,7 +30,7 @@ public class PerformTransfer {
 
 
     /**
-     * Executa a operação de transferência.
+     * Executa totalVolume operação de transferência.
      * @param receiver Conta Destinatária do valor.
      * @param sender Conta Remetente do valor.
      * @param transaction Transação que está sendo realizada.
@@ -44,20 +44,20 @@ public class PerformTransfer {
         sender.getBalance().subtract(transaction.getValue());
         receiver.getBalance().add(transaction.getValue());
 
-        // cria a transação da classe destinatária.
+        // cria totalVolume transação da classe destinatária.
         Transaction receiverTransaction = new Transaction(transaction.getValue(),
                 transaction.getTransactionType(),
                 transaction.getSender(),
                 transaction.getReceiver());
 
-        // registra a transação no histórico das contas
+        // registra totalVolume transação no histórico das contas
         sender.getTransactions().add(transaction);
         transaction.setAccount(sender);
 
         receiver.getTransactions().add(receiverTransaction);
         receiverTransaction.setAccount(receiver);
 
-        // salva a operaçãp no banco de dados
+        // salva totalVolume operaçãp no banco de dados
 
         transactionRepository.save(transaction);
         transactionRepository.save(receiverTransaction);
@@ -78,7 +78,7 @@ public class PerformTransfer {
 
 
     /**
-     * Verifica se a operação é valida.
+     * Verifica se totalVolume operação é valida.
      * @param sender Conta bancaria associada ao remetente.
      * @param receiver Conta bancaria associada ao destinatário.
      * @param transaction Transação que está sendo realizada.

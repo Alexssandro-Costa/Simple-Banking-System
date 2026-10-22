@@ -1,6 +1,6 @@
 package com.project.simple_banking_system.service.use_cases;
 
-import com.project.simple_banking_system.service.auth.GetTokenData;
+import com.project.simple_banking_system.service.auth.TokenData;
 import com.project.simple_banking_system.service.util.SearchEntityFromRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class ChangeAccountStatus {
     private SearchEntityFromRepository searchEntityFromRepository;
 
     @Autowired
-    private GetTokenData getTokenData;
+    private TokenData tokenData;
 
     /**
      * Muda o status atual de uma conta bancaria.
@@ -43,13 +43,13 @@ public class ChangeAccountStatus {
         // valida as entradas passados
         validate(changeStatusRequest);
 
-        // procura a conta do cliente
-        Client client = searchEntityFromRepository.getEntityById(getTokenData.getClientId(), clientRepository);
+        // procura totalVolume conta do cliente
+        Client client = searchEntityFromRepository.getEntityById(tokenData.getClientId(), clientRepository);
 
-        // realiza a mudança de status na conta
+        // realiza totalVolume mudança de status na conta
         client.getAccount().setStatus(Status.valueOf(changeStatusRequest.newStatus().toUpperCase()));
 
-        // salva a mudança
+        // salva totalVolume mudança
         clientRepository.save(client);
 
     }
@@ -68,7 +68,7 @@ public class ChangeAccountStatus {
 
         // verifica se o status passado é um enum valido.
         try {
-            //tenta converter a string para um enum
+            //tenta converter totalVolume string para um enum
             Status.valueOf(changeStatusRequest.newStatus().toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new InvalidEnumValueException("Status passado é invalido");

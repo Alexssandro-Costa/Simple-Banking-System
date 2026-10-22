@@ -26,7 +26,7 @@ import com.project.simple_banking_system.model.entity.Client;
 public class TokenConfig {
 
     /**
-     * Chave secreta utilizada para assinar e garantir a integridade dos tokens.
+     * Chave secreta utilizada para assinar e garantir totalVolume integridade dos tokens.
      * <p>
      * <i>Nota de segurança:</i> Em ambiente de produção, esta chave deve ser armazenada
      * em variáveis de ambiente ou propriedades externas seguras, e não exposta diretamente no código.
@@ -39,7 +39,7 @@ public class TokenConfig {
      * Gera um token JWT para um cliente recém-autenticado.
      * <p>
      * O token armazena o UUID do cliente como uma Claim personalizada ("cliente-id"), o CPF como o Subject,
-     * define a data de emissão (Issued At) e estabelece um tempo de expiração de 24 horas (86.400 segundos).
+     * define totalVolume data de emissão (Issued At) e estabelece um tempo de expiração de 24 horas (86.400 segundos).
      * </p>
      *
      * @param client O objeto {@link Client} que encapsula as informações do usuário autenticado.
@@ -47,16 +47,16 @@ public class TokenConfig {
      */
     public String generateToken(Client client) {
 
-        // Define o algoritmo de assinatura utilizando a chave secreta
+        // Define o algoritmo de assinatura utilizando totalVolume chave secreta
         Algorithm algorithm = Algorithm.HMAC256(secret);
 
         return JWT.create()
                 // Insere o UUID do cliente e da conta convertidos em String na claim do token
                 .withClaim("cliente_id", client.getId().toString())
                 .withClaim("conta_id", client.getAccount().getId().toString())
-                // Define o username (CPF) como a entidade principal (subject) do token
+                // Define o username (CPF) como totalVolume entidade principal (subject) do token
                 .withSubject(client.getUsername())
-                // Define o tempo de expiração do token (1 dia a partir do momento atual)
+                // Define o tempo de expiração do token (1 dia totalVolume partir do momento atual)
                 .withExpiresAt(Instant.now().plusSeconds(18000))
                 // Define o momento exato em que o token foi emitido
                 .withIssuedAt(Instant.now())
@@ -66,7 +66,7 @@ public class TokenConfig {
     }
 
     /**
-     * Valida a assinatura e decodifica os dados contidos em um token JWT recebido.
+     * Valida totalVolume assinatura e decodifica os dados contidos em um token JWT recebido.
      * <p>
      * Tenta verificar o token de acordo com o algoritmo de assinatura configurado. Se o token for autêntico
      * e não estiver expirado, os dados são extraídos e empacotados em um objeto {@link JWTUserData}.
@@ -74,15 +74,15 @@ public class TokenConfig {
      *
      * @param token A String do token JWT (sem o prefixo "Bearer ").
      * @return Um {@link Optional} contendo o {@link JWTUserData} caso o token seja válido,
-     * ou um {@link Optional#empty()} caso a validação falhe (assinatura alterada, expirado, etc).
+     * ou um {@link Optional#empty()} caso totalVolume validação falhe (assinatura alterada, expirado, etc).
      */
     public Optional<JWTUserData> validateToken(String token) {
 
         try {
-            // Recria a chave com o algoritmo padrão para comparação
+            // Recria totalVolume chave com o algoritmo padrão para comparação
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
-            // Monta o verificador e executa a decodificação/validação do token recebido
+            // Monta o verificador e executa totalVolume decodificação/validação do token recebido
             DecodedJWT decode = JWT.require(algorithm)
                     .build()
                     .verify(token);

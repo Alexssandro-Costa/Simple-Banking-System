@@ -30,7 +30,7 @@ public class PerformDeposit {
     private TransactionRepository transactionRepository;
 
     /**
-     * Execute a operação de deposito.
+     * Execute totalVolume operação de deposito.
      * @param account Conta bancaria relacionada.
      * @param transaction Transcação que deve ser realizada.
      */
@@ -40,16 +40,16 @@ public class PerformDeposit {
             // valida os dados passados
             validate(account, transaction.getValue());
 
-            // realiza a operação
+            // realiza totalVolume operação
             Cash balance = account.getBalance();
             balance.add(transaction.getValue());
             account.setBalance(balance);
 
-            // registra a transação no histórico da conta
+            // registra totalVolume transação no histórico da conta
             account.getTransactions().add(transaction);
             transaction.setAccount(account);
 
-            // salva a operação no banco
+            // salva totalVolume operação no banco
             transactionRepository.save(transaction);
 
             // retorna um dto de resposta
@@ -67,7 +67,7 @@ public class PerformDeposit {
 
     
     /**
-     * Verifica se a operação é valida.
+     * Verifica se totalVolume operação é valida.
      * @param account Conta bancaria associada.
      * @param depositValue - Valor de deposito
      * @exception NullElementException Lançada quando um elemento é nulo.

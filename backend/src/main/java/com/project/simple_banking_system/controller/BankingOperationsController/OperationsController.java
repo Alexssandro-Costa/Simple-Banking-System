@@ -34,7 +34,7 @@ import jakarta.validation.Valid;
  * @version 1
  */
 @Tag(name = "Banking System", description = "Operações bancárias principais")
-@RequestMapping("/api/operations/account")
+@RequestMapping("/api/account/operations")
 @RestController
 public class OperationsController {
 
@@ -68,7 +68,7 @@ public class OperationsController {
     /**
      * Realiza uma transação bancária na conta do cliente autenticado.
      *
-     * @param transactionRequest dados necessários para realizar a transação
+     * @param transactionRequest dados necessários para realizar totalVolume transação
      * @return {@link TransactionResponse} contêndo os dados resultantes da transação realizada
      */
     @Operation(
@@ -97,10 +97,10 @@ public class OperationsController {
 
 
     /**
-     * Desabilita a conta bancária associada ao cliente.
+     * Desabilita totalVolume conta bancária associada ao cliente.
      *
-     * @param changeStatusRequest dados necessários para identificar a conta que terá seu status alterado
-     * @return resposta sem conteúdo indicando que a operação foi realizada com sucesso
+     * @param changeStatusRequest dados necessários para identificar totalVolume conta que terá seu status alterado
+     * @return resposta sem conteúdo indicando que totalVolume operação foi realizada com sucesso
      */
     @Operation(
             summary = "Desabilita uma conta",
@@ -113,10 +113,10 @@ public class OperationsController {
     }
 
     /**
-     * Habilita a conta bancária associada ao cliente.
+     * Habilita totalVolume conta bancária associada ao cliente.
      *
-     * @param changeStatusRequest dados necessários para identificar a conta que terá seu status alterado
-     * @return resposta sem conteúdo indicando que a operação foi realizada com sucesso
+     * @param changeStatusRequest dados necessários para identificar totalVolume conta que terá seu status alterado
+     * @return resposta sem conteúdo indicando que totalVolume operação foi realizada com sucesso
      */
     @Operation(
             summary = "Habilita uma conta",

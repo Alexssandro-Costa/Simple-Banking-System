@@ -31,7 +31,7 @@ public interface ClientRepository extends JpaRepository<Client, UUID> {
                 c.name,
                 a.accountNumber,
                 a.balance
-            ) 
+            )     
             FROM Client c
             INNER JOIN c.account a
             WHERE c.id = :id

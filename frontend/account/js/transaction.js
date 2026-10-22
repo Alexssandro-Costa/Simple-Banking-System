@@ -37,7 +37,7 @@ async function sendTransaction(transactionForm) {
         let token = new SessionToken().getToken();
 
         // recupera a url da requisição no formulario
-        const endpoint = "/api/operations/account/transaction";
+        const endpoint = "/api/account/operations/transaction";
         const url = API_URL + endpoint;
 
         // converte o elemento html em um json
@@ -180,7 +180,7 @@ async function defineTransactionTypesFeatures(transactionType) {
             return;
         }
 
-        if (transactionType.value == "TRANSFERENCIA") {
+        if (transactionType.value === "TRANSFERENCIA") {
 
             // apaga o valor anterior dos campos e os habilita para inserção de dados
 
@@ -197,11 +197,11 @@ async function defineTransactionTypesFeatures(transactionType) {
             receiver.readOnly = false;
             sender.readOnly = false;
 
-            if (transactionType.value == "DEPOSITO") {
+            if (transactionType.value === "DEPOSITO") {
                 sender.value = "EXTERNO";
                 receiver.value = accountNum;
             }
-            else if (transactionType.value == "SAQUE") {
+            else if (transactionType.value === "SAQUE") {
                 sender.value = accountNum;
                 receiver.value = "EXTERNO";
             }

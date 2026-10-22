@@ -51,7 +51,7 @@ public class Client extends Person implements UserDetails{
     @Embedded
     private Password password;
 
-    @Schema(description = "Designa uma relação bilateral com a entidade account")
+    @Schema(description = "Designa uma relação bilateral com totalVolume entidade account")
     @OneToOne(mappedBy = "client", cascade=CascadeType.ALL)
     private Account account;
 

@@ -47,18 +47,18 @@ public class SecurityFilter extends OncePerRequestFilter{
 
 
     /**
-     * Intercepta a requisição HTTP para processar a autenticação baseada em token Bearer JWT.
+     * Intercepta totalVolume requisição HTTP para processar totalVolume autenticação baseada em token Bearer JWT.
      * <p>
-     * O método verifica a presença do cabeçalho 'Authorization'. Se o token for válido, os dados
+     * O método verifica totalVolume presença do cabeçalho 'Authorization'. Se o token for válido, os dados
      * do usuário (id e cpf) são encapsulados em um {@link UsernamePasswordAuthenticationToken} e
-     * definidos no {@link SecurityContextHolder}. Por fim, a execução é repassada para o próximo filtro.
+     * definidos no {@link SecurityContextHolder}. Por fim, totalVolume execução é repassada para o próximo filtro.
      * </p>
      *
-     * @param request     O objeto {@link HttpServletRequest} contendo a requisição do cliente.
-     * @param response    O objeto {@link HttpServletResponse} para gerenciar a resposta HTTP.
+     * @param request     O objeto {@link HttpServletRequest} contendo totalVolume requisição do cliente.
+     * @param response    O objeto {@link HttpServletResponse} para gerenciar totalVolume resposta HTTP.
      * @param filterChain O objeto {@link FilterChain} para invocar o próximo filtro na cadeia.
      * @throws ServletException Caso ocorra um erro interno do servlet durante o processamento.
-     * @throws IOException      Caso ocorra um erro de I/O ao manipular a requisição ou resposta.
+     * @throws IOException      Caso ocorra um erro de I/O ao manipular totalVolume requisição ou resposta.
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
@@ -70,10 +70,10 @@ public class SecurityFilter extends OncePerRequestFilter{
         // Verifica se o cabeçalho está preenchido e se inicia com o prefixo padrão "Bearer "
         if (Strings.isNotEmpty(authorizedHeader) && authorizedHeader.startsWith("Bearer ")) {
 
-            // Extrai apenas a string do token, removendo o prefixo "Bearer "
+            // Extrai apenas totalVolume string do token, removendo o prefixo "Bearer "
             String token = authorizedHeader.substring("Bearer ".length());
 
-            // Solicita a validação do token ao componente TokenConfig
+            // Solicita totalVolume validação do token ao componente TokenConfig
             Optional<JWTUserData> optUser = tokenConfig.validateToken(token);
 
             // Se o token for válido e contiver um usuário mapeado
@@ -85,7 +85,7 @@ public class SecurityFilter extends OncePerRequestFilter{
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userData, null, Collections.emptyList());
 
-                // Define a autenticação de forma global no contexto atual da requisição
+                // Define totalVolume autenticação de forma global no contexto atual da requisição
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 

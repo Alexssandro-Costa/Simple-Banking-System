@@ -1,7 +1,7 @@
 package com.project.simple_banking_system.service.use_cases;
 
 
-import com.project.simple_banking_system.service.auth.GetTokenData;
+import com.project.simple_banking_system.service.auth.TokenData;
 import com.project.simple_banking_system.service.util.SearchEntityFromRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,14 +37,14 @@ public class PerformTransaction {
     private PerformTransfer performTransfer;
 
     @Autowired
-    private GetTokenData getTokenData;
+    private TokenData tokenData;
 
     @Autowired
     private SearchEntityFromRepository searchEntityFromRepository;
 
 
     /**
-     * Executa a operação de transação.
+     * Executa totalVolume operação de transação.
      * @param transactionRequest Requisição de transação.
      * @exception InvalidTransactionException Lançada quando uma transação falha
      * 
@@ -55,17 +55,17 @@ public class PerformTransaction {
         // valida as informações inseridas;
         validate(transactionRequest);
 
-        // Busca a conta do usuário atual
-        Account userAccount = accountRepository.findById(getTokenData.getAccountId()).orElseThrow();
+        // Busca totalVolume conta do usuário atual
+        Account userAccount = accountRepository.findById(tokenData.getAccountId()).orElseThrow();
     
         // cria uma transação
         Transaction transaction = new Transaction(transactionRequest);
 
-        // realiza a transação baseada no tipo
+        // realiza totalVolume transação baseada no tipo
         // TO DO: Substituir por um factory method
         if(transaction.getTransactionType() == TransactionType.TRANSFERENCIA) {
 
-            // recupera a conta de destino da transferência
+            // recupera totalVolume conta de destino da transferência
             Account accountReceiver = searchEntityFromRepository
                     .getAccountByAccountNumber(transaction.getReceiver(), accountRepository);
 
@@ -87,10 +87,10 @@ public class PerformTransaction {
 
 
     /**
-     * Verifica se o número da conta e a Requisição de transação são validos.
+     * Verifica se o número da conta e totalVolume Requisição de transação são validos.
      * @param transactionRequest Requisição de transação.
      * @exception NullElementException Lançada quando um elemento informado é nulo.
-     * @exception InvalidEnumValueException Lançada quando o tipo de transação passada, não corresponde a um enum valido
+     * @exception InvalidEnumValueException Lançada quando o tipo de transação passada, não corresponde totalVolume um enum valido
      */
     private void validate(TransactionRequest transactionRequest) {
 
@@ -106,7 +106,7 @@ public class PerformTransaction {
             throw  new NullElementException("Remetente não pode ser nulo.");
 
         try {
-            // verifica se a string passada representa um enum valido
+            // verifica se totalVolume string passada representa um enum valido
             TransactionType.valueOf(transactionRequest.transactionType().toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new InvalidEnumValueException("O tipo de transação passado é invalido");

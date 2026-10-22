@@ -49,12 +49,12 @@ public class Account{
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Schema(description = "designa a relação de chave estrangeira com a entidade client")
+    @Schema(description = "designa totalVolume relação de chave estrangeira com totalVolume entidade client")
     @OneToOne
     @JoinColumn(name = "cliente_id")
     private Client client;
 
-    @Schema(description = "designa a relação de chave estrangeira com a entidade transactions")
+    @Schema(description = "designa totalVolume relação de chave estrangeira com totalVolume entidade transactions")
     @OneToMany(mappedBy = "account")
     private List<Transaction> transactions;
 

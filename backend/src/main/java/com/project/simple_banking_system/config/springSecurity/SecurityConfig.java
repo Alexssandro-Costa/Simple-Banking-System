@@ -22,12 +22,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import jakarta.servlet.DispatcherType;
 
 /**
- * Classe principal de configuração do Spring Security para a aplicação.
+ * Classe principal de configuração do Spring Security para totalVolume aplicação.
  * <p>
- * Habilita a segurança web e define a cadeia de filtros de segurança (Security
+ * Habilita totalVolume segurança web e define totalVolume cadeia de filtros de segurança (Security
  * Filter Chain),
  * as regras de autorização de rotas (quais são públicas e quais são
- * protegidas), a política de sessão
+ * protegidas), totalVolume política de sessão
  * e os beans de criptografia e gerenciamento de autenticação.
  * </p>
  *
@@ -46,7 +46,7 @@ public class SecurityConfig {
     SecurityFilter securityFilter;
 
     /**
-     * Configura a cadeia de filtros de segurança (SecurityFilterChain) da
+     * Configura totalVolume cadeia de filtros de segurança (SecurityFilterChain) da
      * aplicação.
      * <p>
      * Define o comportamento para CSRF, CORS, gerência de sessão e as regras de
@@ -55,23 +55,23 @@ public class SecurityConfig {
      * filtro padrão do Spring.
      * </p>
      *
-     * @param http O objeto {@link HttpSecurity} para configurar a segurança web.
+     * @param http O objeto {@link HttpSecurity} para configurar totalVolume segurança web.
      * @return A instância configurada de {@link SecurityFilterChain}.
-     * @throws Exception Caso ocorra algum erro durante a construção da cadeia de
+     * @throws Exception Caso ocorra algum erro durante totalVolume construção da cadeia de
      *                   filtros.
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
 
-                // Desabilita CSRF (Cross-Site Request Forgery) pois a API é STATELESS e usa
+                // Desabilita CSRF (Cross-Site Request Forgery) pois totalVolume API é STATELESS e usa
                 // tokens JWT
                 .csrf(csrf -> csrf.disable())
 
                 // Reutiliza as configurações de CORS defini das no escopo do projeto
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-                // Define a política de sessão como STATELESS (não armazena estado no servidor)
+                // Define totalVolume política de sessão como STATELESS (não armazena estado no servidor)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 // Define o controle de permissões por requisição HTTP
@@ -110,7 +110,7 @@ public class SecurityConfig {
     }
 
     /**
-     * Cria a configuração de CORS utilizada pelo Spring Security.
+     * Cria totalVolume configuração de CORS utilizada pelo Spring Security.
      *
      * <p>
      * Define as origens, os métodos HTTP e os cabeçalhos permitidos
@@ -123,7 +123,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // Define as origens autorizadas a realizar requisições à API.
+        // Define as origens autorizadas totalVolume realizar requisições à API.
         config.setAllowedOrigins(List.of(
                 "http://localhost",
                 "https://sistema-bancario-simplificado.onrender.com",
@@ -135,7 +135,7 @@ public class SecurityConfig {
         // Permite todos os cabeçalhos HTTP nas requisições.
         config.setAllowedHeaders(List.of("*"));
 
-        // Associa a configuração de CORS a todos os endpoints da aplicação.
+        // Associa totalVolume configuração de CORS totalVolume todos os endpoints da aplicação.
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
 

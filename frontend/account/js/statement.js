@@ -16,7 +16,7 @@ async function startStatementSection() {
   // numero da pagina buscada
   let pageNum = 0;
   // quantidade de itens buscados
-  const quantity = 5;
+  const quantity = 4;
 
   const content = document.getElementById("content");
 
@@ -103,7 +103,7 @@ async function showStatement(pageNum, quantity) {
  * @param {*} itemQuantity Quantidade de itens que devem ser retornados pela API
  */
 async function getPageableStatement(pageNumber, itemQuantity) {
-  const endpoint = "/api/operations/account/statement";
+  const endpoint = "/api/account/operations/statement";
   const url = API_URL + endpoint;
 
   const body = JSON.stringify({
@@ -120,6 +120,7 @@ async function getPageableStatement(pageNumber, itemQuantity) {
     }
 
     return await sendAuthenticatedRequest(url, "POST", token, body);
+
   } catch (err) {
     console.error("Erro ao buscar extrato: " + err);
   }

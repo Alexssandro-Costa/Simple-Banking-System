@@ -1,10 +1,7 @@
 package com.project.simple_banking_system.service.use_cases;
 
 
-import com.project.simple_banking_system.service.auth.GetTokenData;
-import com.project.simple_banking_system.service.util.SearchEntityFromRepository;
-
-import java.util.NoSuchElementException;
+import com.project.simple_banking_system.service.auth.TokenData;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +9,7 @@ import org.springframework.stereotype.Service;
 import com.project.simple_banking_system.exceptions.DisabledAccountException;
 import com.project.simple_banking_system.exceptions.NullElementException;
 import com.project.simple_banking_system.model.DTOs.Response.AccountDataResponse;
-import com.project.simple_banking_system.model.valueObjects.Status;
 import com.project.simple_banking_system.repository.ClientRepository;
-import com.project.simple_banking_system.model.entity.Client;
 import com.project.simple_banking_system.exceptions.AccountDataRequestFailedException;
 
 
@@ -31,7 +26,7 @@ public class GetAccountData {
     private ClientRepository clientRepository;
 
     @Autowired
-    private GetTokenData getTokenData;
+    private TokenData tokenData;
 
     /**
      * Acessa uma conta bancaria existente.
@@ -42,7 +37,7 @@ public class GetAccountData {
 
         try{
         // recupera os dados do cliente no banco de dados
-        AccountDataResponse response = clientRepository.getAccountDataById(getTokenData.getClientId())
+        AccountDataResponse response = clientRepository.getAccountDataById(tokenData.getClientId())
         .orElseThrow();
 
         if(response.name() == null || response.accountNumber() == null)

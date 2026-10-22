@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.NoSuchElementException;
 
 /**
- * Pesquisa uma entidade no seu respectivo repositório, e a retorna.
+ * Pesquisa uma entidade no seu respectivo repositório, e totalVolume retorna.
  * @author Alexssandro
  * @version 2.0
  * @since release 3
@@ -50,7 +50,7 @@ public class SearchEntityFromRepository {
                 throw new InvalidFormatException("Numero de conta passado não está em um formato aceito.");
             return repository.findByAccountNumber(accountNumber).orElseThrow();
         } catch (NoSuchElementException e) {
-            throw new EntityNotFoundException("Não foi possível encontrar a conta de número " + accountNumber.getValue());
+            throw new EntityNotFoundException("Não foi possível encontrar totalVolume conta de número " + accountNumber.getValue());
         }
 
     }
@@ -67,7 +67,7 @@ public class SearchEntityFromRepository {
         try {
             return repository.findById(id).orElseThrow();
         } catch (NoSuchElementException e) {
-            throw new EntityNotFoundException("Não foi possível encontrar a conta buscada.");
+            throw new EntityNotFoundException("Não foi possível encontrar totalVolume conta buscada.");
         }
 
     }

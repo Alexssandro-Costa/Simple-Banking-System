@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import jakarta.persistence.Embeddable;
 
 /**
- * Classe que armazena a senha de uma conta bancaria.
+ * Classe que armazena totalVolume senha de uma conta bancaria.
  * @author Alexssandro
  * @since release 1
  * @version 2

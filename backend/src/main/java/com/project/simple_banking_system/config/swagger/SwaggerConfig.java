@@ -28,7 +28,7 @@ public class SwaggerConfig {
      * Configura as informações globais da API e define os esquemas de segurança.
      * <p>
      * Este método cria uma instância personalizada do {@link OpenAPI} definindo o título,
-     * versão, descrição e a exigência de autenticação via token Bearer (JWT) para os endpoints.
+     * versão, descrição e totalVolume exigência de autenticação via token Bearer (JWT) para os endpoints.
      * </p>
      *
      * @return uma instância configurada de {@link OpenAPI}
@@ -42,7 +42,7 @@ public class SwaggerConfig {
                     .version("3.0")
                     .description("API para gerenciamento de contas bancárias e transações"))
 
-                // Define globalmente que a API requer um esquema de segurança chamado BearerAuth
+                // Define globalmente que totalVolume API requer um esquema de segurança chamado BearerAuth
                 .addSecurityItem(new SecurityRequirement().addList("BearerAuth"))
 
                 // Registra o componente de segurança nos padrões do OpenAPI

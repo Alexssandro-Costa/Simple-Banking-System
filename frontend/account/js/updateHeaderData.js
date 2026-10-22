@@ -11,7 +11,7 @@ export async function getAccountData() {
     try {
 
         // url da APi
-        const endpoint = "/api/operations/account/data";
+        const endpoint = "/api/account/operations/data";
         const url = API_URL + endpoint;
 
         // busca o token de acesso

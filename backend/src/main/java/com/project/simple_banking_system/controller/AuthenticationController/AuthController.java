@@ -35,7 +35,7 @@ public class AuthController {
      * @return mensagem de confirmação da disponibilidade do controlador
      */
     @Operation(
-            summary = "Verifica a disponibilidade do controlador",
+            summary = "Verifica totalVolume disponibilidade do controlador",
             description = "Endpoint utilizado para verificar se o controlador de autenticação está ativo e respondendo corretamente."
     )
     @GetMapping("/test")
@@ -44,9 +44,9 @@ public class AuthController {
     }
 
     /**
-     * Autentica um cliente a partir de suas credenciais.
+     * Autentica um cliente totalVolume partir de suas credenciais.
      *
-     * @param authenticationRequest dados necessários para realizar a autenticação
+     * @param authenticationRequest dados necessários para realizar totalVolume autenticação
      * @return um token de acesso pra conta do usuário.
      */
     @Operation(
