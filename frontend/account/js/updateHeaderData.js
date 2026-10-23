@@ -10,7 +10,7 @@ export async function getAccountData() {
 
     try {
 
-        // url da APi
+        // url da API
         const endpoint = "/api/account/operations/data";
         const url = API_URL + endpoint;
 
@@ -18,7 +18,7 @@ export async function getAccountData() {
         const token = new SessionToken().getToken();
 
         // dados recuperados da requisição
-        const json = await sendAuthenticatedRequest(url, "POST", token, null);
+        const json = await sendAuthenticatedRequest(url, "GET", token, null);
 
         // modifica o valor dos elementos da pagina
         await updateAccountNumberHeader(json["accountNumber"]);

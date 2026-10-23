@@ -4,11 +4,11 @@
  * @param {string} url endereço da requisição
  * @param {string} token token de acesso jwt
  * @param {string} method metodo HTTP que será utilizado que será utilizado
- * @param {string|null} requestJson  Corpo da requisição em formato JSON
+ * @param {string|null} body  Corpo da requisição em formato JSON
  * @returns {Promise<Object|null>} Retorna uma string em formato JSON contendo os dados de retorna da requisição
  * ou nulo caso não exista
  */
-export async function sendAuthenticatedRequest(url, method, token, requestJson) {
+export async function sendAuthenticatedRequest(url, method, token, body) {
 
     try {
         // envia a requisição 
@@ -19,7 +19,7 @@ export async function sendAuthenticatedRequest(url, method, token, requestJson) 
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + token // envia o token no cabeçalho 
             },
-            body: requestJson
+            body: body
         });
 
         // Trata respostas HTTP que indicam erro.

@@ -8,11 +8,7 @@ import com.project.simple_banking_system.model.DTOs.Response.TransactionResponse
 import com.project.simple_banking_system.service.use_cases.GetAccountData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.project.simple_banking_system.model.DTOs.Request.ChangeStatusRequest;
 import com.project.simple_banking_system.model.DTOs.Request.TransactionRequest;
@@ -58,7 +54,7 @@ public class OperationsController {
     @Operation(
             summary = "Consulta os dados da conta",
             description = "Recupera os dados da conta bancária associada ao cliente autenticado por meio do token de acesso."
-    )@PostMapping("/data")
+    )@GetMapping("/data")
     public ResponseEntity<?> getAccountData() {
         var result = getAccountData.execute();
         return ResponseEntity.ok(result);

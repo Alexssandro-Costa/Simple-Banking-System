@@ -1,7 +1,11 @@
+import {sendAuthenticatedRequest} from "../../util/sendAuthenticatedRequest.js";
+import {API_URL} from "../../config/apiUrl.js";
+import {SessionToken} from "../../util/sessionToken.js";
+import {defineChart} from "../../util/defineChart.js";
 
 
 document.getElementById("homeButton").addEventListener("click", function () {
-    // setHomeContent();
+    setHomeContent();
 });
 
 /**
@@ -10,18 +14,21 @@ document.getElementById("homeButton").addEventListener("click", function () {
 export async function setHomeContent() {
 
     try {
-
+        // recupera a sessão de dados do documento
         let section = document.getElementById("content");
 
         if (section == null) {
-            throw new Error("A section de id: " + section.id + ", não existe!");
+            throw new Error("A section de id: \"content\", não existe!");
         }
 
         // adiciona um elemento canvas dentro do section para utilização de gráficos
-        section.innerHTML = "<canvas id='graph' ></canvas>";
+        section.innerHTML = "<canvas id='pieChart' ></canvas>";
 
-        // define o gráfico na pagina
-        await definePieChart("graph")
+        // recupera os dados filtrados da API
+        let data = await filterStatisticsForPieChart();
+
+        // define um gráfico de pizza/pie na sessão
+        await defineChart("pieChart", "pie", data, "Transações por Tipo")
 
     } catch (error) {
         console.error("Erro ao modificar contéudo da home: " + error);
@@ -29,78 +36,54 @@ export async function setHomeContent() {
 
 }
 
-/**
- * Insere um gráfico de pizza/pie no contexto especificado
- * @param {string} context - id do elemento canvas que receberá o gráfico 
- */
-async function definePieChart(context) {
 
-    if (context === null) {
-        throw new Error("Contexto especificado para definição do gráfico é nulo");
+/**
+ * Filtra dados estatísticos recuperados da API para serem utilizados em gráficos de pizza/pie
+ * @returns {Promise<{labels: *[], datasets: [{label: string, data: *[]}]}>} Array contendo dados filtrados
+ */
+async function filterStatisticsForPieChart() {
+
+    // recupera os dados brutos da api
+    const statistics = await getStatistics();
+
+    // array contendo os nomes dos tipos de transação
+    let labels = [];
+
+    // array contendo os dados de cada tipo de transação
+    let data = [];
+
+    // atualiza o valor dos arrays
+    for (const typeData of statistics.dataResponse) {
+        labels.push(typeData.type);
+        data.push(typeData.totalMoved)
     }
 
-    // recupera os dados filtrados do extrato
-    const amountByType = await filterStatementAmount(); 
-
-    // define os dados do gráfico
-    const data = {
-        labels: ["DEPOSITO", "SAQUE", "TRANSFERÊNCIA"],
+    // retorna os dados filtrados
+    return {
+        labels: labels,
         datasets: [
             {
                 label: "Total movimentado R$",
-                data: [amountByType.get("DEPOSITO"), amountByType.get("SAQUE"), amountByType.get("TRANSFERENCIA")]
+                data: data
             }
         ]
     };
 
-    // define as configurações do gráfico
-    const config = {
-        type: 'pie',
-        data: data,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Transações'
-                }
-            }
-        },
-    };
-
-    // define o grafico na  pagina
-    new Chart(context, config);
-
 }
 
-
 /**
- * Filtra os dados do extrato bancario
- * @returns retorna uma promise de um Map mapeado em: 
- * key(tipo da transferência) / value(valor total movimentado de cada tipo) 
+ * Recupera dados estatísticos da API
+ * @returns {Promise<Object|null>} dados estatísticos brutos
  */
-async function filterStatementAmount() {
+async function getStatistics() {
+    // url do endpoint da API
+    const url = API_URL + "/api/account/statistics/generic"
 
-    // recupera o extrato bancario
-    const statementData = null;
+    // recupera o token de acesso da sessão
+    const token = new SessionToken().getToken();
 
-    const typeMap = new Map([
-        ["DEPOSITO", 0],
-        ["SAQUE", 0],
-        ["TRANSFERENCIA", 0]
-    ]);
-
-    // atualiza o valor do map
-    for (const transaction of statementData) {
-
-        const type = transaction.type;
-        typeMap.set(type, typeMap.get(type) + Number(transaction.amount));
-    }
-
-    return typeMap;
+    // recupera os dados da API
+    return await sendAuthenticatedRequest(url, "GET", token, null);
 
 }
 
