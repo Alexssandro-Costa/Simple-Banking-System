@@ -14,6 +14,10 @@ O projeto atualmente é composto por uma **API REST desenvolvida com Spring Boot
 
 **[Acessar Swagger UI](https://sistema-bancario-simplificado.onrender.com/swagger-ui/index.html#/)**
 
+**[Acessar Imagem Docker da API](https://hub.docker.com/repository/docker/alexssandrocosta/spring-boot-simple-banking-api/general)**
+
+**[Acessar Imagem Docker da Aplicação](https://hub.docker.com/repository/docker/alexssandrocosta/spring-boot-simple-banking-frontend/general)**
+
 ---
 
 ## Índice
