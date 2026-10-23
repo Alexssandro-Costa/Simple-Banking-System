@@ -71,7 +71,7 @@ public class OperationsController {
             summary = "Realiza uma transação bancária",
             description = "Executa uma transação bancária utilizando os dados informados na requisição."
     )@PostMapping("/transaction")
-    public ResponseEntity<?> performTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
+    public ResponseEntity<?> performTransaction(@RequestBody TransactionRequest transactionRequest) {
         var result = performTransaction.execute(transactionRequest);
         return ResponseEntity.ok(result);   
     }
@@ -79,15 +79,18 @@ public class OperationsController {
     
     /**
      * Consulta o extrato bancário da conta associada ao cliente autenticado.
-     *
+     * @param page pagina que deve ser buscada na paginação
+     * @param quantity quantidade de elementos que devem ser buscados por página
      * @return {@link CheckStatementResponse } - extrato contendo as transações realizadas pela conta
      */
     @Operation(
-            summary = "Consulta o extrato bancário",
-            description = "Recupera todas as transações registradas no extrato da conta bancária associada ao cliente autenticado."
-    )@PostMapping("/statement")
-    public ResponseEntity<?> checkStatement(@RequestBody CheckStatementRequest checkStatementRequest) {
-        var result = checkStatement.execute(checkStatementRequest);
+            summary = "Consulta paginada extrato bancário",
+            description = "Recupera a pagina definida do extrato da conta bancária associada ao cliente autenticado."
+    )@GetMapping("/statement")
+    public ResponseEntity<?> checkStatement(@RequestParam int page,
+                                            @RequestParam int quantity) {
+
+        var result = checkStatement.execute(page, quantity);
         return ResponseEntity.ok(result);
     }
 

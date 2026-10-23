@@ -38,23 +38,25 @@ public class CheckStatement {
 
     @Autowired
     private TokenData tokenData;
-  
+
     /**
-    * Executa totalVolume busca do extratos bancario de uma conta.
-    * @return TransactionsDTO - Uma lista das transações realizadas pela conta.
-    */
-  public CheckStatementResponse execute(CheckStatementRequest checkStatementRequest) {
+     * Executa uma busca paginada das transações referentes a uma conta bancaria.
+     * @param pageNumber número da página buscada na paginação
+     * @param itemQuantity quantidade de itens que devem ser buscados por página
+     * @return CheckStatementResponse contendo uma lista de transações e informações da paginação
+     */
+  public CheckStatementResponse execute(int pageNumber, int itemQuantity) {
 
       // recupera uma paginação das transações
       Page<Transaction> transactions =
               transactionRepository.findAllByAccountId(tokenData.getAccountId(),
                       PageRequest.of(
-                              checkStatementRequest.pageNumber(),
-                              checkStatementRequest.quantity(),
+                              pageNumber,
+                              itemQuantity,
                               Sort.by("date").descending()
                       ));
 
-      // cria um dto das transações associadas totalVolume conta contendo apenas informações essenciais
+      // cria um dto das transações associadas a uma conta contendo apenas informações essenciais
       List<TransactionDTO> transactionsDTO = transactions.stream()
               .map(TransactionDTO::new)
               .toList();

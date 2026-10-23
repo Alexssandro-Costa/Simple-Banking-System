@@ -104,22 +104,18 @@ async function showStatement(pageNum, quantity) {
  */
 async function getPageableStatement(pageNumber, itemQuantity) {
   const endpoint = "/api/account/operations/statement";
-  const url = API_URL + endpoint;
-
-  const body = JSON.stringify({
-    pageNumber: pageNumber,
-    quantity: itemQuantity,
-  });
-
-  // recupera o token da sessão
-  const token = new SessionToken().getToken();
 
   try {
-    if (url === null || token === null) {
-      throw new Error("Token ou url invalidos");
-    }
+    // parametros de consulta enviados na url
+    const queryParam = "?page=" + pageNumber + "&quantity=" + itemQuantity;
 
-    return await sendAuthenticatedRequest(url, "POST", token, body);
+    // recupera o token da sessão
+    const token = new SessionToken().getToken();
+
+    // constroi a url da API
+    const url = API_URL + endpoint + queryParam;
+
+    return await sendAuthenticatedRequest(url, "GET", token, null);
 
   } catch (err) {
     console.error("Erro ao buscar extrato: " + err);
