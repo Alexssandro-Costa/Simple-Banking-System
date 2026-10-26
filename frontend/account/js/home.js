@@ -1,4 +1,4 @@
-import {sendAuthenticatedRequest} from "../../util/sendRequest.js";
+import {sendRequest} from "../../util/sendRequest.js";
 import {API_URL} from "../../config/apiUrl.js";
 import {SessionToken} from "../../util/sessionToken.js";
 import {defineChart} from "../../util/defineChart.js";
@@ -83,7 +83,7 @@ async function getStatistics() {
     const token = new SessionToken().getToken();
 
     // recupera os dados da API
-    return await sendAuthenticatedRequest(url, "GET", token, null);
+    return await sendRequest(url, "GET", token, null);
 
 }
 

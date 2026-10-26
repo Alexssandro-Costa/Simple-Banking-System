@@ -1,5 +1,5 @@
 import { API_URL } from "../../config/apiUrl.js";
-import { sendAuthenticatedRequest } from "../../util/sendRequest.js";
+import { sendRequest } from "../../util/sendRequest.js";
 import { SessionToken } from "../../util/sessionToken.js";
 
 // TO DO: Separar as funcionalidades
@@ -18,7 +18,7 @@ export async function getAccountData() {
         const token = new SessionToken().getToken();
 
         // dados recuperados da requisição
-        const json = await sendAuthenticatedRequest(url, "GET", token, null);
+        const json = await sendRequest(url, "GET", token, null);
 
         // modifica o valor dos elementos da pagina
         await updateAccountNumberHeader(json["accountNumber"]);

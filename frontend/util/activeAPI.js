@@ -1,5 +1,6 @@
 import {showLoading, hideLoading} from "./LoadingOverlay.js";
 import {API_URL} from "../config/apiUrl.js";
+import {sendRequest} from "./sendRequest.js";
 
 document.addEventListener("DOMContentLoaded", function (){
     testHealthEndpoint();
@@ -13,20 +14,14 @@ async function testHealthEndpoint() {
     const url = API_URL + endpoint;
 
     try{
+        // mostra a animação de loading
         showLoading();
 
-        const response = await fetch(url, {
-            method: "GET"
-        });
-
-        if(!response.ok){
-            throw new Error("Error ao tentar verificar saúde da API");
-        }
-
-        alert(response.json());
+        // realiza a requisição
+        await sendRequest(url, "GET", null, null);
     }
     catch (err) {
-        alert(err);
+        console.error(err);
     }
     finally {
         setTimeout(() => hideLoading(), 1000);

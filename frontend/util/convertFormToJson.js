@@ -11,8 +11,6 @@ export function convertFormToJson(form) {
     // Converte os pares chave/valor em um objeto JavaScript.
     const obj = Object.fromEntries(formData);
 
-    // Converte o objeto JavaScript em uma string JSON.
-    const json = JSON.stringify(obj, null, 2);
-    
-    return json;
+    // Converte o objeto JavaScript em uma string JSON e a retorna
+    return JSON.stringify(obj, null, 2);
 }

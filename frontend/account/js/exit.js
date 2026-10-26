@@ -4,7 +4,10 @@ document.getElementById("exitButton").addEventListener("click", function () {
     exitAccount();
 })
 
-async function exitAccount() {
+/**
+ * Apaga o token da sessão e sai da conta bancaria
+ */
+function exitAccount() {
 
     // remove o token de acesso da sessão
     new SessionToken().removeToken();

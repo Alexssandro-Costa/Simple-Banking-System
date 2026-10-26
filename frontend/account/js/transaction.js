@@ -1,7 +1,7 @@
 import { API_URL } from "../../config/apiUrl.js";
 import { SessionToken } from "../../util/sessionToken.js";
 import { convertFormToJson } from "../../util/convertFormToJson.js";
-import { sendAuthenticatedRequest } from "../../util/sendRequest.js";
+import { sendRequest } from "../../util/sendRequest.js";
 import { updateBalanceHeader } from "./updateHeaderData.js";
 
 const opButton = document.getElementById("operationsButton");
@@ -49,7 +49,7 @@ async function sendTransaction(transactionForm) {
         }
 
         // espera a promise da função e mostra os dados na tela
-        let responseJson = await sendAuthenticatedRequest(url, "POST", token, jsonForm);
+        let responseJson = await sendRequest(url, "POST", token, jsonForm);
         await showTransactionData(responseJson);
 
         // ATUALIZA O BALANÇO MOSTRADO NO HEADER DA PAGINA

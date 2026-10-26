@@ -1,6 +1,6 @@
 ﻿import { API_URL } from "../../config/apiUrl.js";
 import { SessionToken } from "../../util/sessionToken.js";
-import { sendAuthenticatedRequest } from "../../util/sendRequest.js";
+import { sendRequest } from "../../util/sendRequest.js";
 
 document
   .getElementById("statementButton")
@@ -115,7 +115,7 @@ async function getPageableStatement(pageNumber, itemQuantity) {
     // constroi a url da API
     const url = API_URL + endpoint + queryParam;
 
-    return await sendAuthenticatedRequest(url, "GET", token, null);
+    return await sendRequest(url, "GET", token, null);
 
   } catch (err) {
     console.error("Erro ao buscar extrato: " + err);
@@ -127,7 +127,7 @@ async function getPageableStatement(pageNumber, itemQuantity) {
  * @param {boolean} isFirst pagina retornada é a primeira na paginação
  * @param {boolean} isLast pagina retornada é a ultima na paginação
  */
-async function updatePaginationControls(isFirst, isLast) {
+function updatePaginationControls(isFirst, isLast) {
   document.getElementById("previousPage").disabled = isFirst;
   document.getElementById("nextPage").disabled = isLast;
 
