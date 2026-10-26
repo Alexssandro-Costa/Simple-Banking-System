@@ -1,7 +1,7 @@
 import { API_URL } from "../../config/apiUrl.js";
 import { SessionToken } from "../../util/sessionToken.js";
 import { convertFormToJson } from "../../util/convertFormToJson.js";
-import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
+import { sendAuthenticatedRequest } from "../../util/sendRequest.js";
 import { updateBalanceHeader } from "./updateHeaderData.js";
 
 const opButton = document.getElementById("operationsButton");

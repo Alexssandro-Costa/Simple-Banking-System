@@ -1,6 +1,6 @@
 ﻿import { API_URL } from "../../config/apiUrl.js";
 import { SessionToken } from "../../util/sessionToken.js";
-import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
+import { sendAuthenticatedRequest } from "../../util/sendRequest.js";
 
 document
   .getElementById("statementButton")

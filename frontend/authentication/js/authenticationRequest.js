@@ -1,6 +1,7 @@
 import { API_URL } from "../../config/apiUrl.js";
 import { convertFormToJson } from "../../util/convertFormToJson.js"
 import { SessionToken } from "../../util/sessionToken.js";
+import {showLoading, hideLoading} from "../../util/LoadingOverlay.js";
 
 /**
 * Captura o evento de submit do formulario e modifica seu evento para chamar sendAuthRequest; 
@@ -8,7 +9,6 @@ import { SessionToken } from "../../util/sessionToken.js";
 const form = document.getElementById("authForm");
 form.addEventListener("submit", function (event) {
     event.preventDefault(); // cancela o comportamento padrão do submit
-
     sendAuthRequest(form);
 })
 /**

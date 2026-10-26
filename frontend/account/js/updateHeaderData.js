@@ -1,5 +1,5 @@
 import { API_URL } from "../../config/apiUrl.js";
-import { sendAuthenticatedRequest } from "../../util/sendAuthenticatedRequest.js";
+import { sendAuthenticatedRequest } from "../../util/sendRequest.js";
 import { SessionToken } from "../../util/sessionToken.js";
 
 // TO DO: Separar as funcionalidades
