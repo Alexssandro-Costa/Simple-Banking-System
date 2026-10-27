@@ -2,9 +2,9 @@
 /**
 * Captura o evento de input do campo cpf 
 */
-const cpf = document.getElementById("cpf");
-cpf.addEventListener("input", function() {
-    formatCpf(cpf);
+document.getElementById("cpf").
+addEventListener("input", function(event) {
+    formatCpf(event.target);
 });
 
     /** 

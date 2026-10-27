@@ -1,15 +1,15 @@
 import { API_URL } from "../../config/apiUrl.js";
 import { convertFormToJson } from "../../util/convertFormToJson.js"
 import { SessionToken } from "../../util/sessionToken.js";
-import {showLoading, hideLoading} from "../../util/LoadingOverlay.js";
+import {sendRequest} from "../../util/sendRequest.js";
 
 /**
-* Captura o evento de submit do formulario e modifica seu evento para chamar sendAuthRequest; 
+* adiciona um listener no evento de submit do formulário
 */
-const form = document.getElementById("authForm");
-form.addEventListener("submit", function (event) {
+document.getElementById("authForm").addEventListener("submit",
+    function (event) {
     event.preventDefault(); // cancela o comportamento padrão do submit
-    sendAuthRequest(form);
+    sendAuthRequest(event.target);
 })
 /**
  * Envia uma requisição de autenticação para a API.
@@ -18,46 +18,22 @@ form.addEventListener("submit", function (event) {
  */
 async function sendAuthRequest(authRequestForm) {
 
-    // Converte o formulário HTML em JSON.
-    const json = convertFormToJson(authRequestForm);
-
-    // Recupera o endpoint definido no atributo action do formulário.
-    const endpoint = authRequestForm.getAttribute("action");
-
-    // Verifica se os dados necessários para a requisição são válidos.
-    if (!endpoint || !json) {
-        throw new Error("Endpoint ou JSON inválidos.");
-    }
-
-    // Constrói a URL completa da API.
-    const url = API_URL + endpoint;
-
     try {
-        // Envia a requisição para a API.
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: json
-        });
 
-        // Trata respostas HTTP que indicam erro.
-        if (!response.ok) {
+        // Converte o formulário HTML em JSON.
+        const json = convertFormToJson(authRequestForm);
 
-            const errorJson = await response.json();
+        // Recupera o endpoint definido no atributo action do formulário.
+        const endpoint = authRequestForm.getAttribute("action");
 
-            console.error("Erro retornado pela API:", errorJson);
-
-            throw new Error("Erro HTTP: " + response.status);
-        }
+        // Constrói a URL completa da API.
+        const url = API_URL + endpoint;
 
         // Converte o corpo da resposta para um objeto JavaScript.
-        const responseJson = await response.json();
+        const responseJson = await sendRequest(url, "POST", null, json)
 
-        // Persiste o token de acesso.
-        const session = new SessionToken();
-        session.saveToken(responseJson["token"]);
+        // Persiste o token de acesso retornado pela API
+        new SessionToken().saveToken(responseJson["token"]);
 
         // Redireciona para a página inicial da conta.
         window.location.href = "../../account/pages/accountPage.html";
